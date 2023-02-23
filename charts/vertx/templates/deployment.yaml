@@ -5,13 +5,16 @@ metadata:
   labels:
     {{- include "vertx.labels" . | nindent 4 }}
 spec:
-  serviceName: {{ .Values.service.name }}
+  serviceName: {{ include "vertx.fullname" . }}
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       {{- include "vertx.selectorLabels" . | nindent 6 }}
-  updateStrategy:
+  strategy:
     type: {{ .Values.common.updateStrategy }}
+    rollingUpdate:
+      maxUnavailable: {{ .Values.common.maxUnavailable }}
+      maxSurge: {{ .Values.common.maxSurge }}
   template:
     metadata:
       labels:

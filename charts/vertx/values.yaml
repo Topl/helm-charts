@@ -3,12 +3,14 @@
 # Declare variables to be passed into your templates.
 
 common:
-  updateStrategy: "RollingUpdate"
+  updateStrategy: RollingUpdate
+  maxUnavailable: 1
+  maxSurge: 1
     
 replicaCount: 1
 
 image:
-  repository: ghcr.io/topl/vertx
+  repository: vertx
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: dev

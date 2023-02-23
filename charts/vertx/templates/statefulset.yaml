@@ -5,6 +5,7 @@ metadata:
   labels:
     {{- include "redis.labels" . | nindent 4 }}
 spec:
+  serviceName: {{ .Values.redis.service.name }}
   replicas: {{ .Values.redis.replicaCount }}
   selector:
     matchLabels:
