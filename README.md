@@ -6,5 +6,5 @@
 The charts can be added using following command:
 
 ```
-helm repo add argo https://topl.github.io/helm-charts
+helm repo add topl https://topl.github.io/helm-charts
 ```
