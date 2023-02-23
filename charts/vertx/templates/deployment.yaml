@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "vertx.fullname" . }}
+  labels:
+    {{- include "vertx.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ .Values.service.name }}
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "vertx.selectorLabels" . | nindent 6 }}
+  updateStrategy:
+    type: {{ .Values.common.updateStrategy }}
+  template:
+    metadata:
+      labels:
+        {{- include "vertx.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: REDIS_URL
+              value: redis://redis-svc:6379
+            - name: REDIS_PORT
+              value: "{{ .Values.redis.port }}"
+            - name: MONGO_URI
+              value: ""
+            - name: MONGO_AGENDA_URI
+              value: ""
+            - name: PORT
+              value: "{{ .Values.service.port }}"
+          envFrom:
+            {{- if .Values.configMap.create }}
+            - configMapRef:
+                name: {{ .Values.configMap.name }}
+            {{- end }}
+          ports:
+            - name: vertx-ports
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          {{- if .Values.readinessProbe.enabled }}
+          readinessProbe:
+            httpGet:
+              port: {{ .Values.service.port }}
+              path: {{ .Values.readinessProbe.path }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+          {{- end }}
+          {{- if .Values.livenessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              port: {{ .Values.service.port }}
+              path: {{ .Values.livenessProbe.path }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+          - name: {{ .Values.redis.name }}-data
+            mountPath: {{ .Values.volume.mountPath }}
+      volumes:
+      - name: {{ .Values.redis.name }}-data
+        persistentVolumeClaim:
+          claimName: {{ .Values.redis.name }}-pv-{{ .Values.redis.name }}-0
