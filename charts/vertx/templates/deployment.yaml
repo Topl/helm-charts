@@ -28,22 +28,18 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: REDIS_URL
-              value: redis://redis-svc:6379
-            - name: REDIS_PORT
-              value: "{{ .Values.redis.port }}"
-            - name: MONGO_URI
-              value: ""
-            - name: MONGO_AGENDA_URI
-              value: ""
+              value: "{{ .Values.redis.configMap.redisUrl }}"
             - name: PORT
               value: "{{ .Values.service.port }}"
           envFrom:
+            - secretRef:
+                name: {{ .Values.secret.name }}
             {{- if .Values.configMap.create }}
             - configMapRef:
                 name: {{ .Values.configMap.name }}
             {{- end }}
           ports:
-            - name: vertx-ports
+            - name: {{ .Values.service.portName }}
               containerPort: {{ .Values.service.port }}
               protocol: TCP
           {{- if .Values.readinessProbe.enabled }}

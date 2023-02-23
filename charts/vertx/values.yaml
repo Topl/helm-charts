@@ -45,6 +45,7 @@ service:
   enabled: true
   type: ClusterIP
   port: 8081
+  portName: vertx-ports
 
 volume:
   mountPath: /app/data
@@ -60,8 +61,8 @@ configMap:
     LOGGING_PORT: 12201
     LOGGING_PROTOCOL: 'tcp'
 
-secrets:
-  create: true
+secret:
+  create: false
   name: vertx-secrets
 
 livenessProbe:
@@ -130,7 +131,7 @@ redis:
   port: 6379
 
   service:
-    name: redis-svc
+    name: vertx-redis-svc
 
   volume:
     storageClass: standard
@@ -143,6 +144,7 @@ redis:
   configMap:
     create: true
     name: redis-config
+    redisUrl: redis://vertx-redis-svc:6379
     conf: |-
       # Enable AOF https://redis.io/topics/persistence#append-only-file
       appendonly yes
