@@ -3,8 +3,8 @@ name: Publish Helm chart
 on:
   push:
     branches: [DEVOPS-87-move-helm-charts-to-their-on-repo]
-    paths:
-      - "charts/**"
+    # paths:
+    #   - "charts/**"
 
 jobs:
   release:
