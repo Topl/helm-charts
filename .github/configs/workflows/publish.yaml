@@ -1,0 +1,35 @@
+name: Publish Helm chart
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "charts/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout helm-charts
+        uses: actions/checkout@v2
+        with:
+          repository: Topl/helm-charts
+          ref: refs/heads/gh-pages
+          path: helm-charts
+          token: ${{ secrets.CHART_PUBLISH_TOKEN }}
+
+      - name: Publish the Helm chart
+        id: publish-chart
+        uses: moikot/chart-publish-action@v1
+        with:
+          charts_dir: "helm-charts"
+          charts_url: "https://topl.github.io/helm-charts"
+
+      - name: Commit and push helm-charts
+        uses: EndBug/add-and-commit@v6
+        with:
+          author_name: Toplprotocol
+          author_email: info@topl.me
+          branch: gh-pages
+          cwd: helm-charts
+          message: "Commit chart ${{ steps.publish-chart.outputs.chart }}"
