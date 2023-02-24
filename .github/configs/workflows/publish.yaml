@@ -1,9 +1,8 @@
 name: Publish Helm chart test
 
 on:
-  push:
-    branches:
-      - "DEVOPS-87-move-helm-charts-to-their-on-repo"
+  pull_request:
+    branches: [main]
 
 jobs:
   release:
