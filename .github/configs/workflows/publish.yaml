@@ -2,9 +2,8 @@ name: Publish Helm chart test
 
 on:
   push:
-    branches: ["DEVOPS-87-move-helm-charts-to-their-on-repo"]
-    # paths:
-    #   - "charts/**"
+    branches:
+      - "DEVOPS-87-move-helm-charts-to-their-on-repo"
 
 jobs:
   release:
