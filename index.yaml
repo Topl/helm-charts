@@ -1,0 +1,39 @@
+apiVersion: v1
+entries:
+  bifrost:
+  - apiVersion: v2
+    appVersion: 2.0.0-alpha1
+    created: "2023-02-24T16:19:24.556777978Z"
+    description: A Helm chart for Kubernetes
+    digest: 58ca1bb55114d94a1b9b6d520886010ad70ba8f8a098beca213e1e21acb32eed
+    icon: https://uploads-ssl.webflow.com/60f98f46d44e675abb7e66ea/611c4d83ed3df101fd221875_topl_basew.svg
+    name: bifrost
+    type: application
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/bifrost-0.1.1/bifrost-0.1.1.tgz
+    version: 0.1.1
+  bifrost-consensus-testnet:
+  - apiVersion: v2
+    appVersion: 2.0.0-alpha1
+    created: "2023-02-24T16:19:24.683582116Z"
+    description: Launches a private testnet using configurable nodes and artificial
+      throttling.
+    digest: f96075e4d7ff07ef9ff1d290a1f58607b631eb48d34a095b04c9b3fcb469ccf5
+    icon: https://uploads-ssl.webflow.com/60f98f46d44e675abb7e66ea/611c4d83ed3df101fd221875_topl_basew.svg
+    name: bifrost-consensus-testnet
+    type: application
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/bifrost-consensus-testnet-0.1.0/bifrost-consensus-testnet-0.1.0.tgz
+    version: 0.1.0
+  bifrost-daml-broker:
+  - apiVersion: v2
+    appVersion: 1.0.0.beta-2
+    created: "2023-02-24T16:19:24.818620639Z"
+    description: A Helm chart for Kubernetes
+    digest: f222dc2027149dac1f748db35e8357506ff22715b68fa9221f5de07fc923472c
+    name: bifrost-daml-broker
+    type: application
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/bifrost-daml-broker-0.1.0/bifrost-daml-broker-0.1.0.tgz
+    version: 0.1.0
+generated: "2023-02-24T16:19:24.818625739Z"
