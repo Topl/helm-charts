@@ -1,0 +1,112 @@
+# a k8 deployment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "bifrost.daml.broker.fullname" . }}
+  labels:
+    app: {{ include "bifrost.daml.broker.fullname" . }}
+spec:
+  replicas:  {{ .Values.replicaCount }}
+  selector:
+    matchLabels: 
+      app: {{ include "bifrost.daml.broker.fullname" . }}
+  template:
+    metadata:
+      labels: 
+        app: {{ include "bifrost.daml.broker.fullname" . }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image:  {{ .Values.image.name }}:{{ default .Chart.AppVersion .Values.image.tag }}
+        args: 
+          - "--"
+          - "-t"
+          - "$(DAML_ACCESS_TOKEN)"
+          - "-n"
+          - "$(NETWORK)"
+          - "-u"
+          - "$(URL)"
+          - "-h"
+          - "$(DAML_HOST)"
+          - "-p"
+          - "$(DAML_PORT)"
+          - "-o"
+          - "$(DAML_PARTY)"
+          - "-s"
+          - "$(DAML_SECURE)"
+          - "-k"
+          - "$(TOPL_KEYFILE)"
+          - "-m"
+          - "$(IS_DAML_HUB)"
+          - "-w"
+          - "$(TOPL_KEYFILE_PASSWORD)"
+          - "-a"
+          - "$(TOPL_API_KEY)"
+        resources:
+          limits:
+            cpu: {{ .Values.resources.limits.cpu }}
+            memory: {{ .Values.resources.limits.memory }}
+        env:
+          - name: NETWORK
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "bifrost.daml.broker.config.name" . }}
+                key: network
+          - name: URL
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "bifrost.daml.broker.config.name" . }}
+                key: bifrost-url
+          - name: DAML_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "bifrost.daml.broker.config.name" . }}
+                key: daml-host
+          - name: DAML_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "bifrost.daml.broker.config.name" . }}
+                key: daml-port
+          - name: IS_DAML_HUB
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "bifrost.daml.broker.config.name" . }}
+                key: is-daml-hub
+          - name: DAML_SECURE
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "bifrost.daml.broker.config.name" . }}
+                key: daml-secure
+          - name: DAML_ACCESS_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "bifrost.daml.broker.secret.name" . }}
+                key: daml-token
+          - name: DAML_PARTY
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "bifrost.daml.broker.secret.name" . }}
+                key: daml-party
+          - name: TOPL_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "bifrost.daml.broker.secret.name" . }}
+                key: topl-api-key
+          - name: TOPL_KEYFILE
+            value: /broker/keyfile.json
+          - name: TOPL_KEYFILE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "bifrost.daml.broker.secret.name" . }}
+                key: topl-keyfile-password
+        volumeMounts:
+        - name: broker-config
+          mountPath: /broker/
+      volumes:
+        - name: broker-config
+          secret:
+            secretName: {{ include "bifrost.daml.broker.secret.name" . }}
+            items:
+            - key: topl-keyfile
+              path: keyfile.json
