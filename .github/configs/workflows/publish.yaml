@@ -2,34 +2,32 @@ name: Publish Helm chart
 
 on:
   push:
-    branches: [main]
+    branches: [DEVOPS-87-move-helm-charts-to-their-on-repo]
     paths:
       - "charts/**"
 
 jobs:
-  build:
+  release:
+    # depending on default permission settings for your org (contents being read-only or read-write for workloads), you will have to add permissions
+    # see: https://docs.github.com/en/actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-github_token
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout helm-charts
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v3
         with:
-          repository: Topl/helm-charts
-          ref: refs/heads/gh-pages
-          path: helm-charts
-          token: ${{ secrets.CHART_PUBLISH_TOKEN }}
+          fetch-depth: 0
 
-      - name: Publish the Helm chart
-        id: publish-chart
-        uses: moikot/chart-publish-action@v1
-        with:
-          charts_dir: "helm-charts"
-          charts_url: "https://topl.github.io/helm-charts"
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-      - name: Commit and push helm-charts
-        uses: EndBug/add-and-commit@v6
-        with:
-          author_name: Toplprotocol
-          author_email: info@topl.me
-          branch: gh-pages
-          cwd: helm-charts
-          message: "Commit chart ${{ steps.publish-chart.outputs.chart }}"
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+
+      - name: Run chart-releaser
+        uses: helm/chart-releaser-action@v1.5.0
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
