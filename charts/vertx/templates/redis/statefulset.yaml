@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.redis.name }}
+  labels:
+    {{- include "redis.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ .Values.redis.service.name }}
+  replicas: {{ .Values.redis.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "redis.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "redis.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Values.redis.name }}
+          image: "{{ .Values.redis.image.repository }}:{{ .Values.redis.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+            {{- if .Values.redis.configMap.create }}
+            - configMapRef:
+                name: {{ .Values.redis.configMap.name }}
+            {{- end }}
+          ports:
+            - name: redis-port
+              containerPort: {{ .Values.redis.port }}
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+          - name: {{ .Values.redis.name }}-pv
+            mountPath: {{ .Values.redis.volume.mountPath }}
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Values.redis.name }}-pv
+    spec:
+      accessModes: {{ .Values.redis.volume.accessModes }}
+      storageClassName: {{ .Values.redis.volume.storageClass }}
+      resources:
+        requests:
+          storage: {{ .Values.redis.volume.storageSize }}

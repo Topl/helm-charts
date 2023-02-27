@@ -1,0 +1,11 @@
+{{- if .Values.redis.configMap.create -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.redis.configMap.name }}
+  labels: 
+    {{- include "redis.labels" . | nindent 4 }}
+data:
+  redis.conf: |-
+    {{- toYaml $.Values.redis.configMap.conf | nindent 6 }}
+{{- end }}
