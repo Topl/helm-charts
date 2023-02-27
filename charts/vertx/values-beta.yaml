@@ -59,6 +59,7 @@ configMap:
     LOGGING_HOST: 'log.topl.tech'
     LOGGING_PORT: 12201
     LOGGING_PROTOCOL: 'tcp'
+    NODE_ENV: 'beta'
 
 secrets:
   create: true
