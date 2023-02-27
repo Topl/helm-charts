@@ -7,7 +7,7 @@ image:
   tag:
 
 delayerImage:
-  name: us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/network-delayers
+  name: us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/network-delayer
   tag:
 
 orchestratorImage:

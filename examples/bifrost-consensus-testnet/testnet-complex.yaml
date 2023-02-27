@@ -1,3 +1,15 @@
+image:
+  name: localhost:5000/topl/bifrost-node
+  tag: latest
+
+delayerImage:
+  name: localhost:5000/topl/network-delayer
+  tag:
+
+orchestratorImage:
+  name: localhost:5000/topl/testnet-simulation-orchestrator
+  tag: latest
+
 results:
   bucket: bifrost-topl-labs-testnet-scenario-results
 
