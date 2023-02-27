@@ -4,6 +4,7 @@
 {{ $selectorLabels := include "bifrost.selectorLabels" . }}
 {{ $Values := .Values }}
 {{ $Release := .Release }}
+{{ $Chart := .Chart }}
 {{ range $nodeName, $value :=  $.Values.configs }}
 apiVersion: v1
 kind: ConfigMap
@@ -101,7 +102,7 @@ spec:
         {{- toYaml $Values.podSecurityContext | nindent 8 }}
       containers:
         - name: node
-          image: {{ $Values.image.name }}:{{ default .Chart.AppVersion .Values.image.tag }}
+          image: {{ $Values.image.name }}:{{ $Values.image.tag | default $Chart.AppVersion }}
           securityContext:
             {{- toYaml $Values.securityContext | nindent 12 }}
           command:
@@ -143,7 +144,7 @@ spec:
             - name: config-map
               mountPath: /etc/config
         - name: network-delayer
-          image: {{ $Values.delayerImage.name }}:{{ $Values.delayerImage.tag }}
+          image: {{ $Values.delayerImage.name }}:{{ $Values.delayerImage.tag | default $Chart.AppVersion }}
           securityContext:
             {{- toYaml $Values.securityContext | nindent 12 }}
           args:
