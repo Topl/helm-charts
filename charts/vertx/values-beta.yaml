@@ -46,7 +46,7 @@ service:
   name: vertx-svc-beta
   type: NodePort
   port: 8082
-  portName: vertx-ports-beta
+  portName: vertx-beta
 
 volume:
   mountPath: /app/data

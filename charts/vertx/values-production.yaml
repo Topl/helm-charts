@@ -46,7 +46,7 @@ service:
   name: vertx-svc-production
   type: NodePort
   port: 8083
-  portName: vertx-ports-production
+  portName: vertx-prod
 
 volume:
   mountPath: /app/data

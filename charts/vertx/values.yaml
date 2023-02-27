@@ -48,7 +48,7 @@ service:
   name: vertx-svc-dev
   type: NodePort
   port: 8081
-  portName: vertx-ports-dev
+  portName: vertx-dev
 
 volume:
   mountPath: /app/data
