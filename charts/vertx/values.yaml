@@ -126,7 +126,7 @@ affinity: {}
 
 ### Redis configurations
 redis:
-  name: vertx-redis
+  name: vertx-redis-dev
   replicaCount: 1
   image:
     repository: redis
