@@ -64,10 +64,3 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-#          volumeMounts:
-#          - name: {{ .Values.redis.name }}-data
-#            mountPath: {{ .Values.volume.mountPath }}
-#      volumes:
-#      - name: {{ .Values.redis.name }}-data
-#        persistentVolumeClaim:
-#          claimName: {{ .Values.redis.name }}-pv-{{ .Values.redis.name }}-0
