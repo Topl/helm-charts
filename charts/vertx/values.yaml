@@ -134,7 +134,7 @@ redis:
   port: 6379
 
   service:
-    name: vertx-redis-svc
+    name: vertx-redis-svc-dev
 
   volume:
     storageClass: standard
@@ -147,7 +147,7 @@ redis:
   configMap:
     create: true
     name: redis-config
-    redisUrl: redis://vertx-redis-svc:6379
+    redisUrl: redis://vertx-redis-svc-dev:6379
     conf: |-
       # Enable AOF https://redis.io/topics/persistence#append-only-file
       appendonly yes
