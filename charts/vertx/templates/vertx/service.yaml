@@ -9,7 +9,9 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      nodePort: 30163
+      targetPort: http
+      protocol: TCP
+      name: http
   selector:
     {{- include "vertx.selectorLabels" . | nindent 4 }}
 {{- end }}
