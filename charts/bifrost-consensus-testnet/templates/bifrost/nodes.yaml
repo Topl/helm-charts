@@ -102,7 +102,7 @@ spec:
         {{- toYaml $Values.podSecurityContext | nindent 8 }}
       containers:
         - name: node
-          image: {{ $Values.image.name }}:{{ default $Values.image.tag $Chart.AppVersion }}
+          image: {{ $Values.image.name }}:{{ $Values.image.tag | default $Chart.AppVersion }}
           securityContext:
             {{- toYaml $Values.securityContext | nindent 12 }}
           command:
@@ -144,7 +144,7 @@ spec:
             - name: config-map
               mountPath: /etc/config
         - name: network-delayer
-          image: {{ $Values.delayerImage.name }}:{{ default $Values.delayerImage.tag $Chart.AppVersion }}
+          image: {{ $Values.delayerImage.name }}:{{ $Values.delayerImage.tag | default $Chart.AppVersion }}
           securityContext:
             {{- toYaml $Values.securityContext | nindent 12 }}
           args:

@@ -4,7 +4,7 @@ image:
 
 delayerImage:
   name: localhost:5000/topl/network-delayer
-  tag:
+  tag: latest
 
 orchestratorImage:
   name: localhost:5000/topl/testnet-simulation-orchestrator
