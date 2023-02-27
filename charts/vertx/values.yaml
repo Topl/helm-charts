@@ -45,9 +45,10 @@ securityContext: {}
 
 service:
   enabled: true
+  name: vertx-svc-dev
   type: NodePort
   port: 8081
-  portName: vertx-ports
+  portName: vertx-ports-dev
 
 volume:
   mountPath: /app/data

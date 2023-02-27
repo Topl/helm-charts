@@ -43,8 +43,10 @@ securityContext: {}
 
 service:
   enabled: true
-  type: ClusterIP
-  port: 8081
+  name: vertx-svc-beta
+  type: NodePort
+  port: 8082
+  portName: vertx-ports-beta
 
 volume:
   mountPath: /app/data
@@ -53,7 +55,7 @@ configMap:
   create: true
   name: vertx-config-beta
   configMapProperties:
-    PORT: 8081
+    PORT: 8082
     MAINNET_TARGET_URI: 'https://main.torus.topl.network'
     VALHALLA_TARGET_URI: 'https://valhalla.torus.topl.network'
     LOGGING_HOST: 'log.topl.tech'
