@@ -54,8 +54,8 @@ configMap:
   name: vertx-config-production
   configMapProperties:
     PORT: 8081
-    MAINNET_TARGET_URI: 'http://127.0.0.1:9085' #TODO: check if this value needs to be a secret
-    VALHALLA_TARGET_URI: 'http://127.0.0.1:9585' #TODO: check if this value needs to be a secret
+    MAINNET_TARGET_URI: 'https://main.torus.topl.network'
+    VALHALLA_TARGET_URI: 'https://valhalla.torus.topl.network'
     LOGGING_HOST: 'log.topl.tech'
     LOGGING_PORT: 12201
     LOGGING_PROTOCOL: 'tcp'
