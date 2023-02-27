@@ -51,7 +51,7 @@ volume:
 
 configMap:
   create: true
-  name: vertx-config
+  name: vertx-config-production
   configMapProperties:
     PORT: 8081
     MAINNET_TARGET_URI: 'http://127.0.0.1:9085' #TODO: check if this value needs to be a secret
