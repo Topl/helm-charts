@@ -41,7 +41,7 @@ spec:
   - metadata:
       name: {{ .Values.redis.name }}-pv
     spec:
-      accessModes: [ "ReadWriteOnce" ]
+      accessModes: {{ .Values.redis.volume.accessModes }}
       storageClassName: {{ .Values.redis.volume.storageClass }}
       resources:
         requests:

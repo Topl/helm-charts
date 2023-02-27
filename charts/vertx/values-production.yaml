@@ -139,6 +139,7 @@ redis:
     storageClass: standard
     storageSize: 1Gi
     mountPath: /opt/redis/data
+    accessModes: [ "ReadWriteMany" ]
 
   ## Redis config file
   ## ref: https://redis.io/topics/config
