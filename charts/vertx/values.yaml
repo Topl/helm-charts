@@ -10,7 +10,7 @@ common:
 replicaCount: 1
 
 image:
-  repository: vertx
+  repository: us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/vertx
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: dev
@@ -65,7 +65,7 @@ configMap:
 
 secret:
   create: false
-  name: vertx-secrets
+  name: vertx-secrets-dev
 
 livenessProbe:
   enabled: true
