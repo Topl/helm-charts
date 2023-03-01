@@ -4,6 +4,8 @@
 
 common:
   updateStrategy: "RollingUpdate"
+  maxUnavailable: 1
+  maxSurge: 1
     
 replicaCount: 1
 
@@ -17,7 +19,7 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-port: 8081
+port: 2377
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -44,8 +46,9 @@ securityContext: {}
 service:
   enabled: true
   name: vertx-svc-beta
-  type: NodePort
-  port: 8082
+  type: LoadBalancer
+  targetPort: 2377
+  port: 2377
   portName: vertx-beta
 
 volume:
@@ -55,7 +58,8 @@ configMap:
   create: true
   name: vertx-config-beta
   configMapProperties:
-    PORT: 8082
+    PORT: 2377
+    HEALTH_CHECK_PORT: 8101
     MAINNET_TARGET_URI: 'https://main.torus.topl.network'
     VALHALLA_TARGET_URI: 'https://valhalla.torus.topl.network'
     LOGGING_HOST: 'log.topl.tech'
@@ -64,12 +68,13 @@ configMap:
     NODE_ENV: 'beta'
 
 secrets:
-  create: true
+  create: false
   name: vertx-secrets-beta
 
 livenessProbe:
   enabled: true
   path: /live
+  port: 8101
   initialDelaySeconds: 30
   timeoutSeconds: 30
   periodSeconds: 60 # Perform check every x seconds.
@@ -77,6 +82,7 @@ livenessProbe:
 readinessProbe:
   enabled: true
   path: /ready
+  port: 8101
   initialDelaySeconds: 150
   timeoutSeconds: 30
   periodSeconds: 60 # Perform check every x seconds.

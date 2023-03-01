@@ -4,6 +4,8 @@
 
 common:
   updateStrategy: "RollingUpdate"
+  maxUnavailable: 1
+  maxSurge: 1
     
 replicaCount: 2
 
@@ -17,7 +19,7 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-port: 8081
+port: 2378
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -44,8 +46,9 @@ securityContext: {}
 service:
   enabled: true
   name: vertx-svc-production
-  type: NodePort
-  port: 8083
+  type: LoadBalancer
+  targetPort: 2378
+  port: 2378
   portName: vertx-prod
 
 volume:
@@ -55,7 +58,8 @@ configMap:
   create: true
   name: vertx-config-production
   configMapProperties:
-    PORT: 8083
+    PORT: 2378
+    HEALTH_CHECK_PORT: 8102
     MAINNET_TARGET_URI: 'https://main.torus.topl.network'
     VALHALLA_TARGET_URI: 'https://valhalla.torus.topl.network'
     LOGGING_HOST: 'log.topl.tech'
@@ -64,18 +68,20 @@ configMap:
     NODE_ENV: 'production'
 
 secrets:
-  create: true
+  create: false
   name: vertx-secrets-production
 
 livenessProbe:
   enabled: true
   path: /live
+  port: 8102
   initialDelaySeconds: 30
   timeoutSeconds: 30
   periodSeconds: 60 # Perform check every x seconds.
 
 readinessProbe:
   enabled: true
+  port: 8102
   path: /ready
   initialDelaySeconds: 150
   timeoutSeconds: 30
@@ -111,7 +117,7 @@ resources: {}
 
 autoscaling:
   enabled: false
-  minReplicas: 1
+  minReplicas: 2
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
