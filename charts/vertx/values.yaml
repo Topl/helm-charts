@@ -59,6 +59,7 @@ configMap:
   name: vertx-config-dev
   configMapProperties:
     PORT: 8081
+    HEALTH_CHECK_PORT: 8100
     MAINNET_TARGET_URI: 'https://main.torus.topl.network'
     VALHALLA_TARGET_URI: 'https://valhalla.torus.topl.network'
     LOGGING_HOST: 'log.topl.tech'
