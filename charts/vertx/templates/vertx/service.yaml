@@ -10,8 +10,12 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: {{ .Values.service.targetPort}}
+    - name: {{ .Values.service.portName }}
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetport}}
+    - name: {{ .Values.healthCheck.portName }}
+      port: {{ .Values.healthCheck.port }}
+      targetPort: {{ .Values.healthCheck.port}}
   selector:
     {{- include "vertx.selectorLabels" . | nindent 4 }}
 {{- end }}

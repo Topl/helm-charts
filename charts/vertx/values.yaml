@@ -71,21 +71,23 @@ secret:
   create: false
   name: vertx-secrets-dev
 
-livenessProbe:
-  enabled: true
-  path: /live
+healthCheck:
   port: 8100
-  initialDelaySeconds: 30
-  timeoutSeconds: 30
-  periodSeconds: 60 # Perform check every x seconds.
-
-readinessProbe:
-  enabled: true
-  path: /ready
-  port: 8100
-  initialDelaySeconds: 150 ## Application takes a while to start up
-  timeoutSeconds: 30
-  periodSeconds: 60 # Perform check every x seconds.
+  portName: health-check
+  livenessProbe:
+    enabled: true
+    path: /live
+    port: 8100
+    initialDelaySeconds: 150 ## Application takes a while to start up
+    timeoutSeconds: 30
+    periodSeconds: 60 # Perform check every x seconds.
+  readinessProbe:
+    enabled: true
+    path: /ready
+    port: 8100
+    initialDelaySeconds: 150 ## Application takes a while to be ready
+    timeoutSeconds: 30
+    periodSeconds: 60 # Perform check every x seconds.
 
 ingress:
   enabled: false
