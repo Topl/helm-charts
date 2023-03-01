@@ -152,7 +152,7 @@ redis:
   ##
   configMap:
     create: true
-    name: redis-config
+    name: redis-config-beta
     redisUrl: redis://vertx-redis-svc-beta:6379
     conf: |-
       # Enable AOF https://redis.io/topics/persistence#append-only-file

@@ -154,7 +154,7 @@ redis:
   ##
   configMap:
     create: true
-    name: redis-config
+    name: redis-config-prod
     redisUrl: redis://vertx-redis-svc-production:6379
     conf: |-
       # Enable AOF https://redis.io/topics/persistence#append-only-file

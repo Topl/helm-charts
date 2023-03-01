@@ -77,14 +77,12 @@ healthCheck:
   livenessProbe:
     enabled: true
     path: /live
-    port: 8100
     initialDelaySeconds: 150 ## Application takes a while to start up
     timeoutSeconds: 30
     periodSeconds: 60 # Perform check every x seconds.
   readinessProbe:
     enabled: true
     path: /ready
-    port: 8100
     initialDelaySeconds: 150 ## Application takes a while to be ready
     timeoutSeconds: 30
     periodSeconds: 60 # Perform check every x seconds.
@@ -154,7 +152,7 @@ redis:
   ##
   configMap:
     create: true
-    name: redis-config
+    name: redis-config-dev
     redisUrl: redis://vertx-redis-svc-dev:6379
     conf: |-
       # Enable AOF https://redis.io/topics/persistence#append-only-file
