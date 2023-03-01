@@ -47,7 +47,7 @@ spec:
           {{- if .Values.readinessProbe.enabled }}
           readinessProbe:
             httpGet:
-              port: {{ .Values.service.port }}
+              port: {{ .Values.readinessProbe.port }}
               path: {{ .Values.readinessProbe.path }}
             initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
@@ -56,7 +56,7 @@ spec:
           {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
-              port: {{ .Values.service.port }}
+              port: {{ .Values.livenessProbe.port }}
               path: {{ .Values.livenessProbe.path }}
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}

@@ -74,6 +74,7 @@ secret:
 livenessProbe:
   enabled: true
   path: /live
+  port: 8100
   initialDelaySeconds: 30
   timeoutSeconds: 30
   periodSeconds: 60 # Perform check every x seconds.
@@ -81,6 +82,7 @@ livenessProbe:
 readinessProbe:
   enabled: true
   path: /ready
+  port: 8100
   initialDelaySeconds: 150 ## Application takes a while to start up
   timeoutSeconds: 30
   periodSeconds: 60 # Perform check every x seconds.
