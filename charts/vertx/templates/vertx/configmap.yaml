@@ -6,7 +6,7 @@ metadata:
   labels: 
     {{- include "vertx.labels" . | nindent 4 }}
 data:
-    {{- if .Values.configMapProperties }}
-      {{- include "common.tplvalues.render" ( dict "value" .Values.configMapProperties "context" $ ) | nindent 2 }}
+    {{- if .Values.configMap.configMapProperties }}
+      {{- include "common.tplvalues.render" ( dict "value" .Values.configMap.configMapProperties "context" $ ) | nindent 2 }}
     {{- end }}
 {{- end }}

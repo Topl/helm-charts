@@ -19,7 +19,7 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-port: 8081
+port: 2376
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -47,8 +47,8 @@ service:
   enabled: true
   name: vertx-svc-dev
   type: LoadBalancer
-  targetPort: 9376
-  port: 8081
+  targetPort: 2376
+  port: 2376
   portName: vertx-dev
 
 volume:
@@ -58,7 +58,7 @@ configMap:
   create: true
   name: vertx-config-dev
   configMapProperties:
-    PORT: 8081
+    PORT: 2376
     HEALTH_CHECK_PORT: 8100
     MAINNET_TARGET_URI: 'https://main.torus.topl.network'
     VALHALLA_TARGET_URI: 'https://valhalla.torus.topl.network'
