@@ -46,7 +46,8 @@ securityContext: {}
 service:
   enabled: true
   name: vertx-svc-dev
-  type: NodePort
+  type: LoadBalancer
+  targetPort: 9376
   port: 8081
   portName: vertx-dev
 
