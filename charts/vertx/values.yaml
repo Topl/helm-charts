@@ -100,11 +100,11 @@ server:
     ## Ref: https://cert-manager.io/docs/concepts/issuer
     issuer:
       # -- Certificate issuer group. Set if using an external issuer. Eg. `cert-manager.io`
-      group: ""
+      group: "cert-manager.io"
       # -- Certificate issuer kind. Either `Issuer` or `ClusterIssuer`
-      kind: ""
+      kind: "ClusterIssuer"
       # -- Certificate issuer name. Eg. `letsencrypt`
-      name: ""
+      name: "letsencrypt-staging"
     # Private key of the certificate
     privateKey:
       # -- Rotation policy of private key when certificate is re-issued. Either: `Never` or `Always`
