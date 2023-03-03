@@ -34,7 +34,7 @@ spec:
             - name: PORT
               value: "{{ .Values.service.port }}"
             - name: HEALTH_CHECK_PORT
-              value: "8100"
+              value: "{{ .Values.healthCheck.port }}"
           envFrom:
             - secretRef:
                 name: {{ .Values.secret.name }}
