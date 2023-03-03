@@ -50,6 +50,8 @@ service:
   targetPort: 2376
   port: 2376
   portName: vertx-dev
+  annotations:
+    external_dns: "dev.vertx.topl.services."
 
 volume:
   mountPath: /app/data

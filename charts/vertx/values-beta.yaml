@@ -50,6 +50,8 @@ service:
   targetPort: 2377
   port: 2377
   portName: vertx-beta
+  annotations:
+    external_dns: "beta.vertx.topl.services."
 
 volume:
   mountPath: /app/data
