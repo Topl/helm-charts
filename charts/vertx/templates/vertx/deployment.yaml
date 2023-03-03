@@ -33,6 +33,8 @@ spec:
               value: "{{ .Values.redis.configMap.redisUrl }}"
             - name: PORT
               value: "{{ .Values.service.port }}"
+            - name: HEALTH_CHECK_PORT
+              value: "8100"
           envFrom:
             - secretRef:
                 name: {{ .Values.secret.name }}
