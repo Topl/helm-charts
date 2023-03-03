@@ -49,6 +49,9 @@ spec:
             - name: {{ .Values.healthCheck.portName }}
               containerPort: {{ .Values.healthCheck.port }}
               protocol: TCP
+            - name: {{ .Values.service.https.portName }}
+              containerPort: {{ .Values.service.https.port }}
+              protocol: TCP
           {{- if .Values.healthCheck.readinessProbe.enabled }}
           readinessProbe:
             httpGet:

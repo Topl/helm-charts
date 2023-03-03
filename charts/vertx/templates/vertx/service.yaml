@@ -16,6 +16,9 @@ spec:
     - name: {{ .Values.healthCheck.portName }}
       port: {{ .Values.healthCheck.port }}
       targetPort: {{ .Values.healthCheck.port}}
+    - name: {{ .Values.service.https.portName }}
+      port: {{ .Values.service.https.port }}
+      targetPort: {{ .Values.service.targetport}}
   selector:
     {{- include "vertx.selectorLabels" . | nindent 4 }}
 {{- end }}

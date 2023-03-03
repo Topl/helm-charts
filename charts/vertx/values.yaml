@@ -48,6 +48,9 @@ service:
   name: vertx-svc-dev
   type: LoadBalancer
   targetPort: 2376
+  https:
+    portName: https
+    port: 443
   port: 2376
   portName: vertx-dev
   annotations:
