@@ -77,7 +77,7 @@ secrets:
 server:
   certificate:
     # -- Deploy a Certificate resource (requires cert-manager)
-    enabled: true
+    enabled: false
     name: vertx-cert-beta
     # -- The name of the Secret that will be automatically created and managed by this Certificate resource
     secretName: vertx-beta-tls
