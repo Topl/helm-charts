@@ -72,3 +72,11 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+          - name: vertx-tls
+            mountPath: /app/config/tls
+      volumes:
+      - name: vertx-tls
+        secret:
+          defaultMode: 420
+          secretName: vertx-tls
