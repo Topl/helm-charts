@@ -36,8 +36,6 @@ spec:
             - name: HEALTH_CHECK_PORT
               value: "{{ .Values.healthCheck.port }}"
           envFrom:
-            - secretRef:
-                name: {{ .Values.secret.name }}
             {{- if .Values.configMap.create }}
             - configMapRef:
                 name: {{ .Values.configMap.name }}
@@ -75,8 +73,23 @@ spec:
           volumeMounts:
           - name: vertx-tls
             mountPath: /app/config/tls
+          - name: secrets
+            mountPath: /app/secrets.yaml
+            readOnly: true
+            subPath: secrets.yaml
+      initContainers:
+      - name: secret-injector
+        image: us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/vertx:secret-mgr-init
+        env:        
+        - name: VERTX_MONGO_URI_VERSION
+          value: "1"
+        volumeMounts:
+        - name: secrets
+          mountPath: /secrets
       volumes:
       - name: vertx-tls
         secret:
           defaultMode: 420
           secretName: vertx-tls
+      - name: secrets
+        emptyDir: {}
