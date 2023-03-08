@@ -80,7 +80,9 @@ spec:
       initContainers:
       - name: secret-injector
         image: us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/vertx:secret-mgr-init
-        env:        
+        env:
+        - name: PROJECT_ID
+          value: "topl-shared-project-dev"        
         - name: VERTX_MONGO_URI_VERSION
           value: "1"
         volumeMounts:
