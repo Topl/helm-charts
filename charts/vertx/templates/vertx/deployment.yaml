@@ -82,7 +82,7 @@ spec:
         image: us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/vertx:secret-mgr-init
         env:
         - name: PROJECT_ID
-          value: "topl-shared-project-dev"        
+          value: "topl-shared-project-resources"        
         - name: VERTX_MONGO_URI_VERSION
           value: "1"
         volumeMounts:
