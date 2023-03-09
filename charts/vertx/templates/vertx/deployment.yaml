@@ -88,6 +88,7 @@ spec:
         volumeMounts:
         - name: secrets
           mountPath: /secrets
+          subPath: secrets.yaml
       volumes:
       - name: vertx-tls
         secret:
