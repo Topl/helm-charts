@@ -9,12 +9,19 @@ common:
     
 replicaCount: 1
 
+initContainer:
+  image: 
+    repository: us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/vertx
+    tag: secret-mgr-init-2
+  env: 
+    project_id: topl-shared-project-resources
+    vertx_mongo_uri_version: 1
+
 image:
   repository: us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/vertx
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: dev
-
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""

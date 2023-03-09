@@ -79,12 +79,12 @@ spec:
             subPath: secrets.yaml
       initContainers:
       - name: secret-injector
-        image: us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/vertx:secret-mgr-init-1
+        image: "{{ .Values.initContainer.image.repository }}:{{ .Values.initContainer.image.tag }}"
         env:
         - name: PROJECT_ID
-          value: "topl-shared-project-resources"        
+          value: "{{ .Values.initContainer.env.project_id }}"       
         - name: VERTX_MONGO_URI_VERSION
-          value: "1"
+          value: "{{ .Values.initContainer.env.vertx_mongo_uri_version }}" 
         volumeMounts:
         - name: secrets
           mountPath: /secrets
