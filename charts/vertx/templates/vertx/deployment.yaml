@@ -79,7 +79,7 @@ spec:
             subPath: secrets.yaml
       initContainers:
       - name: secret-injector
-        image: us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/vertx:secret-mgr-init
+        image: us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/vertx:secret-mgr-init-1
         env:
         - name: PROJECT_ID
           value: "topl-shared-project-resources"        
