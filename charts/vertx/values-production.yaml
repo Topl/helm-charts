@@ -49,6 +49,9 @@ service:
   type: LoadBalancer
   targetPort: 2378
   port: 2378
+  https:
+    portName: https
+    port: 443
   portName: vertx-prod
   annotations:
     external_dns: "prod.vertx.topl.services."
