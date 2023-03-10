@@ -6,6 +6,7 @@ metadata:
   labels:
     {{- include "vertx.labels" . | nindent 4 }}
   annotations:
+    cloud.google.com/app-protocols: '{"https":"HTTPS","http":"HTTP"}'
     external-dns.alpha.kubernetes.io/hostname: {{ .Values.service.annotations.external_dns }}
 spec:
   type: {{ .Values.service.type }}
@@ -21,6 +22,7 @@ spec:
       targetPort: 2376
     - name: http
       port: 80
+      targePort: 2376
   selector:
     {{- include "vertx.selectorLabels" . | nindent 4 }}
 {{- end }}
