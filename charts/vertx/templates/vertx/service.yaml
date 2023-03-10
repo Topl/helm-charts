@@ -22,7 +22,7 @@ spec:
       targetPort: 2376
     - name: http
       port: 80
-      targePort: 2376
+      targetPort: 2376
   selector:
     {{- include "vertx.selectorLabels" . | nindent 4 }}
 {{- end }}
