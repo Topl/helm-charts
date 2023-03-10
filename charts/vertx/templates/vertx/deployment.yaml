@@ -74,7 +74,7 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
           - name: vertx-tls
-            mountPath: /etc/ssl/
+            mountPath: /app/config/tls
       volumes:
       - name: vertx-tls
         secret:
