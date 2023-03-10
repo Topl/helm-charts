@@ -58,6 +58,8 @@ service:
 
 volume:
   mountPath: /app/data
+  tls:
+    mountPath: /app/config/tls
 
 configMap:
   create: true
