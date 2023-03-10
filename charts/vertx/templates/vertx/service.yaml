@@ -17,9 +17,11 @@ spec:
       port: {{ .Values.healthCheck.port }}
       targetPort: {{ .Values.healthCheck.port }}
     - name: {{ .Values.service.https.portName }}
-      port: {{ .Values.service.https.port }}
+      port: 2376
     - name: http
       port: 80
+  tls:
+    - secretName: vertx-tls
   selector:
     {{- include "vertx.selectorLabels" . | nindent 4 }}
 {{- end }}
