@@ -17,7 +17,8 @@ spec:
       port: {{ .Values.healthCheck.port }}
       targetPort: {{ .Values.healthCheck.port }}
     - name: {{ .Values.service.https.portName }}
-      port: 2376
+      port: 443
+      targetPort: 2376
     - name: http
       port: 80
   selector:
