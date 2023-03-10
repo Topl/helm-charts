@@ -77,9 +77,8 @@ spec:
             runAsUser: 0
           volumeMounts:
           - name: vertx-tls
-            mountPath: /etc/ssl/certs/
+            mountPath: /etc/ssl/certs
       volumes:
       - name: vertx-tls
         secret:
-          defaultMode: 420
           secretName: vertx-tls
