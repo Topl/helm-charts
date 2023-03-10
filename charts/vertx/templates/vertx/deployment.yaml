@@ -72,9 +72,12 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsUser: 0
           volumeMounts:
           - name: vertx-tls
-            mountPath: /app/config/tls
+            mountPath: /etc/ssl/certs/
       volumes:
       - name: vertx-tls
         secret:
