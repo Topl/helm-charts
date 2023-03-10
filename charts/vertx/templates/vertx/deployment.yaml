@@ -78,7 +78,7 @@ spec:
           volumeMounts:
           - name: vertx-tls
             mountPath: /etc/ssl/certs
-          - name: vertx-tls-copy
+          - name: vertx-tls
             mountPath: /app/config/tls
       volumes:
       - name: vertx-tls
