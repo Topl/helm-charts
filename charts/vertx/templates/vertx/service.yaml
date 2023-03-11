@@ -7,10 +7,10 @@ metadata:
     {{- include "vertx.labels" . | nindent 4 }}
   annotations:
     cloud.google.com/app-protocols: '{"https":"HTTPS","http":"HTTP"}'
-    cloud.google.com/backend-config: '{"ports": {
-    "2376":"vertx-dev",
-    "8100":"vertx-dev"
-    }}'
+    #cloud.google.com/backend-config: '{"ports": {
+    #"2376":"vertx-dev",
+    #"8100":"vertx-dev"
+    #}}'
 #    external-dns.alpha.kubernetes.io/hostname: {{ .Values.service.annotations.external_dns }}
 spec:
   type: {{ .Values.service.type }}
