@@ -72,6 +72,8 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          securityContext:
+            runAsUser: 0
           volumeMounts:
           #- name: vertx-tls
           #  mountPath: /etc/ssl/certs
