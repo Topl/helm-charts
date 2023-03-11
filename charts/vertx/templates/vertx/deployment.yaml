@@ -73,6 +73,8 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           securityContext:
+            capabilities:
+              add: ["NET_ADMIN", "SYS_TIME"]
             runAsUser: 0
           volumeMounts:
           #- name: vertx-tls
