@@ -2,6 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: vertx-ingress
+  namespace: vertx
 spec:
   tls:
   - secretName: vertx-tls
@@ -14,4 +15,4 @@ spec:
           service:
             name: vertx-svc-dev
             port:
-              number: 60000
+              number: 2376

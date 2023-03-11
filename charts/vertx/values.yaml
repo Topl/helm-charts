@@ -46,7 +46,7 @@ securityContext: {}
 service:
   enabled: true
   name: vertx-svc-dev
-  type: LoadBalancer
+  type: NodePort
   targetPort: 2376
   https:
     portName: https
