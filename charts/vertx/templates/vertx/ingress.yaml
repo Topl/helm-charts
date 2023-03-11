@@ -9,6 +9,13 @@ spec:
   rules:
   - http:
       paths:
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: vertx-svc-dev
+            port:
+              number: 2376
       - path: /ready
         pathType: ImplementationSpecific
         backend:
@@ -16,12 +23,5 @@ spec:
             name: vertx-svc-dev
             port:
               number: 8100
-#      - path: /ready
-#        pathType: ImplementationSpecific
-#        backend:
-#          service:
-#            name: vertx-svc-dev
-#            port:
-#              number: 8100
               
         
