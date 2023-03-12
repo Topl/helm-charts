@@ -54,7 +54,7 @@ service:
   port: 2376
   portName: vertx-dev
   annotations:
-    external_dns: "dev.vertx.topl.tech"
+    external_dns: "vertx.topl.tech"
 
 volume:
   mountPath: /app/data
