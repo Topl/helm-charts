@@ -1,14 +1,13 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: vertx-ingress-dev
+  name: vertx-ingress
   namespace: vertx
 spec:
   tls:
   - secretName: vertx-tls
   rules:
-  - host: "dev.vertx.topl.tech"
-    http:
+  - http:
       paths:
       - path: /*
         pathType: ImplementationSpecific
