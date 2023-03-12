@@ -1,0 +1,10 @@
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: vertx-dev
+spec:
+  healthCheck:
+    checkIntervalSec: 60
+    port: 2376
+    type: HTTPS
+    requestPath: /healthz

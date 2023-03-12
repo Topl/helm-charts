@@ -124,13 +124,13 @@ healthCheck:
   portName: health-check
   livenessProbe:
     enabled: true
-    path: /live
+    path: /healthz
     initialDelaySeconds: 150 ## Application takes a while to start up
     timeoutSeconds: 30
     periodSeconds: 60 # Perform check every x seconds.
   readinessProbe:
     enabled: true
-    path: /ready
+    path: /healthz
     initialDelaySeconds: 150 ## Application takes a while to be ready
     timeoutSeconds: 30
     periodSeconds: 60 # Perform check every x seconds.

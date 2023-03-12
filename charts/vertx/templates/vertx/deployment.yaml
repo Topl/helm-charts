@@ -33,8 +33,6 @@ spec:
               value: "{{ .Values.redis.configMap.redisUrl }}"
             - name: PORT
               value: "{{ .Values.service.port }}"
-            - name: HEALTH_CHECK_PORT
-              value: "{{ .Values.healthCheck.port }}"
           envFrom:
             - secretRef:
                 name: {{ .Values.secret.name }}
@@ -46,16 +44,13 @@ spec:
             - name: {{ .Values.service.portName }}
               containerPort: {{ .Values.service.port }}
               protocol: TCP
-            - name: {{ .Values.healthCheck.portName }}
-              containerPort: {{ .Values.healthCheck.port }}
-              protocol: TCP
             - name: {{ .Values.service.https.portName }}
               containerPort: {{ .Values.service.https.port }}
               protocol: TCP
           {{- if .Values.healthCheck.readinessProbe.enabled }}
           readinessProbe:
             httpGet:
-              port: {{ .Values.healthCheck.port }}
+              port: {{ .Values.service.port }}
               path: {{ .Values.healthCheck.readinessProbe.path }}
             initialDelaySeconds: {{ .Values.healthCheck.readinessProbe.initialDelaySeconds }}
             timeoutSeconds: {{ .Values.healthCheck.readinessProbe.timeoutSeconds }}
@@ -64,7 +59,7 @@ spec:
           {{- if .Values.healthCheck.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
-              port: {{ .Values.healthCheck.port }}
+              port: {{ .Values.service.port }}
               path: {{ .Values.healthCheck.livenessProbe.path }}
             initialDelaySeconds: {{ .Values.healthCheck.livenessProbe.initialDelaySeconds }}
             timeoutSeconds: {{ .Values.healthCheck.livenessProbe.timeoutSeconds }}
@@ -72,13 +67,7 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          securityContext:
-            capabilities:
-              add: ["NET_ADMIN", "SYS_TIME"]
-            runAsUser: 0
           volumeMounts:
-          #- name: vertx-tls
-          #  mountPath: /etc/ssl/certs
           - name: vertx-tls
             mountPath: {{ .Values.volume.tls.mountPath }}
       volumes:

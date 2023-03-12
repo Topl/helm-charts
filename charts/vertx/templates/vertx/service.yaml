@@ -18,9 +18,6 @@ spec:
     - name: {{ .Values.service.portName }}
       port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.targetport }}
-    - name: {{ .Values.healthCheck.portName }}
-      port: {{ .Values.healthCheck.port }}
-      targetPort: {{ .Values.healthCheck.port }}
     - name: {{ .Values.service.https.portName }}
       port: 443
       targetPort: 2376
