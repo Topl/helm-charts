@@ -87,7 +87,7 @@ server:
     # -- The name of the Secret that will be automatically created and managed by this Certificate resource
     secretName: vertx-tls
     # -- Certificate primary domain (commonName)
-    domain: dev.vertx.topl.tech
+    domain: vertx.topl.tech
     # -- Certificate Subject Alternate Names (SANs)
     additionalHosts: 
     #  - "dev.vertx.topl.services"
