@@ -7,14 +7,23 @@ spec:
   tls:
   - secretName: vertx-tls
   rules:
-  - http:
+  - host: "vertx.topl.tech"
+    http:
       paths:
       - path: /dev
-        pathType: ImplementationSpecific
+        pathType: Prefix
         backend:
           service:
             name: vertx-svc-dev
             port:
               number: 2376
+#      paths:
+#      - path: /dev
+#        pathType: ImplementationSpecific
+#        backend:
+#          service:
+#            name: vertx-svc-dev
+#            port:
+#              number: 2376
               
         
