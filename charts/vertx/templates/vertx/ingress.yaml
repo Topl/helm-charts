@@ -11,19 +11,11 @@ spec:
     http:
       paths:
       - path: /*
-        pathType: Prefix
+        pathType: ImplementationSpecific
         backend:
           service:
             name: vertx-svc-dev
             port:
               number: 2376
-#      paths:
-#      - path: /dev
-#        pathType: ImplementationSpecific
-#        backend:
-#          service:
-#            name: vertx-svc-dev
-#            port:
-#              number: 2376
               
         
