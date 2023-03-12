@@ -11,7 +11,7 @@ metadata:
     #"2376":"vertx-dev",
     #"8100":"vertx-dev"
     #}}'
-    external-dns.alpha.kubernetes.io/hostname: {{ .Values.service.annotations.external_dns }}
+#    external-dns.alpha.kubernetes.io/hostname: {{ .Values.service.annotations.external_dns }}
 spec:
   type: {{ .Values.service.type }}
   ports:
