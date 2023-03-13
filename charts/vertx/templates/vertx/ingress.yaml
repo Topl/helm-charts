@@ -6,7 +6,8 @@ metadata:
   namespace: vertx
 spec:
   tls:
-  - secretName: vertx-tls
+    secretName: vertx-tls-dev
+    secretName: vertx-tls-prod
   rules:
   - host: "dev.vertx.topl.services"
     http:
