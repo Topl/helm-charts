@@ -7,7 +7,7 @@ spec:
   tls:
   - secretName: vertx-tls
   rules:
-  - host: "dev.vertx.topl.tech"
+  - host: "dev.vertx.topl.services"
     http:
       paths:
       - path: /*
