@@ -51,7 +51,7 @@ service:
   https:
     portName: vertx-prod
     port: 443
-  port: 2376
+  port: 2378
   portName: vertx-prod
   annotations:
     external_dns: "prod.vertx.topl.services."
