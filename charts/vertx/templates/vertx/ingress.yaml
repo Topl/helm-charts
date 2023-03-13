@@ -17,3 +17,13 @@ spec:
             name: vertx-svc-dev
             port:
               number: 2376
+  - host: "prod.vertx.topl.services"
+    http:
+      paths:
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: vertx-svc-production
+            port:
+              number: 2378
