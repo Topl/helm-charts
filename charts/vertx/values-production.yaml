@@ -13,7 +13,7 @@ image:
   repository: us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/vertx
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: latest
+  tag: dev
 
 imagePullSecrets: []
 nameOverride: ""
@@ -46,15 +46,20 @@ securityContext: {}
 service:
   enabled: true
   name: vertx-svc-production
-  type: LoadBalancer
+  type: NodePort
   targetPort: 2378
-  port: 2378
+  https:
+    portName: vertx-prod
+    port: 443
+  port: 2376
   portName: vertx-prod
   annotations:
     external_dns: "prod.vertx.topl.services."
 
 volume:
   mountPath: /app/data
+  tls: 
+    mountPath: /app/config/tls
 
 configMap:
   create: true
@@ -69,7 +74,7 @@ configMap:
     LOGGING_PROTOCOL: 'tcp'
     NODE_ENV: 'production'
 
-secrets:
+secret:
   create: false
   name: vertx-secrets-production
 
@@ -102,7 +107,7 @@ server:
       # -- Certificate issuer kind. Either `Issuer` or `ClusterIssuer`
       kind: "ClusterIssuer"
       # -- Certificate issuer name. Eg. `letsencrypt`
-      name: "letsencrypt-prod"
+      name: "letsencrypt-staging"
     # Private key of the certificate
     privateKey:
       # -- Rotation policy of private key when certificate is re-issued. Either: `Never` or `Always`
@@ -119,7 +124,7 @@ healthCheck:
   portName: health-check
   livenessProbe:
     enabled: true
-    path: /live
+    path: /healthz
     port: 8102
     initialDelaySeconds: 150 ## Application takes a while to start up
     timeoutSeconds: 30
@@ -127,7 +132,7 @@ healthCheck:
   readinessProbe:
     enabled: true
     port: 8102
-    path: /ready
+    path: /healthz
     initialDelaySeconds: 150 ## Application takes a while to be ready
     timeoutSeconds: 30
     periodSeconds: 60 # Perform check every x seconds.
