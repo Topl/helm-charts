@@ -90,7 +90,8 @@ server:
     domain: dev.vertx.topl.tech
     # -- Certificate Subject Alternate Names (SANs)
     additionalHosts: 
-    #  - "dev.vertx.topl.services"
+    #  - "beta.vertx.topl.tech"
+    #  - "prod.vertx.topl.tech"
     # -- The requested 'duration' (i.e. lifetime) of the certificate.
     # @default -- `""` (defaults to 2160h = 90d if not specified)
     ## Ref: https://cert-manager.io/docs/usage/certificate/#renewal
@@ -144,7 +145,7 @@ ingress:
   hosts:
     - host: dev.vertx.topl.tech
       paths:
-        - path: /*
+        - path: /dev
           pathType: ImplementationSpecific
   tls:
     - secretName: vertx-tls
