@@ -13,7 +13,7 @@ image:
   repository: us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/vertx
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: dev
+  tag: update-health-check-alpine
 
 imagePullSecrets: []
 nameOverride: ""
@@ -90,8 +90,8 @@ server:
     domain: dev.vertx.topl.tech
     # -- Certificate Subject Alternate Names (SANs)
     additionalHosts: 
-    #  - "beta.vertx.topl.tech"
-    #  - "prod.vertx.topl.tech"
+      - "beta.vertx.topl.tech"
+      - "prod.vertx.topl.tech"
     # -- The requested 'duration' (i.e. lifetime) of the certificate.
     # @default -- `""` (defaults to 2160h = 90d if not specified)
     ## Ref: https://cert-manager.io/docs/usage/certificate/#renewal
@@ -137,7 +137,8 @@ healthCheck:
     periodSeconds: 60 # Perform check every x seconds.
 
 ingress:
-  enabled: enable
+  enabled: false
+  name: vertx-ingress
   className: ""
   annotations: {}
     # kubernetes.io/ingress.class: nginx
@@ -145,8 +146,10 @@ ingress:
   hosts:
     - host: dev.vertx.topl.tech
       paths:
-        - path: /dev
+        - path: /*
           pathType: ImplementationSpecific
+          serviceName: "vertx-svc-dev"
+          servicePort: 2376
   tls:
     - secretName: vertx-tls
       hosts:

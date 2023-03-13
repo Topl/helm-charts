@@ -13,7 +13,7 @@ image:
   repository: us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/vertx
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: beta
+  tag: update-health-check-alpine
 
 imagePullSecrets: []
 nameOverride: ""
@@ -51,7 +51,7 @@ service:
   port: 2377
   portName: vertx-beta
   annotations:
-    external_dns: "beta.vertx.topl.services."
+    external_dns: "beta.vertx.topl.tech"
 
 volume:
   mountPath: /app/data
