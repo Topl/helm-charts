@@ -87,12 +87,11 @@ server:
     # -- The name of the Secret that will be automatically created and managed by this Certificate resource
     secretName: vertx-tls
     # -- Certificate primary domain (commonName)
-    domain: "vertx.topl.services"
+    domain: "prod.vertx.topl.services"
     # -- Certificate Subject Alternate Names (SANs)
     additionalHosts:
       - "dev.vertx.topl.services" 
       - "beta.vertx.topl.services"
-      - "prod.vertx.topl.services"
     # -- The requested 'duration' (i.e. lifetime) of the certificate.
     # @default -- `""` (defaults to 2160h = 90d if not specified)
     ## Ref: https://cert-manager.io/docs/usage/certificate/#renewal
