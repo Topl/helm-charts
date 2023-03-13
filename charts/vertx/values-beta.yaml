@@ -13,7 +13,7 @@ image:
   repository: us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/vertx
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: dev
+  tag: beta
 
 imagePullSecrets: []
 nameOverride: ""
@@ -54,7 +54,7 @@ service:
   port: 2377
   portName: vertx-beta
   annotations:
-    external_dns: "beta.vertx.topl.tech"
+    external_dns: "beta.vertx.topl.services"
 
 volume:
   mountPath: /app/data
@@ -82,10 +82,10 @@ secrets:
 server:
   certificate:
     # -- Deploy a Certificate resource (requires cert-manager)
-    enabled: false
+    enabled: true
     name: vertx-cert-beta
     # -- The name of the Secret that will be automatically created and managed by this Certificate resource
-    secretName: vertx-beta-tls
+    secretName: vertx-tls-beta
     # -- Certificate primary domain (commonName)
     domain: beta.vertx.topl.services
     # -- Certificate Subject Alternate Names (SANs)
@@ -106,7 +106,7 @@ server:
       # -- Certificate issuer kind. Either `Issuer` or `ClusterIssuer`
       kind: "ClusterIssuer"
       # -- Certificate issuer name. Eg. `letsencrypt`
-      name: "letsencrypt-staging"
+      name: "letsencrypt-prod"
     # Private key of the certificate
     privateKey:
       # -- Rotation policy of private key when certificate is re-issued. Either: `Never` or `Always`

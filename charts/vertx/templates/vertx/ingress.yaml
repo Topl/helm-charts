@@ -8,6 +8,7 @@ spec:
   tls:
     - secretName: vertx-tls-dev
     - secretName: vertx-tls-prod
+    - secretName: vertx-tls-beta
   rules:
   - host: "dev.vertx.topl.services"
     http:
@@ -29,4 +30,14 @@ spec:
             name: vertx-svc-production
             port:
               number: 2378
+  - host: "beta.vertx.topl.services"
+    http:
+      paths:
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: vertx-svc-beta
+            port:
+              number: 2377
 {{- end }}

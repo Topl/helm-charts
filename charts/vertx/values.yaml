@@ -145,16 +145,16 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: dev.vertx.topl.tech
+    - host: dev.vertx.topl.services
       paths:
         - path: /*
           pathType: ImplementationSpecific
           serviceName: "vertx-svc-dev"
           servicePort: 2376
   tls:
-    - secretName: vertx-tls
+    - secretName: vertx-tls-dev
       hosts:
-        - dev.vertx.topl.tech
+        - dev.vertx.topl.services
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
