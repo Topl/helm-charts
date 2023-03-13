@@ -46,7 +46,7 @@ securityContext: {}
 service:
   enabled: true
   name: vertx-svc-beta
-  type: LoadBalancer
+  type: NodePort
   targetPort: 2377
   port: 2377
   portName: vertx-beta
