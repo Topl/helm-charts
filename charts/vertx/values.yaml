@@ -147,7 +147,7 @@ ingress:
         - path: /*
           pathType: ImplementationSpecific
   tls:
-    - secretName: chart-example-tls
+    - secretName: vertx-tls
       hosts:
         - dev.vertx.topl.tech
 
