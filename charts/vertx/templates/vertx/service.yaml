@@ -20,10 +20,10 @@ spec:
       targetPort: {{ .Values.service.targetport }}
     - name: {{ .Values.service.https.portName }}
       port: 443
-      targetPort: 2376
+      targetPort: {{ .Values.service.port }}
     - name: http
       port: 80
-      targetPort: 2376
+      targetPort: {{ .Values.service.port }}
   selector:
     {{- include "vertx.selectorLabels" . | nindent 4 }}
 {{- end }}
