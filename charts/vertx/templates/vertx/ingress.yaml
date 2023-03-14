@@ -1,43 +1,39 @@
-{{- if .Values.ingress.enabled }}
+{{- if .Values.ingress.enabled -}}
+{{- $fullName := include "vertx.fullname" . -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: vertx-ingress
-  namespace: vertx
+  name: {{ $fullName }}
+  labels:
+    {{- include "vertx.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
+  {{- if .Values.ingress.tls }}
   tls:
-    - secretName: vertx-tls-dev
-    - secretName: vertx-tls-prod
-    - secretName: vertx-tls-beta
+    {{- range .Values.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
   rules:
-  - host: "dev.vertx.topl.services"
-    http:
-      paths:
-      - path: /*
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: vertx-svc-dev
-            port:
-              number: 2376
-  - host: "prod.vertx.topl.services"
-    http:
-      paths:
-      - path: /*
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: vertx-svc-production
-            port:
-              number: 2378
-  - host: "beta.vertx.topl.services"
-    http:
-      paths:
-      - path: /*
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: vertx-svc-beta
-            port:
-              number: 2377
+    {{- range .Values.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: {{ .serviceName }}
+                port:
+                  number: {{ .servicePort }}
+          {{- end }}
+    {{- end }}
 {{- end }}

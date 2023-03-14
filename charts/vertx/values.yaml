@@ -152,7 +152,7 @@ ingress:
           serviceName: "vertx-svc-dev"
           servicePort: 2376
   tls:
-    - secretName: vertx-tls-dev
+    - secretName: vertx-tls
       hosts:
         - dev.vertx.topl.services
 
