@@ -1,0 +1,12 @@
+{{- if .Values.backendConfig.enabled }}
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: {{ include "vertx.fullname" . }}
+spec:
+  healthCheck:
+    checkIntervalSec: {{ .Values.backendConfig.checkIntervalSec }}
+    port: {{ .Values.service.port }}
+    type: {{ .Values.backendConfig.type }}
+    requestPath: {{ .Values.backendConfig.requestPath }}
+{{- end }}

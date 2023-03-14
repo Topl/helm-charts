@@ -5,13 +5,20 @@ metadata:
   name: {{ .Values.service.name }}
   labels:
     {{- include "vertx.labels" . | nindent 4 }}
+  annotations:
+    cloud.google.com/app-protocols: '{"https":"HTTPS","http":"HTTP"}'
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
-      protocol: TCP
-      name: http
+    - name: {{ .Values.service.portName }}
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.port }}
+    - name: {{ .Values.service.https.portName }}
+      port: {{ .Values.service.https.port }}
+      targetPort: {{ .Values.service.port }}
+    - name: {{ .Values.service.http.portName }}
+      port: {{ .Values.service.http.port }}
+      targetPort: {{ .Values.service.port }}
   selector:
     {{- include "vertx.selectorLabels" . | nindent 4 }}
 {{- end }}

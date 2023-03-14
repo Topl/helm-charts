@@ -13,13 +13,11 @@ image:
   repository: us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/vertx
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: dev
+  tag: latest-prod
 
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
-
-port: 8081
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -47,17 +45,32 @@ service:
   enabled: true
   name: vertx-svc-dev
   type: NodePort
-  port: 8081
-  portName: vertx-ports-dev
+  portName: vertx-dev
+  port: 2376
+  https:
+    portName: https
+    port: 443
+  http:
+    portName: http
+    port: 80
+
+backendConfig:
+  enabled: true
+  checkIntervalSec: 60
+  type: HTTPS
+  requestPath: "/healthz"
 
 volume:
   mountPath: /app/data
+  tls:
+    mountPath: /app/config/tls
 
 configMap:
   create: true
   name: vertx-config-dev
-  configMapProperties:
-    PORT: 8081
+  data:
+    PORT: 2376
+    HEALTH_CHECK_PORT: 8100
     MAINNET_TARGET_URI: 'https://main.torus.topl.network'
     VALHALLA_TARGET_URI: 'https://valhalla.torus.topl.network'
     LOGGING_HOST: 'log.topl.tech'
@@ -69,35 +82,82 @@ secret:
   create: false
   name: vertx-secrets-dev
 
-livenessProbe:
-  enabled: true
-  path: /live
-  initialDelaySeconds: 30
-  timeoutSeconds: 30
-  periodSeconds: 60 # Perform check every x seconds.
+# TLS certificate configuration via cert-manager
+server:
+  certificate:
+    # -- Deploy a Certificate resource (requires cert-manager)
+    enabled: true
+    name: vertx-cert-dev
+    # -- The name of the Secret that will be automatically created and managed by this Certificate resource
+    secretName: vertx-tls-dev
+    # -- Certificate primary domain (commonName)
+    domain: "dev.vertx.topl.services"
+    # -- Certificate Subject Alternate Names (SANs)
+    additionalHosts: []
+    #  - "dev.vertx.topl.services" 
+    #  - "beta.vertx.topl.services"
+    #  - "prod.vertx.topl.services"
+    # -- The requested 'duration' (i.e. lifetime) of the certificate.
+    # @default -- `""` (defaults to 2160h = 90d if not specified)
+    ## Ref: https://cert-manager.io/docs/usage/certificate/#renewal
+    duration: ""
+    # -- How long before the expiry a certificate should be renewed.
+    # @default -- `""` (defaults to 360h = 15d if not specified)
+    ## Ref: https://cert-manager.io/docs/usage/certificate/#renewal
+    renewBefore: ""
+    # Certificate issuer
+    ## Ref: https://cert-manager.io/docs/concepts/issuer
+    issuer:
+      # -- Certificate issuer group. Set if using an external issuer. Eg. `cert-manager.io`
+      group: "cert-manager.io"
+      # -- Certificate issuer kind. Either `Issuer` or `ClusterIssuer`
+      kind: "ClusterIssuer"
+      # -- Certificate issuer name. Eg. `letsencrypt`
+      name: "letsencrypt-prod"
+    # Private key of the certificate
+    privateKey:
+      # -- Rotation policy of private key when certificate is re-issued. Either: `Never` or `Always`
+      rotationPolicy: Never
+      # -- The private key cryptography standards (PKCS) encoding for private key. Either: `PCKS1` or `PKCS8`
+      encoding: PKCS1
+      # -- Algorithm used to generate certificate private key. One of: `RSA`, `Ed25519` or `ECDSA`
+      algorithm: RSA
+      # -- Key bit size of the private key. If algorithm is set to `Ed25519`, size is ignored.
+      size: 2048
 
-readinessProbe:
-  enabled: true
-  path: /ready
-  initialDelaySeconds: 150 ## Application takes a while to start up
-  timeoutSeconds: 30
-  periodSeconds: 60 # Perform check every x seconds.
+healthCheck:
+  portName: health-check
+  livenessProbe:
+    enabled: true
+    path: /healthz
+    initialDelaySeconds: 150 ## Application takes a while to start up
+    timeoutSeconds: 30
+    periodSeconds: 60 # Perform check every x seconds.
+  readinessProbe:
+    enabled: true
+    path: /healthz
+    initialDelaySeconds: 150 ## Application takes a while to be ready
+    timeoutSeconds: 30
+    periodSeconds: 60 # Perform check every x seconds.
 
 ingress:
   enabled: false
+  name: vertx-ingress
   className: ""
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: chart-example.local
+    - host: dev.vertx.topl.services
       paths:
-        - path: /
+        - path: /*
           pathType: ImplementationSpecific
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+          serviceName: "vertx-svc-dev"
+          servicePort: 2376
+  tls:
+    - secretName: vertx-tls
+      hosts:
+        - dev.vertx.topl.services
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -126,7 +186,7 @@ affinity: {}
 
 ### Redis configurations
 redis:
-  name: vertx-redis
+  name: vertx-redis-dev
   replicaCount: 1
   image:
     repository: redis
@@ -148,7 +208,7 @@ redis:
   ##
   configMap:
     create: true
-    name: redis-config
+    name: redis-config-dev
     redisUrl: redis://vertx-redis-svc-dev:6379
     conf: |-
       # Enable AOF https://redis.io/topics/persistence#append-only-file
