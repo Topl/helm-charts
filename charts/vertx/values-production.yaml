@@ -166,15 +166,8 @@ ingress:
           servicePort: 2378
   tls: 
     - secretName: vertx-tls-dev
-      hosts:
-        - dev.vertx.topl.services
     - secretName: vertx-tls-beta
-      host:
-        - beta.vertx.topl.services
     - secretName: vertx-tls-prod
-      host:
-        - prod.vertx.topl.services
-        - vertx.topl.services
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
