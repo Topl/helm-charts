@@ -83,6 +83,18 @@ entries:
   vertx:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2023-03-14T16:30:30.443276132Z"
+    description: A Helm chart for Vertx, a NodeJS fast-gateway application for authenticating,
+      rate-limiting, and routing to Topl services.
+    digest: 288dbd2f5bfec1d59bd3174adcb38c6a766f603aec16604ad355ab58f497a314
+    icon: https://uploads-ssl.webflow.com/60f98f46d44e675abb7e66ea/611c4d83ed3df101fd221875_topl_basew.svg
+    name: vertx
+    type: application
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/vertx-0.2.0/vertx-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2023-02-28T04:01:25.181674015Z"
     description: A Helm chart for Vertx, a NodeJS fast-gateway application for authenticating,
       rate-limiting, and routing to Topl services.
@@ -93,4 +105,4 @@ entries:
     urls:
     - https://github.com/Topl/helm-charts/releases/download/vertx-0.1.0/vertx-0.1.0.tgz
     version: 0.1.0
-generated: "2023-03-14T13:13:23.797400834Z"
+generated: "2023-03-14T16:30:30.443291533Z"
