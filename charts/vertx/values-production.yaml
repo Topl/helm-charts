@@ -54,7 +54,7 @@ service:
     portName: http
     port: 80
   annotations:
-    external_dns: "prod.vertx.topl.services."
+    external_dns: "vertx.topl.services."
 
 backendConfig:
   enabled: true
@@ -93,7 +93,7 @@ server:
     # -- The name of the Secret that will be automatically created and managed by this Certificate resource
     secretName: vertx-tls-prod
     # -- Certificate primary domain (commonName)
-    domain: prod.vertx.topl.services
+    domain: vertx.topl.services
     # -- Certificate Subject Alternate Names (SANs)
     additionalHosts: []
     #  - "dev.vertx.topl.services"
