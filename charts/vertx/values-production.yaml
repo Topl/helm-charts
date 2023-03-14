@@ -161,7 +161,7 @@ ingress:
           pathType: ImplementationSpecific
           serviceName: "vertx-svc-beta"
           servicePort: 2377
-    - host: prod.vertx.topl.services
+    - host: vertx.topl.services
       paths:
         - path: /*
           pathType: ImplementationSpecific
