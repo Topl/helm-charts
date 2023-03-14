@@ -68,9 +68,9 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-          - name: {{ .Values.server.secretName }}
+          - name: {{ .Values.server.certificate.secretName }}
             mountPath: {{ .Values.volume.tls.mountPath }}
       volumes:
-      - name: {{ .Values.server.secretName }}
+      - name: {{ .Values.server.certificate.secretName }}
         secret:
-          secretName: {{ .Values.server.secretName }}
+          secretName: {{ .Values.server.certificate.secretName }}
