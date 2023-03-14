@@ -19,8 +19,6 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-port: 2376
-
 serviceAccount:
   # Specifies whether a service account should be created
   create: false
@@ -47,14 +45,22 @@ service:
   enabled: true
   name: vertx-svc-dev
   type: NodePort
-  targetPort: 2376
+  portName: vertx-dev
+  port: 2376
   https:
     portName: https
     port: 443
-  port: 2376
-  portName: vertx-dev
+  http:
+    portName: http
+    port: 80
   annotations:
     external_dns: "dev.vertx.topl.services"
+
+backendConfig:
+  enabled: true
+  checkIntervalSec: 60
+  type: HTTPS
+  requestPath: "/healthz"
 
 volume:
   mountPath: /app/data
@@ -122,7 +128,6 @@ server:
       size: 2048
 
 healthCheck:
-  port: 8100
   portName: health-check
   livenessProbe:
     enabled: true

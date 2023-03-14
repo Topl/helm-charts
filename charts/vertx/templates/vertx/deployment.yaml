@@ -68,9 +68,9 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-          - name: vertx-tls
+          - name: {{ .Values.server.secretName }}
             mountPath: {{ .Values.volume.tls.mountPath }}
       volumes:
-      - name: vertx-tls
+      - name: {{ .Values.server.secretName }}
         secret:
-          secretName: vertx-tls
+          secretName: {{ .Values.server.secretName }}

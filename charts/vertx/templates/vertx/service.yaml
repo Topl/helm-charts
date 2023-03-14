@@ -7,22 +7,18 @@ metadata:
     {{- include "vertx.labels" . | nindent 4 }}
   annotations:
     cloud.google.com/app-protocols: '{"https":"HTTPS","http":"HTTP"}'
-    #cloud.google.com/backend-config: '{"ports": {
-    #"2376":"vertx-dev",
-    #"8100":"vertx-dev"
-    #}}'
     external-dns.alpha.kubernetes.io/hostname: {{ .Values.service.annotations.external_dns }}
 spec:
   type: {{ .Values.service.type }}
   ports:
     - name: {{ .Values.service.portName }}
       port: {{ .Values.service.port }}
-      targetPort: {{ .Values.service.targetport }}
-    - name: {{ .Values.service.https.portName }}
-      port: 443
       targetPort: {{ .Values.service.port }}
-    - name: http
-      port: 80
+    - name: {{ .Values.service.https.portName }}
+      port: {{ .Values.service.https.port }}
+      targetPort: {{ .Values.service.port }}
+    - name: {{ .Values.service.http.portName }}
+      port: {{ .Values.service.http.port }}
       targetPort: {{ .Values.service.port }}
   selector:
     {{- include "vertx.selectorLabels" . | nindent 4 }}
