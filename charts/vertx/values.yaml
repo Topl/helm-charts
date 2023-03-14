@@ -53,8 +53,6 @@ service:
   http:
     portName: http
     port: 80
-  annotations:
-    external_dns: "dev.vertx.topl.services"
 
 backendConfig:
   enabled: true
