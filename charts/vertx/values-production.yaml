@@ -13,13 +13,11 @@ image:
   repository: us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/vertx
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: dev
+  tag: latest
 
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
-
-port: 2378
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -47,14 +45,22 @@ service:
   enabled: true
   name: vertx-svc-production
   type: NodePort
-  targetPort: 2378
+  portName: vertx-prod
+  port: 2378
   https:
     portName: https
     port: 443
-  port: 2378
-  portName: vertx-prod
+  http:
+    portName: http
+    port: 80
   annotations:
     external_dns: "prod.vertx.topl.services."
+
+backendConfig:
+  enabled: true
+  checkIntervalSec: 60
+  type: HTTPS
+  requestPath: "/healthz"
 
 volume:
   mountPath: /app/data
@@ -122,18 +128,15 @@ server:
       size: 2048
 
 healthCheck:
-  port: 8102
   portName: health-check
   livenessProbe:
     enabled: true
     path: /healthz
-    port: 8102
     initialDelaySeconds: 150 ## Application takes a while to start up
     timeoutSeconds: 30
     periodSeconds: 60 # Perform check every x seconds.
   readinessProbe:
     enabled: true
-    port: 8102
     path: /healthz
     initialDelaySeconds: 150 ## Application takes a while to be ready
     timeoutSeconds: 30
