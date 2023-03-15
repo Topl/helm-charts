@@ -43,9 +43,9 @@ securityContext: {}
 
 service:
   enabled: true
-  name: vertx-svc-production-debug
+  name: vertx-svc-production
   type: NodePort
-  portName: vertx-debug
+  portName: vertx-prod
   port: 2380
   https:
     portName: https
@@ -67,7 +67,7 @@ volume:
 
 configMap:
   create: true
-  name: vertx-config-production-debug
+  name: vertx-config-production
   data:
     PORT: 2378
     HEALTH_CHECK_PORT: 8102
@@ -87,9 +87,9 @@ server:
   certificate:
     # -- Deploy a Certificate resource (requires cert-manager)
     enabled: true
-    name: vertx-cert-debug
+    name: vertx-cert-prod
     # -- The name of the Secret that will be automatically created and managed by this Certificate resource
-    secretName: vertx-tls-debug
+    secretName: vertx-tls-prod
     # -- Certificate primary domain (commonName)
     domain: debug.vertx.topl.services
     # -- Certificate Subject Alternate Names (SANs)
@@ -151,10 +151,10 @@ ingress:
       paths:
         - path: /*
           pathType: ImplementationSpecific
-          serviceName: "vertx-svc-production-debug"
+          serviceName: "vertx-svc-production"
           servicePort: 2380
   tls: 
-    - secretName: vertx-tls-debug
+    - secretName: vertx-tls-prod
       hosts:
         - debug.vertx.topl.services
 
@@ -185,7 +185,7 @@ affinity: {}
 
 ### Redis configurations
 redis:
-  name: vertx-redis-production-debug
+  name: vertx-redis-production
   replicaCount: 1
   image:
     repository: redis
@@ -194,7 +194,7 @@ redis:
   port: 6379
 
   service:
-    name: vertx-redis-svc-production-debug
+    name: vertx-redis-svc-production
 
   volume:
     storageClass: standard
@@ -208,7 +208,7 @@ redis:
   configMap:
     create: true
     name: redis-config-prod-debug
-    redisUrl: redis://vertx-redis-svc-production-debug:6379
+    redisUrl: redis://vertx-redis-svc-production:6379
     conf: |-
       # Enable AOF https://redis.io/topics/persistence#append-only-file
       appendonly yes
