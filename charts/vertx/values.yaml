@@ -141,7 +141,7 @@ healthCheck:
     periodSeconds: 60 # Perform check every x seconds.
 
 ingress:
-  enabled: false
+  enabled: true
   name: vertx-ingress
   className: ""
   annotations: {}

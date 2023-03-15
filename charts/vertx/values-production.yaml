@@ -94,7 +94,7 @@ server:
     domain: debug.vertx.topl.services
     # -- Certificate Subject Alternate Names (SANs)
     additionalHosts:
-    #  - "prod.vertx.topl.services"
+      - "beta.vertx.topl.services"
     #  - "beta.vertx.topl.services"
     #  - "prod.vertx.topl.services"
     # -- The requested 'duration' (i.e. lifetime) of the certificate.
@@ -153,6 +153,10 @@ ingress:
           pathType: ImplementationSpecific
           serviceName: "vertx-svc-production"
           servicePort: 2380
+        - path: /beta
+          pathType: ImplementationSpecific
+          serviceName: "vertx-svc-beta"
+          servicePort: 2377
   tls: 
     - secretName: vertx-tls-prod
       hosts:
