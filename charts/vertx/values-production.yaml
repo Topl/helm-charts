@@ -46,7 +46,7 @@ service:
   name: vertx-svc-production
   type: NodePort
   portName: vertx-prod
-  port: 2378
+  port: 2380
   https:
     portName: https
     port: 443
@@ -69,7 +69,7 @@ configMap:
   create: true
   name: vertx-config-production
   data:
-    PORT: 2378
+    PORT: 2380
     HEALTH_CHECK_PORT: 8102
     MAINNET_TARGET_URI: 'https://main.torus.topl.network'
     VALHALLA_TARGET_URI: 'https://valhalla.torus.topl.network'
@@ -152,7 +152,7 @@ ingress:
         - path: /*
           pathType: ImplementationSpecific
           serviceName: "vertx-svc-production"
-          servicePort: 2378
+          servicePort: 2380
   tls: 
     - secretName: vertx-tls-prod
       hosts:
