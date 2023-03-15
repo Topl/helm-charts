@@ -53,8 +53,8 @@ service:
   http:
     portName: http
     port: 80
-  annotations:
-    external_dns: "beta.vertx.topl.services"
+  #annotations:
+  #  external_dns: "beta.vertx.topl.services"
 
 backendConfig:
   enabled: true
@@ -112,7 +112,7 @@ server:
       # -- Certificate issuer kind. Either `Issuer` or `ClusterIssuer`
       kind: "ClusterIssuer"
       # -- Certificate issuer name. Eg. `letsencrypt`
-      name: "letsencrypt-prod"
+      name: "letsencrypt-staging"
     # Private key of the certificate
     privateKey:
       # -- Rotation policy of private key when certificate is re-issued. Either: `Never` or `Always`
@@ -146,14 +146,16 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: chart-example.local
+    - host: beta.vertx.topl.services
       paths:
-        - path: /
+        - path: /*
           pathType: ImplementationSpecific
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+          serviceName: "vertx-svc-beta"
+          servicePort: 2381
+  tls: 
+    - secretName: vertx-tls-beta
+      hosts:
+        - beta.vertx.topl.services
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
