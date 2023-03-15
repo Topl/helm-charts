@@ -140,7 +140,7 @@ healthCheck:
     periodSeconds: 60 # Perform check every x seconds.
 
 ingress:
-  enabled: false
+  enabled: true
   className: ""
   annotations: {}
     # kubernetes.io/ingress.class: nginx
