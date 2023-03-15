@@ -45,7 +45,7 @@ service:
   enabled: true
   name: vertx-svc-production-debug
   type: NodePort
-  portName: vertx-prod-debug
+  portName: vertx-debug
   port: 2380
   https:
     portName: https
@@ -154,7 +154,7 @@ ingress:
           serviceName: "vertx-svc-production-debug"
           servicePort: 2380
   tls: 
-    - secretName: vertx-tls-prod-debug
+    - secretName: vertx-tls-debug
       hosts:
         - debug.vertx.topl.services
 
