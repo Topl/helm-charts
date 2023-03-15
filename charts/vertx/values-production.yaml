@@ -43,9 +43,9 @@ securityContext: {}
 
 service:
   enabled: true
-  name: vertx-svc-production
+  name: vertx-svc-test
   type: NodePort
-  portName: vertx-prod
+  portName: vertx-test
   port: 2380
   https:
     portName: https
@@ -67,10 +67,9 @@ volume:
 
 configMap:
   create: true
-  name: vertx-config-production
+  name: vertx-config-test
   data:
     PORT: 2380
-    HEALTH_CHECK_PORT: 8102
     MAINNET_TARGET_URI: 'https://main.torus.topl.network'
     VALHALLA_TARGET_URI: 'https://valhalla.torus.topl.network'
     LOGGING_HOST: 'log.topl.tech'
@@ -87,11 +86,11 @@ server:
   certificate:
     # -- Deploy a Certificate resource (requires cert-manager)
     enabled: true
-    name: vertx-cert-prod
+    name: vertx-cert-test
     # -- The name of the Secret that will be automatically created and managed by this Certificate resource
-    secretName: vertx-tls-prod
+    secretName: vertx-tls-test
     # -- Certificate primary domain (commonName)
-    domain: vertx.topl.services
+    domain: test.vertx.topl.services
     # -- Certificate Subject Alternate Names (SANs)
     additionalHosts: []
     #  - "beta.vertx.topl.services"
@@ -113,7 +112,7 @@ server:
       # -- Certificate issuer kind. Either `Issuer` or `ClusterIssuer`
       kind: "ClusterIssuer"
       # -- Certificate issuer name. Eg. `letsencrypt`
-      name: "letsencrypt-prod"
+      name: "letsencrypt-staging"
     # Private key of the certificate
     privateKey:
       # -- Rotation policy of private key when certificate is re-issued. Either: `Never` or `Always`
@@ -147,16 +146,16 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: vertx.topl.services
+    - host: test.vertx.topl.services
       paths:
         - path: /*
           pathType: ImplementationSpecific
-          serviceName: "vertx-svc-production"
+          serviceName: "vertx-svc-test"
           servicePort: 2380
   tls: 
-    - secretName: vertx-tls-prod
+    - secretName: vertx-tls-test
       hosts:
-        - vertx.topl.services
+        - test.vertx.topl.services
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -185,7 +184,7 @@ affinity: {}
 
 ### Redis configurations
 redis:
-  name: vertx-redis-production
+  name: vertx-redis-test
   replicaCount: 1
   image:
     repository: redis
@@ -194,7 +193,7 @@ redis:
   port: 6379
 
   service:
-    name: vertx-redis-svc-production
+    name: vertx-redis-svc-test
 
   volume:
     storageClass: standard
@@ -207,8 +206,8 @@ redis:
   ##
   configMap:
     create: true
-    name: redis-config-prod-debug
-    redisUrl: redis://vertx-redis-svc-production:6379
+    name: redis-config-test
+    redisUrl: redis://vertx-redis-svc-test:6379
     conf: |-
       # Enable AOF https://redis.io/topics/persistence#append-only-file
       appendonly yes
