@@ -93,8 +93,8 @@ server:
     # -- Certificate primary domain (commonName)
     domain: vertx.topl.services
     # -- Certificate Subject Alternate Names (SANs)
-    additionalHosts: []
-    #  - "dev.vertx.topl.services"
+    additionalHosts:
+      - "prod.vertx.topl.services"
     #  - "beta.vertx.topl.services"
     #  - "prod.vertx.topl.services"
     # -- The requested 'duration' (i.e. lifetime) of the certificate.
@@ -147,31 +147,13 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: dev.vertx.topl.services
-      paths:
-        - path: /*
-          pathType: ImplementationSpecific
-          serviceName: "vertx-svc-dev"
-          servicePort: 2376
-    - host: beta.vertx.topl.services
-      paths:
-        - path: /*
-          pathType: ImplementationSpecific
-          serviceName: "vertx-svc-beta"
-          servicePort: 2377
-    - host: vertx.topl.services
+    - host: prod.vertx.topl.services
       paths:
         - path: /*
           pathType: ImplementationSpecific
           serviceName: "vertx-svc-production"
           servicePort: 2378
   tls: 
-    - secretName: vertx-tls-dev
-      hosts:
-        - dev.vertx.topl.services
-    - secretName: vertx-tls-beta
-      hosts:
-        - beta.vertx.topl.services
     - secretName: vertx-tls-prod
       hosts:
         - prod.vertx.topl.services
