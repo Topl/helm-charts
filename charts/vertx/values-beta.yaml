@@ -151,7 +151,7 @@ ingress:
         - path: /*
           pathType: ImplementationSpecific
           serviceName: "vertx-svc-beta"
-          servicePort: 2381
+          servicePort: 2377
   tls: 
     - secretName: vertx-tls-beta
       hosts:
