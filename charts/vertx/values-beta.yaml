@@ -43,7 +43,8 @@ securityContext: {}
 
 service:
   enabled: true
-  name: ClusterIP
+  name: vertx-svc-beta
+  type: ClusterIP
   portName: vertx-beta
   port: 2377
   https:
