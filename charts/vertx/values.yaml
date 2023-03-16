@@ -148,7 +148,7 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: dev.vertx.topl.tech
+    - host: dev.vertx.topl.services
       paths:
         - path: /*
           pathType: ImplementationSpecific
