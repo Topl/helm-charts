@@ -54,8 +54,8 @@ service:
     portName: http
     port: 80
   annotations:
-    ingress: {"ingress": true}
-    appprotocols: {"https":"HTTPS","http":"HTTP"}
+    ingress: '{"ingress": true}'
+    appprotocols: '{"https":"HTTPS","http":"HTTP"}'
 
 backendConfig:
   enabled: true
