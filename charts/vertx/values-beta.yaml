@@ -43,8 +43,7 @@ securityContext: {}
 
 service:
   enabled: true
-  name: vertx-svc-beta
-  type: NodePort
+  name: ClusterIP
   portName: vertx-beta
   port: 2377
   https:
@@ -53,8 +52,6 @@ service:
   http:
     portName: http
     port: 80
-  #annotations:
-  #  external_dns: "beta.vertx.topl.services"
 
 backendConfig:
   enabled: true
