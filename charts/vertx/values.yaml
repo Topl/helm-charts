@@ -44,7 +44,7 @@ securityContext: {}
 service:
   enabled: true
   name: vertx-svc-dev
-  type: NodePort
+  type: ClusterIP
   portName: vertx-dev
   port: 2376
   https:
