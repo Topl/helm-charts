@@ -7,7 +7,7 @@ common:
   maxUnavailable: 1
   maxSurge: 1
     
-replicaCount: 1
+replicaCount: 2
 
 image:
   repository: us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/vertx
@@ -185,7 +185,7 @@ affinity: {}
 ### Redis configurations
 redis:
   name: vertx-redis-prod
-  replicaCount: 1
+  replicaCount: 2
   image:
     repository: redis
     imagePullPolicy: IfNotPresent
