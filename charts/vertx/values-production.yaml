@@ -44,7 +44,7 @@ securityContext: {}
 service:
   enabled: true
   name: vertx-svc-production
-  type: NodePort
+  type: ClusterIP
   portName: vertx-prod
   port: 2380
   https:
