@@ -43,9 +43,9 @@ securityContext: {}
 
 service:
   enabled: true
-  name: vertx-svc-dns-test
+  name: vertx-svc-dev
   type: NodePort
-  portName: vertx-dns
+  portName: vertx-dev
   port: 2376
   https:
     portName: https
@@ -67,7 +67,7 @@ volume:
 
 configMap:
   create: true
-  name: vertx-config-dns-test
+  name: vertx-config-dev
   data:
     PORT: 2376
     HEALTH_CHECK_PORT: 8100
@@ -87,11 +87,11 @@ server:
   certificate:
     # -- Deploy a Certificate resource (requires cert-manager)
     enabled: true
-    name: vertx-cert-dns-test
+    name: vertx-cert-dev
     # -- The name of the Secret that will be automatically created and managed by this Certificate resource
-    secretName: vertx-tls-dns-test
+    secretName: vertx-tls-dev
     # -- Certificate primary domain (commonName)
-    domain: "nstest.vertx.topl.tech"
+    domain: "dev.vertx.topl.services"
     # -- Certificate Subject Alternate Names (SANs)
     additionalHosts: []
     #  - "dev.vertx.topl.services" 
@@ -148,16 +148,16 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: nstest.vertx.topl.tech
+    - host: dev.vertx.topl.tech
       paths:
         - path: /*
           pathType: ImplementationSpecific
-          serviceName: "vertx-svc-dns-test"
+          serviceName: "vertx-svc-dev"
           servicePort: 2376
   tls:
-    - secretName: vertx-tls-dns-test
+    - secretName: vertx-tls-dev
       hosts:
-        - nstest.vertx.topl.tech
+        - dev.vertx.topl.services
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -186,7 +186,7 @@ affinity: {}
 
 ### Redis configurations
 redis:
-  name: vertx-redis-dns-test
+  name: vertx-redis-dev
   replicaCount: 1
   image:
     repository: redis
@@ -195,7 +195,7 @@ redis:
   port: 6379
 
   service:
-    name: vertx-redis-svc-dns-test
+    name: vertx-redis-svc-dev
 
   volume:
     storageClass: standard
@@ -208,8 +208,8 @@ redis:
   ##
   configMap:
     create: true
-    name: redis-config-dns-test
-    redisUrl: redis://vertx-redis-svc-dns-test:6379
+    name: redis-config-dev
+    redisUrl: redis://vertx-redis-svc-dev:6379
     conf: |-
       # Enable AOF https://redis.io/topics/persistence#append-only-file
       appendonly yes
