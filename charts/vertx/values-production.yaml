@@ -53,6 +53,10 @@ service:
   http:
     portName: http
     port: 80
+  annotations:
+    { "cloud.google.com/neg": '{"ingress": true"}',
+      "app-protocols": '{"https":"HTTPS","http":"HTTP"}'
+    }
 
 backendConfig:
   enabled: true
