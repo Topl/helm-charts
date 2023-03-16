@@ -150,7 +150,7 @@ ingress:
       paths:
         - path: /*
           pathType: ImplementationSpecific
-          serviceName: "vertx-svc-prod"
+          serviceName: "vertx-svc-production"
           servicePort: 2380
   tls: 
     - secretName: vertx-tls-prod
