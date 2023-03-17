@@ -44,7 +44,7 @@ securityContext: {}
 service:
   enabled: true
   name: vertx-svc-dev
-  type: NodePort
+  type: ClusterIP
   portName: vertx-dev
   port: 2376
   https:
@@ -53,6 +53,12 @@ service:
   http:
     portName: http
     port: 80
+  annotations:
+    { 
+      "cloud.google.com/neg": '{"ingress": true}',
+      "app-protocols": '{"https":"HTTPS","http":"HTTP"}'
+    }
+
 
 backendConfig:
   enabled: true
@@ -94,9 +100,6 @@ server:
     domain: "dev.vertx.topl.services"
     # -- Certificate Subject Alternate Names (SANs)
     additionalHosts: []
-    #  - "dev.vertx.topl.services" 
-    #  - "beta.vertx.topl.services"
-    #  - "prod.vertx.topl.services"
     # -- The requested 'duration' (i.e. lifetime) of the certificate.
     # @default -- `""` (defaults to 2160h = 90d if not specified)
     ## Ref: https://cert-manager.io/docs/usage/certificate/#renewal
@@ -141,7 +144,7 @@ healthCheck:
     periodSeconds: 60 # Perform check every x seconds.
 
 ingress:
-  enabled: false
+  enabled: true
   name: vertx-ingress
   className: ""
   annotations: {}
@@ -155,7 +158,7 @@ ingress:
           serviceName: "vertx-svc-dev"
           servicePort: 2376
   tls:
-    - secretName: vertx-tls
+    - secretName: vertx-tls-dev
       hosts:
         - dev.vertx.topl.services
 

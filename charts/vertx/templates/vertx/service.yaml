@@ -6,7 +6,9 @@ metadata:
   labels:
     {{- include "vertx.labels" . | nindent 4 }}
   annotations:
-    cloud.google.com/app-protocols: '{"https":"HTTPS","http":"HTTP"}'
+    {{- range $key, $value := .Values.service.annotations }}
+      {{ $key }}: {{ $value | quote }}
+    {{- end }}
 spec:
   type: {{ .Values.service.type }}
   ports:

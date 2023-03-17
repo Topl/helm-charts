@@ -44,15 +44,20 @@ securityContext: {}
 service:
   enabled: true
   name: vertx-svc-production
-  type: NodePort
+  type: ClusterIP
   portName: vertx-prod
-  port: 2378
+  port: 2380
   https:
     portName: https
     port: 443
   http:
     portName: http
     port: 80
+  annotations:
+    { 
+      "cloud.google.com/neg": '{"ingress": true}',
+      "app-protocols": '{"https":"HTTPS","http":"HTTP"}'
+    }
 
 backendConfig:
   enabled: true
@@ -69,8 +74,7 @@ configMap:
   create: true
   name: vertx-config-production
   data:
-    PORT: 2378
-    HEALTH_CHECK_PORT: 8102
+    PORT: 2380
     MAINNET_TARGET_URI: 'https://main.torus.topl.network'
     VALHALLA_TARGET_URI: 'https://valhalla.torus.topl.network'
     LOGGING_HOST: 'log.topl.tech'
@@ -94,9 +98,6 @@ server:
     domain: vertx.topl.services
     # -- Certificate Subject Alternate Names (SANs)
     additionalHosts: []
-    #  - "dev.vertx.topl.services"
-    #  - "beta.vertx.topl.services"
-    #  - "prod.vertx.topl.services"
     # -- The requested 'duration' (i.e. lifetime) of the certificate.
     # @default -- `""` (defaults to 2160h = 90d if not specified)
     ## Ref: https://cert-manager.io/docs/usage/certificate/#renewal
@@ -147,34 +148,15 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: dev.vertx.topl.services
-      paths:
-        - path: /*
-          pathType: ImplementationSpecific
-          serviceName: "vertx-svc-dev"
-          servicePort: 2376
-    - host: beta.vertx.topl.services
-      paths:
-        - path: /*
-          pathType: ImplementationSpecific
-          serviceName: "vertx-svc-beta"
-          servicePort: 2377
     - host: vertx.topl.services
       paths:
         - path: /*
           pathType: ImplementationSpecific
           serviceName: "vertx-svc-production"
-          servicePort: 2378
+          servicePort: 2380
   tls: 
-    - secretName: vertx-tls-dev
-      hosts:
-        - dev.vertx.topl.services
-    - secretName: vertx-tls-beta
-      hosts:
-        - beta.vertx.topl.services
     - secretName: vertx-tls-prod
       hosts:
-        - prod.vertx.topl.services
         - vertx.topl.services
 
 resources: {}
@@ -204,7 +186,7 @@ affinity: {}
 
 ### Redis configurations
 redis:
-  name: vertx-redis-production
+  name: vertx-redis-prod
   replicaCount: 2
   image:
     repository: redis
@@ -213,7 +195,7 @@ redis:
   port: 6379
 
   service:
-    name: vertx-redis-svc-production
+    name: vertx-redis-svc-prod
 
   volume:
     storageClass: standard
@@ -227,7 +209,7 @@ redis:
   configMap:
     create: true
     name: redis-config-prod
-    redisUrl: redis://vertx-redis-svc-production:6379
+    redisUrl: redis://vertx-redis-svc-prod:6379
     conf: |-
       # Enable AOF https://redis.io/topics/persistence#append-only-file
       appendonly yes
