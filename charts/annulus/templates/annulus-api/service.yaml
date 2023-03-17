@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "annulus-api.fullname" . }}
+  labels:
+    {{- include "annulus-api.labels" . | nindent 4 }}
+  annotations:
+    {{- range $key, $value := .Values.service.api.annotations }}
+      {{ $key }}: {{ $value | quote }}
+    {{- end }}
+spec:
+  type: {{ .Values.service.api.type }}
+  ports:
+    - name: {{ .Values.service.api.portName }}
+      port: {{ .Values.service.api.port }}
+      targetPort: {{ .Values.service.api.port }}
+      protocol: TCP
+    - name: {{ .Values.service.api.http.portName }}
+      port: {{ .Values.service.api.http.port }}
+      targetPort:  {{ .Values.service.api.port }}
+      protocol: TCP
+    - name: {{ .Values.service.api.https.portName }}
+      port: {{ .Values.service.api.https.port }}
+      targetPort:  {{ .Values.service.api.port }}
+      protocol: TCP
+  selector:
+    {{- include "annulus-api.selectorLabels" . | nindent 4 }}

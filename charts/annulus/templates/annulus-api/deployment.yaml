@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "annulus-api.fullname" . }}
+  labels:
+    {{- include "annulus-api.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.common.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "annulus-api.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: {{ .Values.common.updateStrategy }}
+    rollingUpdate:
+      maxUnavailable: {{ .Values.common.maxUnavailable }}
+      maxSurge: {{ .Values.common.maxSurge }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "annulus-api.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "annulus-api.serviceAccountName" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.api.repository }}:{{ .Values.image.api.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.api.pullPolicy }}
+          env:
+            - name: PORT
+              value: "{{ .Values.service.api.port }}"
+          envFrom:
+            - secretRef:
+                name: {{ .Values.secret.api.name }}
+            {{- if .Values.configMap.api.create }}
+            - configMapRef:
+                name: {{ .Values.configMap.api.name }}
+            {{- end }}
+          ports:
+            - name: {{ .Values.service.api.portName }}
+              containerPort: {{ .Values.service.api.port }}
+              protocol: TCP
+            - name: {{ .Values.service.api.http.portName }}
+              containerPort: {{ .Values.service.api.http.port }}
+              protocol: TCP
+            - name: {{ .Values.service.api.https.portName }}
+              containerPort: {{ .Values.service.api.https.port }}
+              protocol: TCP
+          {{- if .Values.healthCheck.readinessProbe.enabled }}
+          readinessProbe:
+            httpGet:
+              port: {{ .Values.service.api.port }}
+              path: {{ .Values.healthCheck.readinessProbe.path }}
+            initialDelaySeconds: {{ .Values.healthCheck.readinessProbe.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.healthCheck.readinessProbe.timeoutSeconds }}
+            periodSeconds: {{ .Values.healthCheck.readinessProbe.periodSeconds }}
+          {{- end }}
+          {{- if .Values.healthCheck.livenessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              port: {{ .Values.service.api.port }}
+              path: {{ .Values.healthCheck.livenessProbe.path }}
+            initialDelaySeconds: {{ .Values.healthCheck.livenessProbe.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.healthCheck.livenessProbe.timeoutSeconds }}
+            periodSeconds: {{ .Values.healthCheck.livenessProbe.periodSeconds }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+
