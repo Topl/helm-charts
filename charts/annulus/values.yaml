@@ -12,7 +12,7 @@ image:
     repository: us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/annulus-api
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "dev"
+    tag: dev
   
 imagePullSecrets: []
 nameOverride: ""
@@ -78,6 +78,7 @@ securityContext: {}
 
 service:
   api:
+    name: annulus-api-staging
     type: ClusterIP
     port: 5112
     portName: annulus-staging
@@ -178,13 +179,13 @@ server:
 
 ingress:
   api:
-    enabled: true
+    enabled: false
     className: ""
     annotations: {}
       # kubernetes.io/ingress.class: nginx
       # kubernetes.io/tls-acme: "true"
     defaultBackend: 
-      serviceName: annulus-staging
+      serviceName: annulus-api-staging
       port: 5112
     ##hosts:
     ##  - host: dev-api.annulus.topl.services

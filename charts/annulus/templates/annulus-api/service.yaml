@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "annulus-api.fullname" . }}
+  name: {{ .Values.service.api.name }}
   labels:
     {{- include "annulus-api.labels" . | nindent 4 }}
   annotations:
