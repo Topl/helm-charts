@@ -166,3 +166,24 @@ configs:
           latency: 10 milli
           downloadBytesPerSecond: 500000
           uploadBytesPerSecond: 500000
+  relay4-5:
+    bifrost:
+      big-bang:
+        local-staker-index: -1
+    topology:
+      ingress:
+        throttle:
+          latency: 10 milli
+          downloadBytesPerSecond: 500000
+          uploadBytesPerSecond: 500000
+      egress:
+        - peer: producer4
+          throttle:
+            latency: 10 milli
+            downloadBytesPerSecond: 500000
+            uploadBytesPerSecond: 500000
+        - peer: producer5
+          throttle:
+            latency: 10 milli
+            downloadBytesPerSecond: 500000
+            uploadBytesPerSecond: 500000
