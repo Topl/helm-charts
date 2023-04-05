@@ -31,12 +31,28 @@ scenario:
   timeout: 10 minutes
 
 resources:
-  limits:
-    cpu: 2000m
-    memory: 1000Mi
-  requests:
-    cpu: 100m
-    memory: 1000Mi
+  node:
+    limits:
+      cpu: 2000m
+      memory: 1000Mi
+    requests:
+      cpu: 1000m
+      memory: 1000Mi
+  orchestrator:
+    limits:
+      cpu: 1500m
+      memory: 1500Mi
+    requests:
+      cpu: 500m
+      memory: 1500Mi
+  networkDelayer:
+    limits:
+      cpu: 800m
+      memory: 768Mi
+    requests:
+      cpu: 200m
+      memory: 768Mi
+
 
 podSecurityContext:
   runAsUser: 1001 # TODO: Update Bifrost Docker container to use high UID. Add CKV_K8S_40 as a check.
