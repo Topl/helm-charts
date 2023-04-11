@@ -23,7 +23,8 @@ args:
     "valhalla",
     "-c",
     "/config/bifrost-dion-config/application.conf",
-    "--disableAuth",
+    "--apiKeyHash",
+    "HrzwbCmLRJDAyYWFpMUFNFCMz1RTzUqxnCHcSzV62mGr",
   ]
 
 # Istio uses the service account name as a component of the service's security
