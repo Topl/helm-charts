@@ -81,6 +81,17 @@ entries:
     urls:
     - https://github.com/Topl/helm-charts/releases/download/bifrost-daml-broker-0.1.0/bifrost-daml-broker-0.1.0.tgz
     version: 0.1.0
+  bifrost-dion:
+  - apiVersion: v2
+    appVersion: 1.11.3
+    created: "2023-04-18T18:37:41.487135606Z"
+    description: A Helm chart for Kubernetes
+    digest: 7446d5369b4e82f2345a6002d5c3138506f6a866ed9813e8add10b848372870a
+    name: bifrost-dion
+    type: application
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/bifrost-dion-0.1.0/bifrost-dion-0.1.0.tgz
+    version: 0.1.0
   genus:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -129,4 +140,4 @@ entries:
     urls:
     - https://github.com/Topl/helm-charts/releases/download/vertx-0.1.0/vertx-0.1.0.tgz
     version: 0.1.0
-generated: "2023-04-05T17:53:08.249704217Z"
+generated: "2023-04-18T18:37:41.487153806Z"
