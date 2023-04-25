@@ -15,7 +15,7 @@ A Helm chart for Kubernetes
 | command | string | `nil` |  |
 | configMap.content | string | `"bifrost {\n  chainReplicator {\n  enableChainReplicator = false\n  checkMissingBlock = true\n  }\n}\n"` |  |
 | configMap.fileName | string | `"application.conf"` |  |
-| configMap.mountPath | string | `"/config/bifrost-dion-config"` |  |
+| configMap.mountPath | string | `"/config/bifrost-config"` |  |
 | image.name | string | `"ghcr.io/topl/bifrost-node"` |  |
 | image.tag | string | `nil` |  |
 | livenessProbe.enabled | bool | `false` |  |
@@ -35,9 +35,9 @@ A Helm chart for Kubernetes
 | readinessProbe.timeoutSeconds | int | `30` |  |
 | replicas | int | `1` |  |
 | resources.limits.cpu | float | `2` |  |
-| resources.limits.memory | string | `"4000Mi"` |  |
+| resources.limits.memory | string | `"2000Mi"` |  |
 | resources.requests.cpu | string | `"100m"` |  |
-| resources.requests.memory | string | `"128Mi"` |  |
+| resources.requests.memory | string | `"2000Mi"` |  |
 | securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | securityContext.readOnlyRootFilesystem | bool | `true` |  |
