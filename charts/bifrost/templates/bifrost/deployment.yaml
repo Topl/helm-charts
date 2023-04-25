@@ -16,6 +16,10 @@ spec:
     metadata:
       labels:
         {{- include "bifrost.selectorLabels" . | nindent 8 }}
+      {{- if .Values.configMap }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/bifrost/configmap.yaml") . | sha256sum }}
+      {{- end }}
     spec:
       automountServiceAccountToken: false
       securityContext:
@@ -26,13 +30,13 @@ spec:
         securityContext:
           {{- toYaml .Values.securityContext | nindent 10 }}
         command:
-          {{ range .Values.command }}
+          {{- range .Values.command }}
             - {{ . }}
-          {{ end }}
+          {{- end }}
         args:
-          {{ range .Values.args }}
+          {{- range .Values.args }}
             - {{ . }}
-          {{ end }}
+          {{- end }}
         resources:
           {{- toYaml .Values.resources | nindent 12 }}
         {{- if .Values.readinessProbe.enabled }}
@@ -55,9 +59,14 @@ spec:
         - containerPort: {{ .Values.ports.p2p }}
         - containerPort: {{ .Values.ports.rpc }}
         volumeMounts:
+        - name: {{ (print .Values.name "-config") | quote }}
+          mountPath: {{ .Values.configMap.mountPath | quote }}
         - name: {{ .Values.name }}-pv
           mountPath: {{ .Values.volume.mountDirectory }}
-
+      volumes:
+        - name: {{ (print .Values.name "-config") | quote }}
+          configMap:
+            name: {{ .Values.name | lower | quote }}
   volumeClaimTemplates:
   - metadata:
       name: {{ .Values.name }}-pv

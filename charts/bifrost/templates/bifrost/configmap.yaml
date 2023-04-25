@@ -1,0 +1,12 @@
+{{- if .Values.configMap }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.name }}
+  labels:
+    {{- include "bifrost.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace | quote }}
+data:
+  {{ .Values.configMap.fileName | default "config.yaml" }}: |-
+{{ .Values.configMap.content | indent 4 }}
+{{- end }}

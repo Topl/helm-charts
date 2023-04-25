@@ -13,10 +13,10 @@ replicas: 1
 resources:
   limits:
     cpu: 2.0
-    memory: 4000Mi
+    memory: 2000Mi
   requests:
     cpu: 100m
-    memory: 128Mi
+    memory: 2000Mi
 
 podSecurityContext:
   runAsUser: 1001 # TODO: Update Bifrost Docker container to use high UID. Add CKV_K8S_40 as a check.
@@ -32,7 +32,8 @@ securityContext:
     drop:
       - ALL
 
-args: # Refer to CLI: https://github.com/Topl/Bifrost#command-line-reference
+# Refer to CLI: https://github.com/Topl/Bifrost#command-line-reference
+args: ["--dataDir", "/mnt/bifrost/data", "--stakingDir", "/mnt/bifrost/staking"]
 # args: ['--seed', 'test', '--forge']
 # args: ['--network', 'valhalla']
 
@@ -50,20 +51,33 @@ ports:
   p2p: 9084
   rpc: 9085
 
+configMap: # Optional
+  # Where the config map should be mounted inside your container's filesystem.
+  mountPath: /config/bifrost-config
+  fileName: application.conf
+  # Everything under content is copied verbatim into your service's configmap.
+  content: |
+    bifrost {
+      chainReplicator {
+      enableChainReplicator = false
+      checkMissingBlock = true
+      }
+    }
+
 volume:
-  mountDirectory: /opt/docker/.bifrost
+  mountDirectory: /mnt/bifrost/
   # GKE specific storage classes: standard, standard-rwo, premium-rwo
-  storageClass: default
+  storageClass:
   storageSize: 10Gi
 
 livenessProbe:
-  enabled: true
+  enabled: false
   initialDelaySeconds: 30
   timeoutSeconds: 30
   periodSeconds: 60 # Perform check every x seconds.
 
 readinessProbe:
-  enabled: true
+  enabled: false
   initialDelaySeconds: 30
   timeoutSeconds: 30
   periodSeconds: 60 # Perform check every x seconds.
