@@ -21,7 +21,7 @@ version: 0.1.3
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "2.0.0-alpha2"
+appVersion: "2.0.0-alpha3"
 
 #TODO: Find a better icon.
 icon: https://uploads-ssl.webflow.com/60f98f46d44e675abb7e66ea/611c4d83ed3df101fd221875_topl_basew.svg
