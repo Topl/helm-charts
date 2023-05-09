@@ -92,11 +92,11 @@ outlierDetection:
 # Optional
 resources:
   requests:
-    memory: "500Mi"
-    cpu: "200m"
+    memory: "2000Mi"
+    cpu: "100m"
   limits:
-    memory: "500Mi"
-    cpu: "250m"
+    memory: "2000Mi"
+    cpu: 2.0
 
 podSecurityContext:
   runAsUser: 1001 # TODO: Update Bifrost Docker container to use high UID. Add CKV_K8S_40 as a check.
