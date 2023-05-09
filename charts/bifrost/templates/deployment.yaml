@@ -40,13 +40,6 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           imagePullPolicy: {{ .Values.image.imagePullPolicy | quote }}
-          env:
-            - name: BIFROST_CHAINREPLICATOR_MONGODB_URI
-              valueFrom:
-                secretKeyRef:
-                  name: "mongodb-secret"
-                  key: "mongodb-uri"
-                  optional: true
           command:
           {{- range .Values.command }}
             - {{ . }}
