@@ -1,22 +1,102 @@
-# # Default values for bifrost.
-# # This is a YAML-formatted file.
-# # Declare variables to be passed into your templates.
+# Default values for bifrost.
+# This is a YAML-formatted file.
 
-name: bifrost-node
+# The overall system your service is a part of
+system: bifrost-node
+# The name of your service
+service: bifrost-node
+# The major version number for your service
+version: 1
 
+# Docker settings
 image:
-  name: ghcr.io/topl/bifrost-node
-  tag:
+  # The name of your docker container
+  repository: toplprotocol/bifrost-node
+  # Your docker container's tag
+  tag: ""
+  imagePullPolicy: IfNotPresent
 
-replicas: 1
+command: # Optional
+args: ["--dataDir", "/mnt/bifrost/data", "--stakingDir", "/mnt/bifrost/staking"]
 
+# Istio uses the service account name as a component of the service's security
+# identity. Set "create" to false to use an previously created service account.
+serviceAccount:
+  name: bifrost-node
+  create: true
+
+# The initial number of pod replicas to run for your service
+replicaCount: 1
+# The maximum number of pods from that set that can be unavailable at once
+maxUnavailable: 1
+
+# Horizontal pod autoscaler configuration (optional)
+# autoscaling:
+#   minReplicas: 2
+#   maxReplicas: 4
+#   targetAverageCpuUtilization: 80
+
+serviceType: ClusterIP
+
+# Port settings
+# Ports must be named <protocol>[-<suffix>] to work with Istio.
+# Valid protocols are grpc, http, http2, https, mongo, mysql, redis, tcp, tls, udp
+ports:
+  - name: http-rpc
+    port: 80
+    targetPort: 9085
+  - name: https-rpc
+    port: 443
+    targetPort: 9085
+  - name: https-rpcport
+    port: 9085
+    targetPort: 9085
+  - name: https-genus
+    port: 9091
+    targetPort: 9091
+  - name: http-status
+    port: 8080
+    targetPort: 8080
+
+p2p:
+  ports:
+    - name: tcp-p2p
+      port: 9084
+      targetPort: 9084
+
+# Configure the Istio ingress gateway to route outside traffic for the provided
+# host name to this service on the ports and protocols defined in the 'ports' section
+# above.
+ingressGateway:
+  name: istio-gateways/bifrost-gateway
+  host: dion.valhalla.torus.topl.tech
+  matchPrefix:
+    - "/"
+
+# The overall timeout for requests to this service
+# Optional
+overallTimeout: 10s
+
+# Client retry settings (use Istio syntax)
+# Optional
+retries:
+  attempts: 3
+  perTryTimeout: 2s
+
+# Circuit breaker settings (use Istio syntax)
+# Optional
+outlierDetection:
+  consecutive5xxErrors: 5
+
+# Resource settings (use Kubernetes syntax)
+# Optional
 resources:
-  limits:
-    cpu: 2.0
-    memory: 2000Mi
   requests:
-    cpu: 100m
-    memory: 2000Mi
+    memory: "2000Mi"
+    cpu: "100m"
+  limits:
+    memory: "2000Mi"
+    cpu: 2.0
 
 podSecurityContext:
   runAsUser: 1001 # TODO: Update Bifrost Docker container to use high UID. Add CKV_K8S_40 as a check.
@@ -32,24 +112,19 @@ securityContext:
     drop:
       - ALL
 
-# Refer to CLI: https://github.com/Topl/Bifrost#command-line-reference
-args: ["--dataDir", "/mnt/bifrost/data", "--stakingDir", "/mnt/bifrost/staking"]
-# args: ['--seed', 'test', '--forge']
-# args: ['--network', 'valhalla']
-
-command:
-# command: ["tail", "-f", "/dev/null"] # Use this to debug Bifrost and exec into the running pod.
-
-service:
-  enabled: true
-  type: ClusterIP
-  ports:
-    p2p: 9084
-    rpc: 9085
-
-ports:
-  p2p: 9084
-  rpc: 9085
+# Probe settings (use Kubernetes syntax)
+# Optional
+# probes:
+#   livenessProbe:
+#     initialDelaySeconds: 30
+#     httpGet:
+#       path: /status
+#       port: 9585
+#   readinessProbe:
+#     timeoutSeconds: 10
+#     httpGet:
+#       path: /status
+#       port: 9585
 
 configMap: # Optional
   # Where the config map should be mounted inside your container's filesystem.
@@ -63,21 +138,8 @@ configMap: # Optional
       checkMissingBlock = true
       }
     }
-
 volume:
   mountDirectory: /mnt/bifrost/
   # GKE specific storage classes: standard, standard-rwo, premium-rwo
   storageClass:
   storageSize: 10Gi
-
-livenessProbe:
-  enabled: false
-  initialDelaySeconds: 30
-  timeoutSeconds: 30
-  periodSeconds: 60 # Perform check every x seconds.
-
-readinessProbe:
-  enabled: false
-  initialDelaySeconds: 30
-  timeoutSeconds: 30
-  periodSeconds: 60 # Perform check every x seconds.
