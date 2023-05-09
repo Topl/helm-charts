@@ -1,0 +1,6 @@
+apiVersion: v2
+appVersion: 0.1.0
+description: Helm Chart for deploying Annulus, a Topl blockchain explorer.
+name: annulus
+type: application
+version: 0.1.0
