@@ -13,6 +13,17 @@ entries:
     version: 0.1.0
   bifrost:
   - apiVersion: v2
+    appVersion: 2.0.0-alpha3
+    created: "2023-05-09T18:53:03.838293426Z"
+    description: A Helm chart for Kubernetes
+    digest: 006665201ad3c487beacc10ba51bb6df5a53066e1dd578135084bc33a9985038
+    icon: https://uploads-ssl.webflow.com/60f98f46d44e675abb7e66ea/611c4d83ed3df101fd221875_topl_basew.svg
+    name: bifrost
+    type: application
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/bifrost-0.1.4/bifrost-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
     appVersion: 2.0.0-alpha2
     created: "2023-04-25T12:58:56.18320081Z"
     description: A Helm chart for Kubernetes
@@ -162,4 +173,4 @@ entries:
     urls:
     - https://github.com/Topl/helm-charts/releases/download/vertx-0.1.0/vertx-0.1.0.tgz
     version: 0.1.0
-generated: "2023-05-09T18:05:10.315459703Z"
+generated: "2023-05-09T18:53:03.838626133Z"
