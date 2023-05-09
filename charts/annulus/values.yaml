@@ -49,7 +49,7 @@ ports:
 # above.
 ingressGateway:
   name: istio-gateways/bifrost-gateway
-  host: dev.annulus.topl.tech
+  host: annulus.dev.topl.tech
   matchPrefix:
     - "/"
 
