@@ -49,8 +49,8 @@ ports:
     port: 443
     targetPort: 9085
   - name: https-rpcport
-    port: 9085
-    targetPort: 9085
+    port: 9084
+    targetPort: 9084
   - name: https-genus
     port: 9091
     targetPort: 9091
@@ -61,8 +61,8 @@ ports:
 p2p:
   ports:
     - name: tcp-p2p
-      port: 9084
-      targetPort: 9084
+      port: 9085
+      targetPort: 9085
 
 # Configure the Istio ingress gateway to route outside traffic for the provided
 # host name to this service on the ports and protocols defined in the 'ports' section
