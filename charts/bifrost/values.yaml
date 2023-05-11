@@ -45,13 +45,13 @@ ports:
   - name: http-rpc
     port: 80
     targetPort: 9085
-  - name: https-rpc
+  - name: grpc-rpc
     port: 443
     targetPort: 9085
-  - name: https-rpcport
+  - name: grpc-rpcport
     port: 9084
     targetPort: 9084
-  - name: https-genus
+  - name: grpc-genus
     port: 9091
     targetPort: 9091
   - name: http-status
