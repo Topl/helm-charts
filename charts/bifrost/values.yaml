@@ -42,19 +42,19 @@ serviceType: ClusterIP
 # Ports must be named <protocol>[-<suffix>] to work with Istio.
 # Valid protocols are grpc, http, http2, https, mongo, mysql, redis, tcp, tls, udp
 ports:
-  - name: http-rpc
+  - name: grpc-rpc
     port: 80
     targetPort: 9085
-  - name: http2-rpc
+  - name: grpc-rpc
     port: 443
     targetPort: 9085
-  - name: http2-rpcport
+  - name: grpc-rpcport
     port: 9084
     targetPort: 9084
-  - name: http2-genus
+  - name: grpc-genus
     port: 9091
     targetPort: 9091
-  - name: http2-status
+  - name: grpc-status
     port: 8080
     targetPort: 8080
 
