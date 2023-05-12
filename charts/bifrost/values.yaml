@@ -44,17 +44,17 @@ serviceType: ClusterIP
 ports:
   - name: grpc
     port: 80
-    targetPort: 9085
-  - name: http2-tls
+    targetPort: 9084
+  - name: grpc-tls
     port: 443
-    targetPort: 9085
-  - name: http2-port
+    targetPort: 9084
+  - name: grpc-port
     port: 9084
     targetPort: 9084
-  - name: http2-genus
+  - name: grpc-genus
     port: 9091
     targetPort: 9091
-  - name: http2-status
+  - name: grpc-status
     port: 8080
     targetPort: 8080
 
