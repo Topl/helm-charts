@@ -108,9 +108,9 @@ podSecurityContext:
 securityContext:
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
-  capabilities:
-    drop:
-      - ALL
+  # capabilities:
+  #   drop:
+  #     - ALL
 
 # Probe settings (use Kubernetes syntax)
 # Optional
