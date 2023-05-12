@@ -45,7 +45,7 @@ ports:
   - name: grpc
     port: 80
     targetPort: 9084
-  - name: grpc-tls
+  - name: https-tls
     port: 443
     targetPort: 9084
   - name: grpc-port
