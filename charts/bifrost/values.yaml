@@ -45,16 +45,16 @@ ports:
   - name: grpc
     port: 80
     targetPort: 9085
-  - name: tls
+  - name: http2-tls
     port: 443
     targetPort: 9085
-  - name: port
+  - name: http2-port
     port: 9084
     targetPort: 9084
-  - name: genus
+  - name: http2-genus
     port: 9091
     targetPort: 9091
-  - name: status
+  - name: http2-status
     port: 8080
     targetPort: 8080
 
