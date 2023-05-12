@@ -45,16 +45,16 @@ ports:
   - name: grpc
     port: 80
     targetPort: 9085
-  - name: grpc-tls
+  - name: tls
     port: 443
     targetPort: 9085
-  - name: grpc-port
+  - name: port
     port: 9084
     targetPort: 9084
-  - name: grpc-genus
+  - name: genus
     port: 9091
     targetPort: 9091
-  - name: grpc-status
+  - name: status
     port: 8080
     targetPort: 8080
 
