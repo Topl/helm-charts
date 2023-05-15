@@ -85,8 +85,8 @@ retries:
 
 # Circuit breaker settings (use Istio syntax)
 # Optional
-outlierDetection:
-  consecutive5xxErrors: 5
+# outlierDetection:
+#   consecutive5xxErrors: 5
 
 # Resource settings (use Kubernetes syntax)
 # Optional
