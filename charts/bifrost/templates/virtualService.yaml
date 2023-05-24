@@ -10,12 +10,12 @@ metadata:
   namespace: {{ .Release.Namespace | quote }}
 spec:
   gateways:
-    - {{ .Values.ingressGateway.name | quote }} 
+    - {{ .Values.istio.ingressGateway.name | quote }} 
   hosts:
-    - {{ .Values.ingressGateway.host | quote }}
+    - {{ .Values.istio.ingressGateway.host | quote }}
   http:
     - match:
-{{- range .Values.ingressGateway.matchPrefix }}
+{{- range .Values.istio.ingressGateway.matchPrefix }}
       - uri:
           prefix: {{ . | quote }}
 {{- end }}
@@ -23,11 +23,11 @@ spec:
       - destination:
           host: {{ (print .Values.service "." .Release.Namespace ".svc.cluster.local")  | quote }}
           subset: {{ (print "v" .Values.version) | quote }}
-{{- if .Values.retries }}
+{{- if .Values.istio.retries }}
       retries:
-{{ toYaml .Values.retries | indent 8 }}
-      timeout: {{ required "You must specify an overall timeout to use retries" .Values.overallTimeout}}
-{{- else if .Values.overallTimeout }}
-      timeout: {{ .Values.overallTimeout }}
+{{ toYaml .Values.istio.retries | indent 8 }}
+      timeout: {{ required "You must specify an overall timeout to use retries" .Values.istio.overallTimeout}}
+{{- else if .Values.istio.overallTimeout }}
+      timeout: {{ .Values.istio.overallTimeout }}
 {{- end }}
 {{- end }}
