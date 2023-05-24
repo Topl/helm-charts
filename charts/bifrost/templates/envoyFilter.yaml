@@ -1,0 +1,22 @@
+{{- if .Values.istio.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: {{ .Values.service | lower | quote }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.service | lower | quote }}
+    app.kubernetes.io/part-of: {{ .Values.system | quote }}
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+spec:
+  workloadLabels:
+    app: {{ .Values.service | lower | quote }}
+  filters:
+  - listenerMatch:
+      listenerType: SIDECAR_INBOUND
+      listenerProtocol: HTTP
+    insertPosition:
+      index: FIRST
+    filterType: HTTP
+    filterName: "envoy.grpc_web"
+    filterConfig: {}
+{{- end }}
