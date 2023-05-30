@@ -51,9 +51,6 @@ ports:
   - name: grpc
     port: 9084
     targetPort: 9084
-  - name: grpc-genus
-    port: 9091
-    targetPort: 9091
   - name: http-status
     port: 8080
     targetPort: 8080
