@@ -75,7 +75,7 @@ istio:
 
   # The overall timeout for requests to this service
   # Optional
-  overallTimeout: 60s
+  # overallTimeout: 60s
 
   # Client retry settings (use Istio syntax)
   # Optional

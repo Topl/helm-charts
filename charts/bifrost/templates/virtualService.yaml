@@ -44,6 +44,7 @@ spec:
           - x-accept-content-transfer-encoding
           - x-accept-response-streaming
           - x-grpc-web
+          - x-user-agent
         maxAge: 1728s
         exposeHeaders:
           - grpc-timeout
@@ -57,6 +58,7 @@ spec:
           - x-accept-content-transfer-encoding
           - x-accept-response-streaming
           - x-grpc-web
+          - x-user-agent
 {{- if .Values.istio.retries }}
       retries:
 {{ toYaml .Values.istio.retries | indent 8 }}
