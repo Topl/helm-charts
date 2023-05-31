@@ -75,13 +75,13 @@ istio:
 
   # The overall timeout for requests to this service
   # Optional
-  overallTimeout: 10s
+  overallTimeout: 60s
 
   # Client retry settings (use Istio syntax)
   # Optional
   retries:
     attempts: 3
-    perTryTimeout: 2s
+    perTryTimeout: 5s
 
   # Circuit breaker settings (use Istio syntax)
   # Optional
