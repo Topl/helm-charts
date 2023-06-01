@@ -25,7 +25,7 @@ spec:
           subset: {{ (print "v" .Values.version) | quote }}
       corsPolicy:
         allowOrigins:
-          - regex: "*"
+          - regex: ".*"
         allowMethods:
           - POST
           - GET
