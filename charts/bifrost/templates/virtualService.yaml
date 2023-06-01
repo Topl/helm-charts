@@ -24,8 +24,8 @@ spec:
           host: {{ (print .Values.service "." .Release.Namespace ".svc.cluster.local")  | quote }}
           subset: {{ (print "v" .Values.version) | quote }}
       corsPolicy:
-        allowOrigin:
-          - "*"
+        allowOrigins:
+          - regex: "*"
         allowMethods:
           - POST
           - GET
@@ -45,7 +45,6 @@ spec:
           - x-accept-response-streaming
           - x-grpc-web
           - x-user-agent
-          - Access-Control-Allow-Origin
         maxAge: 1728s
         exposeHeaders:
           - grpc-timeout
@@ -60,7 +59,6 @@ spec:
           - x-accept-response-streaming
           - x-grpc-web
           - x-user-agent
-          - Access-Control-Allow-Origin
 {{- if .Values.istio.retries }}
       retries:
 {{ toYaml .Values.istio.retries | indent 8 }}
