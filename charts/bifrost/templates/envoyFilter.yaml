@@ -18,5 +18,4 @@ spec:
       index: FIRST
     filterType: HTTP
     filterName: "envoy.grpc_web"
-    filterConfig: {}
 {{- end }}
