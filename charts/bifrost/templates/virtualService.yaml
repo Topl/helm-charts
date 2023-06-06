@@ -28,7 +28,7 @@ spec:
             number: 80
       corsPolicy:
         allowOrigins:
-          - regex: "*"
+          - regex: ".*"
           - exact: https://studio.buf.build
         allowMethods:
           - POST
@@ -74,7 +74,7 @@ spec:
             number: 443
       corsPolicy:
         allowOrigins:
-          - regex: "*"
+          - regex: ".*"
           - exact: https://studio.buf.build
         allowMethods:
           - POST
