@@ -73,20 +73,20 @@ istio:
     matchPrefix:
       - "/"
 
-  # The overall timeout for requests to this service
-  # Optional
-  overallTimeout: 60s
+  # # The overall timeout for requests to this service
+  # # Optional
+  # overallTimeout: 24h
 
-  # Client retry settings (use Istio syntax)
-  # Optional
-  retries:
-    attempts: 3
-    perTryTimeout: 5s
+  # # Client retry settings (use Istio syntax)
+  # # Optional
+  # retries:
+  #   attempts: 3
+  #   perTryTimeout: 5s
 
-  # Circuit breaker settings (use Istio syntax)
-  # Optional
-  outlierDetection:
-    consecutive5xxErrors: 5
+  # # Circuit breaker settings (use Istio syntax)
+  # # Optional
+  # outlierDetection:
+  #   consecutive5xxErrors: 5
 
 # Resource settings (use Kubernetes syntax)
 # Optional
