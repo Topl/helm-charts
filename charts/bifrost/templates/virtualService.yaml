@@ -15,6 +15,7 @@ spec:
     - {{ .Values.istio.ingressGateway.host | quote }}
   http:
     - match:
+      - port: 443
 {{- range .Values.istio.ingressGateway.matchPrefix }}
       - uri:
           prefix: {{ . | quote }}
@@ -23,6 +24,8 @@ spec:
       - destination:
           host: {{ (print .Values.service "." .Release.Namespace ".svc.cluster.local")  | quote }}
           subset: {{ (print "v" .Values.version) | quote }}
+          port:
+            number: 443
       corsPolicy:
         allowOrigins:
           - regex: ".*"
@@ -44,10 +47,10 @@ spec:
           - x-accept-response-streaming
           - x-grpc-web
           - x-user-agent
-          - DNT
-          - x-requested-with
-          - if-modified-since
-          - authorization
+          # - DNT
+          # - x-requested-with
+          # - if-modified-since
+          # - authorization
         maxAge: "24h"
         exposeHeaders:
           - grpc-timeout
@@ -61,10 +64,10 @@ spec:
           - x-accept-response-streaming
           - x-grpc-web
           - x-user-agent
-          - DNT
-          - x-requested-with
-          - if-modified-since
-          - authorization
+          # - DNT
+          # - x-requested-with
+          # - if-modified-since
+          # - authorization
 {{- if .Values.istio.retries }}
       retries:
 {{ toYaml .Values.istio.retries | indent 8 }}
