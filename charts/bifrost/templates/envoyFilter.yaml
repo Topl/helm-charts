@@ -8,14 +8,23 @@ metadata:
     app.kubernetes.io/part-of: {{ .Values.system | quote }}
     app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
 spec:
-  workloadLabels:
-    app: {{ .Values.service | lower | quote }}
-  filters:
-  - listenerMatch:
-      listenerType: SIDECAR_INBOUND
-      listenerProtocol: HTTP
-    insertPosition:
-      index: FIRST
-    filterType: HTTP
-    filterName: "envoy.grpc_web"
+  workloadSelector:
+    labels:
+      app: {{ .Values.service | lower | quote }}
+  configPatches:
+    - applyTo: HTTP_FILTER
+      match:
+        context: SIDECAR_INBOUND
+        listener:
+          filterChain:
+            filter:
+              name: "envoy.http_connection_manager"
+              subFilter:
+                name: "envoy.router"
+      patch:
+        operation: INSERT_BEFORE
+        value:
+          name: "envoy.grpc_web"
+          typed_config:
+            "@type": "type.googleapis.com/envoy.extensions.filters.http.grpc_web.v3.GrpcWeb"
 {{- end }}
