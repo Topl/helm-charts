@@ -52,6 +52,7 @@ spec:
           - if-modified-since
           - authorization
         maxAge: "24h"
+        allowCredentials: true
         exposeHeaders:
           - grpc-timeout
           - content-type
@@ -113,6 +114,7 @@ spec:
           - if-modified-since
           - authorization
         maxAge: "24h"
+        allowCredentials: true
         exposeHeaders:
           - grpc-timeout
           - content-type
