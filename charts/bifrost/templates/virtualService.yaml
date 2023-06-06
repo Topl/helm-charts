@@ -15,6 +15,67 @@ spec:
     - {{ .Values.istio.ingressGateway.host | quote }}
   http:
     - match:
+      - port: 80
+{{- range .Values.istio.ingressGateway.matchPrefix }}
+      - uri:
+          prefix: {{ . | quote }}
+{{- end }}
+      route:
+      - destination:
+          host: {{ (print .Values.service "." .Release.Namespace ".svc.cluster.local")  | quote }}
+          subset: {{ (print "v" .Values.version) | quote }}
+          port:
+            number: 80
+      corsPolicy:
+        allowOrigins:
+          - regex: ".*"
+        allowMethods:
+          - POST
+          - GET
+          - OPTIONS
+          - PUT
+          - DELETE
+        allowHeaders:
+          - grpc-timeout
+          - content-type
+          - keep-alive
+          - user-agent
+          - cache-control
+          - content-type
+          - content-transfer-encoding
+          - x-accept-content-transfer-encoding
+          - x-accept-response-streaming
+          - x-grpc-web
+          - x-user-agent
+          - DNT
+          - x-requested-with
+          - if-modified-since
+          - authorization
+        maxAge: "24h"
+        exposeHeaders:
+          - grpc-timeout
+          - content-type
+          - keep-alive
+          - user-agent
+          - cache-control
+          - content-type
+          - content-transfer-encoding
+          - x-accept-content-transfer-encoding
+          - x-accept-response-streaming
+          - x-grpc-web
+          - x-user-agent
+          - DNT
+          - x-requested-with
+          - if-modified-since
+          - authorization
+{{- if .Values.istio.retries }}
+      retries:
+{{ toYaml .Values.istio.retries | indent 8 }}
+      timeout: {{ required "You must specify an overall timeout to use retries" .Values.istio.overallTimeout}}
+{{- else if .Values.istio.overallTimeout }}
+      timeout: {{ .Values.istio.overallTimeout }}
+{{- end }}
+    - match:
       - port: 443
 {{- range .Values.istio.ingressGateway.matchPrefix }}
       - uri:
@@ -47,10 +108,10 @@ spec:
           - x-accept-response-streaming
           - x-grpc-web
           - x-user-agent
-          # - DNT
-          # - x-requested-with
-          # - if-modified-since
-          # - authorization
+          - DNT
+          - x-requested-with
+          - if-modified-since
+          - authorization
         maxAge: "24h"
         exposeHeaders:
           - grpc-timeout
@@ -64,10 +125,10 @@ spec:
           - x-accept-response-streaming
           - x-grpc-web
           - x-user-agent
-          # - DNT
-          # - x-requested-with
-          # - if-modified-since
-          # - authorization
+          - DNT
+          - x-requested-with
+          - if-modified-since
+          - authorization
 {{- if .Values.istio.retries }}
       retries:
 {{ toYaml .Values.istio.retries | indent 8 }}
