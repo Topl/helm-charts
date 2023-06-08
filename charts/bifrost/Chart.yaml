@@ -1,6 +1,6 @@
 apiVersion: v2
 name: bifrost
-description: A Helm chart for Kubernetes
+description: A Helm chart for Bifrost, the Topl blockchain node built for good.
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -25,3 +25,7 @@ appVersion: "2.0.0-alpha5"
 
 #TODO: Find a better icon.
 icon: https://uploads-ssl.webflow.com/60f98f46d44e675abb7e66ea/611c4d83ed3df101fd221875_topl_basew.svg
+home: https://topl.co
+sources:
+  - https://github.com/Topl/helm-charts
+  - https://topl.github.io/helm-charts/

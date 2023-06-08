@@ -2,7 +2,14 @@
 
 ![Version: 0.1.5](https://img.shields.io/badge/Version-0.1.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0-alpha5](https://img.shields.io/badge/AppVersion-2.0.0--alpha5-informational?style=flat-square)
 
-A Helm chart for Kubernetes
+A Helm chart for Bifrost, the Topl blockchain node built for good.
+
+**Homepage:** <https://topl.co>
+
+## Source Code
+
+* <https://github.com/Topl/helm-charts>
+* <https://topl.github.io/helm-charts/>
 
 ## Values
 
