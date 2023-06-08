@@ -1,3 +1,4 @@
+{{- if .Values.istio.enabled }}
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -9,23 +10,31 @@ metadata:
   namespace: {{ .Release.Namespace | quote }}
 spec:
   gateways:
-    - {{ .Values.ingressGateway.name | quote }} 
+    - {{ .Values.istio.ingressGateway.name | quote }} 
   hosts:
-    - {{ .Values.ingressGateway.host | quote }}
+    - {{ .Values.istio.ingressGateway.host | quote }}
   http:
+{{- range .Values.ports }}
     - match:
-{{- range .Values.ingressGateway.matchPrefix }}
+      - port: {{ .port }}
+{{- range $.Values.istio.ingressGateway.matchPrefix }}
       - uri:
           prefix: {{ . | quote }}
 {{- end }}
       route:
       - destination:
-          host: {{ (print .Values.service "." .Release.Namespace ".svc.cluster.local")  | quote }}
-          subset: {{ (print "v" .Values.version) | quote }}
-{{- if .Values.retries }}
+          host: {{ (print $.Values.service "." $.Release.Namespace ".svc.cluster.local")  | quote }}
+          subset: {{ (print "v" $.Values.version) | quote }}
+          port:
+            number: {{ .port }}
+      corsPolicy:
+{{- toYaml $.Values.istio.corsPolicy | nindent 8 }}
+{{- if $.Values.istio.retries }}
       retries:
-{{ toYaml .Values.retries | indent 8 }}
-      timeout: {{ required "You must specify an overall timeout to use retries" .Values.overallTimeout}}
-{{- else if .Values.overallTimeout }}
-      timeout: {{ .Values.overallTimeout }}
+{{ toYaml $.Values.istio.retries | indent 8 }}
+      timeout: {{ required "You must specify an overall timeout to use retries" $.Values.istio.overallTimeout}}
+{{- else if $.Values.istio.overallTimeout }}
+      timeout: {{ $.Values.istio.overallTimeout }}
+{{- end }}
+{{- end }}
 {{- end }}

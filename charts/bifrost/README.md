@@ -1,8 +1,15 @@
 # bifrost
 
-![Version: 0.1.3](https://img.shields.io/badge/Version-0.1.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0-alpha2](https://img.shields.io/badge/AppVersion-2.0.0--alpha2-informational?style=flat-square)
+![Version: 0.1.5](https://img.shields.io/badge/Version-0.1.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0-alpha5](https://img.shields.io/badge/AppVersion-2.0.0--alpha5-informational?style=flat-square)
 
-A Helm chart for Kubernetes
+A Helm chart for Bifrost, the Topl blockchain node built for good.
+
+**Homepage:** <https://topl.co>
+
+## Source Code
+
+* <https://github.com/Topl/helm-charts>
+* <https://topl.github.io/helm-charts/>
 
 ## Values
 
@@ -16,24 +23,55 @@ A Helm chart for Kubernetes
 | configMap.content | string | `"bifrost {\n  chainReplicator {\n  enableChainReplicator = false\n  checkMissingBlock = true\n  }\n}\n"` |  |
 | configMap.fileName | string | `"application.conf"` |  |
 | configMap.mountPath | string | `"/config/bifrost-config"` |  |
-| image.name | string | `"ghcr.io/topl/bifrost-node"` |  |
-| image.tag | string | `nil` |  |
-| livenessProbe.enabled | bool | `false` |  |
-| livenessProbe.initialDelaySeconds | int | `30` |  |
-| livenessProbe.periodSeconds | int | `60` |  |
-| livenessProbe.timeoutSeconds | int | `30` |  |
-| name | string | `"bifrost-node"` |  |
+| image.imagePullPolicy | string | `"IfNotPresent"` |  |
+| image.repository | string | `"toplprotocol/bifrost-node"` |  |
+| image.tag | string | `""` |  |
+| istio.corsPolicy.allowCredentials | bool | `true` |  |
+| istio.corsPolicy.allowHeaders[0] | string | `"grpc-timeout"` |  |
+| istio.corsPolicy.allowHeaders[10] | string | `"x-grpc-web"` |  |
+| istio.corsPolicy.allowHeaders[1] | string | `"content-type"` |  |
+| istio.corsPolicy.allowHeaders[2] | string | `"keep-alive"` |  |
+| istio.corsPolicy.allowHeaders[3] | string | `"user-agent"` |  |
+| istio.corsPolicy.allowHeaders[4] | string | `"cache-control"` |  |
+| istio.corsPolicy.allowHeaders[5] | string | `"content-type"` |  |
+| istio.corsPolicy.allowHeaders[6] | string | `"content-transfer-encoding"` |  |
+| istio.corsPolicy.allowHeaders[7] | string | `"x-accept-content-transfer-encoding"` |  |
+| istio.corsPolicy.allowHeaders[8] | string | `"x-accept-response-streaming"` |  |
+| istio.corsPolicy.allowHeaders[9] | string | `"x-user-agent"` |  |
+| istio.corsPolicy.allowMethods[0] | string | `"POST"` |  |
+| istio.corsPolicy.allowMethods[1] | string | `"GET"` |  |
+| istio.corsPolicy.allowMethods[2] | string | `"OPTIONS"` |  |
+| istio.corsPolicy.allowMethods[3] | string | `"PUT"` |  |
+| istio.corsPolicy.allowMethods[4] | string | `"DELETE"` |  |
+| istio.corsPolicy.allowOrigins[0].regex | string | `".*"` |  |
+| istio.corsPolicy.exposeHeaders[0] | string | `"grpc-status"` |  |
+| istio.corsPolicy.exposeHeaders[1] | string | `"grpc-message"` |  |
+| istio.corsPolicy.maxAge | string | `"24h"` |  |
+| istio.enabled | bool | `true` |  |
+| istio.ingressGateway.host | string | `"tetra.testnet.torus.topl.tech"` |  |
+| istio.ingressGateway.matchPrefix[0] | string | `"/"` |  |
+| istio.ingressGateway.name | string | `"istio-gateways/bifrost-gateway"` |  |
+| istio.outlierDetection | object | `{}` |  |
+| istio.overallTimeout | string | `nil` |  |
+| istio.retries | object | `{}` |  |
+| maxUnavailable | int | `1` |  |
+| p2p.ports[0].name | string | `"tcp-p2p"` |  |
+| p2p.ports[0].port | int | `9085` |  |
+| p2p.ports[0].targetPort | int | `9085` |  |
 | podSecurityContext.fsGroup | int | `0` |  |
 | podSecurityContext.runAsGroup | int | `0` |  |
 | podSecurityContext.runAsUser | int | `1001` |  |
 | podSecurityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
-| ports.p2p | int | `9084` |  |
-| ports.rpc | int | `9085` |  |
-| readinessProbe.enabled | bool | `false` |  |
-| readinessProbe.initialDelaySeconds | int | `30` |  |
-| readinessProbe.periodSeconds | int | `60` |  |
-| readinessProbe.timeoutSeconds | int | `30` |  |
-| replicas | int | `1` |  |
+| ports[0].name | string | `"http2"` |  |
+| ports[0].port | int | `80` |  |
+| ports[0].targetPort | int | `9084` |  |
+| ports[1].name | string | `"https"` |  |
+| ports[1].port | int | `443` |  |
+| ports[1].targetPort | int | `9084` |  |
+| ports[2].name | string | `"grpc"` |  |
+| ports[2].port | int | `9084` |  |
+| ports[2].targetPort | int | `9084` |  |
+| replicaCount | int | `1` |  |
 | resources.limits.cpu | float | `2` |  |
 | resources.limits.memory | string | `"2000Mi"` |  |
 | resources.requests.cpu | string | `"100m"` |  |
@@ -41,10 +79,12 @@ A Helm chart for Kubernetes
 | securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | securityContext.readOnlyRootFilesystem | bool | `true` |  |
-| service.enabled | bool | `true` |  |
-| service.ports.p2p | int | `9084` |  |
-| service.ports.rpc | int | `9085` |  |
-| service.type | string | `"ClusterIP"` |  |
+| service | string | `"bifrost-node"` |  |
+| serviceAccount.create | bool | `true` |  |
+| serviceAccount.name | string | `"bifrost-node"` |  |
+| serviceType | string | `"ClusterIP"` |  |
+| system | string | `"bifrost-node"` |  |
+| version | int | `1` |  |
 | volume.mountDirectory | string | `"/mnt/bifrost/"` |  |
 | volume.storageClass | string | `nil` |  |
 | volume.storageSize | string | `"10Gi"` |  |

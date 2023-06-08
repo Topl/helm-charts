@@ -1,3 +1,4 @@
+{{- if .Values.istio.enabled }}
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
@@ -9,12 +10,13 @@ metadata:
   namespace: {{ .Release.Namespace | quote }}
 spec:
   host: {{ (print .Values.service "." .Release.Namespace ".svc.cluster.local")  | quote }}
-{{- if .Values.outlierDetection }}
+{{- if .Values.istio.outlierDetection }}
   trafficPolicy:
     outlierDetection:
-{{ toYaml .Values.outlierDetection | indent 6 }}
+{{ toYaml .Values.istio.outlierDetection | indent 6 }}
 {{- end }}
   subsets:
     - name: {{ (print "v" .Values.version) | quote }}
       labels:
         version: {{ .Values.version | quote }}
+{{- end}}
