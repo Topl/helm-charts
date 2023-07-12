@@ -14,6 +14,7 @@ spec:
       app.kubernetes.io/part-of: {{ .Values.system | quote }}
       app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
   ingress:
+  - {}
   policyTypes:
   - Ingress
 {{- end }}
