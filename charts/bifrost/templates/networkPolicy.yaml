@@ -14,4 +14,7 @@ spec:
         - podSelector:
             matchLabels:
               app: {{ .Values.service | lower | quote }}
+      ports:
+        - protocol: TCP
+          port: 9084
 {{- end }}
