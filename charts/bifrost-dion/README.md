@@ -12,7 +12,8 @@ A Helm chart for Kubernetes
 | args[1] | string | `"valhalla"` |  |
 | args[2] | string | `"-c"` |  |
 | args[3] | string | `"/config/bifrost-dion-config/application.conf"` |  |
-| args[4] | string | `"--disableAuth"` |  |
+| args[4] | string | `"--apiKeyHash"` |  |
+| args[5] | string | `"HrzwbCmLRJDAyYWFpMUFNFCMz1RTzUqxnCHcSzV62mGr"` |  |
 | command | string | `nil` |  |
 | configMap.content | string | `"bifrost {\n  chainReplicator {\n  enableChainReplicator = false\n  checkMissingBlock = true\n  }\n}\n"` |  |
 | configMap.fileName | string | `"application.conf"` |  |

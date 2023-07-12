@@ -37,9 +37,6 @@ autoscaling:
 # Ports must be named <protocol>[-<suffix>] to work with Istio.
 # Valid protocols are grpc, http, http2, https, mongo, mysql, redis, tcp, tls, udp
 ports:
-  - name: http-svc
-    port: 80
-    targetPort: 80
   - name: https-svc
     port: 443
     targetPort: 80
@@ -91,6 +88,8 @@ resources:
 #       path: /ready
 #       port: 8080
 
+networkPolicy:
+  enabled: true
 # configMap: # Optional
 #   # Where the config map should be mounted inside your container's filesystem.
 #   mountPath: /config/annulus-config

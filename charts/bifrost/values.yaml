@@ -137,6 +137,9 @@ securityContext:
     drop:
       - ALL
 
+networkPolicy:
+  enabled: true
+
 # Probe settings (use Kubernetes syntax)
 # Optional
 # probes:
