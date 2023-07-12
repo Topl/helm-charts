@@ -13,6 +13,5 @@ spec:
     - from:
         - podSelector:
             matchLabels:
-              app.kubernetes.io/part-of: {{ .Values.system | quote }}
               app: {{ .Values.service | lower | quote }}
 {{- end }}
