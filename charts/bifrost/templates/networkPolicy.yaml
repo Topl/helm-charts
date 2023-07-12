@@ -20,15 +20,6 @@ spec:
           app.kubernetes.io/name: {{ .Values.service | lower | quote }}
           app.kubernetes.io/part-of: {{ .Values.system | quote }}
           app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
-    ports:
-{{- range .Values.ports }}
-    - port: {{ .name | quote }}
-      protocol: TCP
-{{- end }}
-{{- range .Values.p2p.ports }}
-    - port: {{ .name | quote }}
-      protocol: TCP
-{{- end }}
   policyTypes:
   - Ingress
 {{- end }}
