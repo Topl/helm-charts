@@ -14,6 +14,7 @@ spec:
         - podSelector:
             matchLabels:
               app.kubernetes.io/part-of: {{ .Values.system | quote }}
+              app: {{ .Values.service | lower | quote }}
       ports:
         - protocol: TCP
           port: 9084
