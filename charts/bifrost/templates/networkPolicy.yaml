@@ -3,18 +3,28 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: {{ .Values.service | lower | quote }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.service | lower | quote }}
+    app.kubernetes.io/part-of: {{ .Values.system | quote }}
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
 spec:
   podSelector:
     matchLabels:
+      app.kubernetes.io/name: {{ .Values.service | lower | quote }}
       app.kubernetes.io/part-of: {{ .Values.system | quote }}
+      app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
   policyTypes:
     - Ingress
   ingress:
     - from:
         - podSelector:
             matchLabels:
-              app: {{ .Values.service | lower | quote }}
-      ports:
-        - protocol: TCP
-          port: 9084
+              app.kubernetes.io/name: {{ .Values.service | lower | quote }}
+              app.kubernetes.io/part-of: {{ .Values.system | quote }}
+              app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    ports:
+{{- range .Values.ports }}
+    - port: {{ .name | quote }}
+      protocol: TCP
+{{- end }}
 {{- end }}
