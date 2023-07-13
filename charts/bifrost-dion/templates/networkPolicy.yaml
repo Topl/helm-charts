@@ -10,16 +10,12 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: {{ .Values.service | lower | quote }}
       app.kubernetes.io/part-of: {{ .Values.system | quote }}
-      app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
   ingress:
   - from:
     - podSelector:
         matchLabels:
-            app.kubernetes.io/name: {{ .Values.service | lower | quote }}
             app.kubernetes.io/part-of: {{ .Values.system | quote }}
-            app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
     ports:
 {{- range .Values.ports }}
     - port: {{ .name | quote }}

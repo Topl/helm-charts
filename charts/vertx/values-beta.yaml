@@ -6,7 +6,7 @@ common:
   updateStrategy: "RollingUpdate"
   maxUnavailable: 1
   maxSurge: 1
-    
+
 replicaCount: 1
 
 image:
@@ -30,16 +30,21 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext: {}
+podSecurityContext:
+  {}
   # fsGroup: 2000
 
-securityContext: {}
+securityContext:
+  {}
   # capabilities:
   #   drop:
   #   - ALL
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # runAsUser: 1000
+
+networkPolicy:
+  enabled: true
 
 service:
   enabled: true
@@ -54,12 +59,10 @@ service:
     portName: http
     port: 80
   annotations:
-    { 
+    {
       "cloud.google.com/neg": '{"ingress": true}',
-      "app-protocols": '{"https":"HTTPS","http":"HTTP"}'
+      "app-protocols": '{"https":"HTTPS","http":"HTTP"}',
     }
-
-    
 
 backendConfig:
   enabled: true
@@ -78,12 +81,12 @@ configMap:
   data:
     PORT: 2377
     HEALTH_CHECK_PORT: 8101
-    MAINNET_TARGET_URI: 'https://main.torus.topl.network'
-    VALHALLA_TARGET_URI: 'https://valhalla.torus.topl.network'
-    LOGGING_HOST: 'log.topl.tech'
+    MAINNET_TARGET_URI: "https://main.torus.topl.network"
+    VALHALLA_TARGET_URI: "https://valhalla.torus.topl.network"
+    LOGGING_HOST: "log.topl.tech"
     LOGGING_PORT: 12201
-    LOGGING_PROTOCOL: 'tcp'
-    NODE_ENV: 'beta'
+    LOGGING_PROTOCOL: "tcp"
+    NODE_ENV: "beta"
 
 secrets:
   create: false
@@ -147,7 +150,8 @@ healthCheck:
 ingress:
   enabled: true
   className: ""
-  annotations: {}
+  annotations:
+    {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
@@ -157,12 +161,13 @@ ingress:
           pathType: ImplementationSpecific
           serviceName: "vertx-svc-beta"
           servicePort: 2377
-  tls: 
+  tls:
     - secretName: vertx-tls-beta
       hosts:
         - beta.vertx.topl.services
 
-resources: {}
+resources:
+  {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -204,7 +209,7 @@ redis:
     storageClass: standard
     storageSize: 1Gi
     mountPath: /opt/redis/data
-    accessModes: [ "ReadWriteOnce" ]
+    accessModes: ["ReadWriteOnce"]
 
   ## Redis config file
   ## ref: https://redis.io/topics/config
