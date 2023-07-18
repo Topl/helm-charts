@@ -55,6 +55,7 @@ A Helm chart for Bifrost, the Topl blockchain node built for good.
 | istio.overallTimeout | string | `nil` |  |
 | istio.retries | object | `{}` |  |
 | maxUnavailable | int | `1` |  |
+| networkPolicy.enabled | bool | `true` |  |
 | p2p.ports[0].name | string | `"tcp-p2p"` |  |
 | p2p.ports[0].port | int | `9085` |  |
 | p2p.ports[0].targetPort | int | `9085` |  |

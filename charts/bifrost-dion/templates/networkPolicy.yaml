@@ -15,7 +15,7 @@ spec:
   - from:
     - podSelector:
         matchLabels:
-            app.kubernetes.io/part-of: {{ .Values.system | quote }}
+          app.kubernetes.io/part-of: {{ .Values.system | quote }}
     ports:
 {{- range .Values.ports }}
     - port: {{ .name | quote }}

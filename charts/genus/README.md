@@ -44,6 +44,7 @@ A Helm chart for Kubernetes
 | mongoDBSecretData | string | `"uri"` |  |
 | mongoDBSecretName | string | `"mongodb-connection-string"` |  |
 | nameOverride | string | `""` |  |
+| networkPolicy.enabled | bool | `true` |  |
 | nodeSelector | object | `{}` |  |
 | podAnnotations | object | `{}` |  |
 | podSecurityContext | object | `{}` |  |
