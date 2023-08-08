@@ -1,0 +1,24 @@
+{{- if .Values.networkPolicy.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "vertx.fullname" . }}
+  labels:
+    {{- include "vertx.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "vertx.labels" . | nindent 6 }}
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+            {{- include "vertx.labels" . | nindent 12 }}
+    ports:
+    - port: {{ .Values.service.http.portName | quote }}
+      protocol: TCP
+    - port: {{ .Values.service.https.portName | quote }}
+      protocol: TCP
+  policyTypes:
+  - Ingress
+{{- end }}

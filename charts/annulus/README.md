@@ -1,6 +1,6 @@
 # annulus
 
-![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.2.1](https://img.shields.io/badge/AppVersion-v0.2.1-informational?style=flat-square)
+![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.0](https://img.shields.io/badge/AppVersion-0.1.0-informational?style=flat-square)
 
 Helm Chart for deploying Annulus, a Topl blockchain explorer.
 
@@ -18,14 +18,12 @@ Helm Chart for deploying Annulus, a Topl blockchain explorer.
 | ingressGateway.matchPrefix[0] | string | `"/"` |  |
 | ingressGateway.name | string | `"istio-gateways/bifrost-gateway"` |  |
 | maxUnavailable | int | `1` |  |
+| networkPolicy.enabled | bool | `true` |  |
 | outlierDetection.consecutive5xxErrors | int | `5` |  |
 | overallTimeout | string | `"10s"` |  |
-| ports[0].name | string | `"http-svc"` |  |
-| ports[0].port | int | `80` |  |
+| ports[0].name | string | `"https-svc"` |  |
+| ports[0].port | int | `443` |  |
 | ports[0].targetPort | int | `80` |  |
-| ports[1].name | string | `"https-svc"` |  |
-| ports[1].port | int | `443` |  |
-| ports[1].targetPort | int | `80` |  |
 | replicaCount | int | `1` |  |
 | resources.limits.cpu | string | `"250m"` |  |
 | resources.limits.memory | string | `"64Mi"` |  |
