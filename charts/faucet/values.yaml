@@ -21,6 +21,7 @@ image:
 serviceAccount:
   name: faucet
   create: true
+  automountToken: false
 
 # The initial number of pod replicas to run for your service
 replicaCount: 1
@@ -72,8 +73,24 @@ resources:
     memory: "32Mi"
     cpu: "200m"
   limits:
-    memory: "64Mi"
+    memory: "500Mi"
     cpu: "250m"
+    ephemeral-storage: "500Mi"
+
+podSecurityContext:
+  runAsUser: 100
+  runAsGroup: 100
+  fsGroup: 100
+  supplementalGroups: [100]
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
 
 # Probe settings (use Kubernetes syntax)
 # Optional

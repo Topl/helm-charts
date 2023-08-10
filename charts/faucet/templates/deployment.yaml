@@ -29,9 +29,14 @@ spec:
 {{- end }}
     spec:
       serviceAccountName: {{ .Values.serviceAccount.name | lower | quote }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automountToken }}
       containers:
         - name: {{ .Values.service | lower | quote }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
           imagePullPolicy: {{ .Values.image.imagePullPolicy | quote }}
           ports:
 {{- range .Values.ports }}
