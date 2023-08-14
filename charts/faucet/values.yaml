@@ -78,7 +78,7 @@ resources:
     ephemeral-storage: "500Mi"
 
 podSecurityContext:
-  runAsUser: 100
+  runAsUser: 1001
   runAsGroup: 100
   fsGroup: 100
   supplementalGroups: [100]
@@ -86,7 +86,7 @@ podSecurityContext:
     type: RuntimeDefault
 
 securityContext:
-  readOnlyRootFilesystem: true
+  readOnlyRootFilesystem: false
   allowPrivilegeEscalation: false
   capabilities:
     drop:
@@ -98,13 +98,13 @@ probes:
   livenessProbe:
     initialDelaySeconds: 30
     httpGet:
-      path: /health
-      port: 8080
+      path: /
+      port: 80
   readinessProbe:
     timeoutSeconds: 10
     httpGet:
-      path: /ready
-      port: 8080
+      path: /
+      port: 80
 # configMap: # Optional
 #   # Where the config map should be mounted inside your container's filesystem.
 #   mountPath: /config/faucet-config
