@@ -78,10 +78,10 @@ resources:
     ephemeral-storage: "500Mi"
 
 # podSecurityContext:
-#   # runAsUser: 100
-#   # runAsGroup: 100
-#   # fsGroup: 100
-#   # supplementalGroups: [100]
+#   runAsUser: 100
+#   runAsGroup: 100
+#   fsGroup: 100
+#   supplementalGroups: [100]
 #   seccompProfile:
 #     type: RuntimeDefault
 
