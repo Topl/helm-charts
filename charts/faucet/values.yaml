@@ -85,12 +85,12 @@ podSecurityContext:
   seccompProfile:
     type: RuntimeDefault
 
-securityContext:
-  readOnlyRootFilesystem: false
-  allowPrivilegeEscalation: false
-  capabilities:
-    drop:
-      - ALL
+# securityContext:
+#   readOnlyRootFilesystem: false
+#   allowPrivilegeEscalation: false
+#   capabilities:
+#     drop:
+#       - ALL
 
 # Probe settings (use Kubernetes syntax)
 # Optional
