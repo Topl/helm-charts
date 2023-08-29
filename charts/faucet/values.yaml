@@ -1,0 +1,139 @@
+# Default values for faucet.
+# This is a YAML-formatted file.
+
+# The overall system your service is a part of
+system: faucet
+# The name of your service
+service: faucet
+# The major version number for your service
+version: 1
+
+# Docker settings
+image:
+  # The name of your docker container
+  repository: toplprotocol/faucet
+  # Your docker container's tag
+  tag:
+  imagePullPolicy: IfNotPresent
+
+# Istio uses the service account name as a component of the service's security
+# identity. Set "create" to false to use an previously created service account.
+serviceAccount:
+  name: faucet
+  create: true
+  automountToken: false
+
+# The initial number of pod replicas to run for your service
+replicaCount: 1
+# The maximum number of pods from that set that can be unavailable at once
+maxUnavailable: 1
+
+# Horizontal pod autoscaler configuration (optional)
+autoscaling:
+  minReplicas: 1
+  maxReplicas: 1
+  targetAverageCpuUtilization: 80
+
+# Port settings
+# Ports must be named <protocol>[-<suffix>] to work with Istio.
+# Valid protocols are grpc, http, http2, https, mongo, mysql, redis, tcp, tls, udp
+ports:
+  - name: https-svc
+    port: 443
+    targetPort: 9999
+
+# Configure the Istio ingress gateway to route outside traffic for the provided
+# host name to this service on the ports and protocols defined in the 'ports' section
+# above.
+ingressGateway:
+  name: istio-gateways/bifrost-gateway
+  host: faucet.topl.tech
+  matchPrefix:
+    - "/"
+
+# The overall timeout for requests to this service
+# Optional
+overallTimeout: 10s
+
+# Client retry settings (use Istio syntax)
+# Optional
+retries:
+  attempts: 3
+  perTryTimeout: 2s
+
+# Circuit breaker settings (use Istio syntax)
+# Optional
+outlierDetection:
+  consecutive5xxErrors: 5
+
+# Resource settings (use Kubernetes syntax)
+# Optional
+resources:
+  requests:
+    memory: "32Mi"
+    cpu: "200m"
+  limits:
+    memory: "500Mi"
+    cpu: "250m"
+    ephemeral-storage: "500Mi"
+
+podSecurityContext:
+  runAsUser: 101
+  runAsGroup: 101
+  fsGroup: 101
+  supplementalGroups: [101]
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+
+# Probe settings (use Kubernetes syntax)
+# Optional
+probes:
+  livenessProbe:
+    initialDelaySeconds: 30
+    httpGet:
+      path: /healthz
+      port: 9999
+  readinessProbe:
+    timeoutSeconds: 10
+    httpGet:
+      path: /healthz
+      port: 9999
+
+configMap: # Optional
+  # Where the config map should be mounted inside your container's filesystem.
+  mountPath: /etc/nginx
+  fileName: nginx.conf
+  # Everything under content is copied verbatim into your service's configmap.
+  content: |
+    worker_processes  auto;
+    error_log  /tmp/nginx/error.log warn;
+    pid        /tmp/nginx/nginx.pid;
+    events {
+        worker_connections  1024;
+    }
+    http {
+        default_type  application/octet-stream;
+        log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                          '$status $body_bytes_sent "$http_referer" '
+                          '"$http_user_agent" "$http_x_forwarded_for"';
+        access_log  /var/log/nginx/access.log  main;
+        sendfile        on;
+        #tcp_nopush     on;
+        keepalive_timeout  65;
+        #gzip  on;
+        include /etc/nginx/conf.d/*.conf;
+        server {
+          listen 9999;
+          location /healthz {
+            access_log          off;
+            return              200;
+          }
+        }
+    }
