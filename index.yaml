@@ -175,6 +175,17 @@ entries:
     urls:
     - https://github.com/Topl/helm-charts/releases/download/bifrost-dion-0.1.0/bifrost-dion-0.1.0.tgz
     version: 0.1.0
+  faucet:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2023-08-29T15:45:46.328398498Z"
+    description: A Helm chart for Kubernetes
+    digest: 7889e79def412c0e6e39036ea41502968f742c1551cbcbd1148bc518682902f3
+    name: faucet
+    type: application
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/faucet-0.1.0/faucet-0.1.0.tgz
+    version: 0.1.0
   genus:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -223,4 +234,4 @@ entries:
     urls:
     - https://github.com/Topl/helm-charts/releases/download/vertx-0.1.0/vertx-0.1.0.tgz
     version: 0.1.0
-generated: "2023-07-18T01:18:19.944475051Z"
+generated: "2023-08-29T15:45:46.328436401Z"
