@@ -98,12 +98,12 @@ probes:
   livenessProbe:
     initialDelaySeconds: 30
     httpGet:
-      path: /
+      path: /healthz
       port: 9999
   readinessProbe:
     timeoutSeconds: 10
     httpGet:
-      path: /
+      path: /healthz
       port: 9999
 
 configMap: # Optional
