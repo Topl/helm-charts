@@ -31,7 +31,7 @@ maxUnavailable: 1
 # Horizontal pod autoscaler configuration (optional)
 autoscaling:
   minReplicas: 1
-  maxReplicas: 5
+  maxReplicas: 1
   targetAverageCpuUtilization: 80
 
 # Port settings
