@@ -51,12 +51,22 @@ spec:
 {{- if .Values.probes }}
 {{ toYaml .Values.probes | indent 10 }}
 {{- end }}
-{{- if .Values.configMap }}
           volumeMounts:
+{{- if .Values.configMap }}
             - name: {{ (print .Values.service "-config") | quote }}
               mountPath: {{ .Values.configMap.mountPath | quote }}
+{{- end }}
+            - name: cache
+              mountPath: /var/cache/nginx
+            - name: tmp
+              mountPath: /tmp/nginx
       volumes:
+{{- if .Values.configMap }}
         - name: {{ (print .Values.service "-config") | quote }}
           configMap:
             name: {{ .Values.service | lower | quote }}
 {{- end }}
+        - name: cache
+          emptyDir: {}
+        - name: tmp
+          emptyDir: {}
