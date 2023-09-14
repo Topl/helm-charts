@@ -24,6 +24,7 @@ args: ["--dataDir", "/mnt/bifrost/data", "--stakingDir", "/mnt/bifrost/staking"]
 serviceAccount:
   name: bifrost-node
   create: true
+  automountToken: false
 
 # The initial number of pod replicas to run for your service
 replicaCount: 1
@@ -42,9 +43,6 @@ serviceType: ClusterIP
 # Ports must be named <protocol>[-<suffix>] to work with Istio.
 # Valid protocols are grpc, http, http2, https, mongo, mysql, redis, tcp, tls, udp
 ports:
-  - name: http2
-    port: 80
-    targetPort: 9084
   - name: https
     port: 443
     targetPort: 9084
@@ -122,6 +120,7 @@ resources:
   limits:
     memory: "2000Mi"
     cpu: 2.0
+    ephemeral-storage: "500Mi"
 
 podSecurityContext:
   runAsUser: 1001 # TODO: Update Bifrost Docker container to use high UID. Add CKV_K8S_40 as a check.
@@ -142,17 +141,15 @@ networkPolicy:
 
 # Probe settings (use Kubernetes syntax)
 # Optional
-# probes:
-#   livenessProbe:
-#     initialDelaySeconds: 30
-#     httpGet:
-#       path: /status
-#       port: 9585
-#   readinessProbe:
-#     timeoutSeconds: 10
-#     httpGet:
-#       path: /status
-#       port: 9585
+probes:
+  livenessProbe:
+    initialDelaySeconds: 30
+    grpc:
+      port: 9084
+  readinessProbe:
+    timeoutSeconds: 20
+    grpc:
+      port: 9084
 
 configMap: # Optional
   # Where the config map should be mounted inside your container's filesystem.

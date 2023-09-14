@@ -29,9 +29,14 @@ spec:
 {{- end }}
     spec:
       serviceAccountName: {{ .Values.serviceAccount.name | lower | quote }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automountToken }}
       containers:
         - name: {{ .Values.service | lower | quote }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
           imagePullPolicy: {{ .Values.image.imagePullPolicy | quote }}
           ports:
 {{- range .Values.ports }}
@@ -46,12 +51,22 @@ spec:
 {{- if .Values.probes }}
 {{ toYaml .Values.probes | indent 10 }}
 {{- end }}
-{{- if .Values.configMap }}
           volumeMounts:
+{{- if .Values.configMap }}
             - name: {{ (print .Values.service "-config") | quote }}
               mountPath: {{ .Values.configMap.mountPath | quote }}
+{{- end }}
+            - name: cache
+              mountPath: /var/cache/nginx
+            - name: tmp
+              mountPath: /tmp/nginx
       volumes:
+{{- if .Values.configMap }}
         - name: {{ (print .Values.service "-config") | quote }}
           configMap:
             name: {{ .Values.service | lower | quote }}
 {{- end }}
+        - name: cache
+          emptyDir: {}
+        - name: tmp
+          emptyDir: {}

@@ -21,6 +21,7 @@ image:
 serviceAccount:
   name: annulus
   create: true
+  automountToken: false
 
 # The initial number of pod replicas to run for your service
 replicaCount: 1
@@ -39,7 +40,7 @@ autoscaling:
 ports:
   - name: https-svc
     port: 443
-    targetPort: 80
+    targetPort: 9999
 
 # Configure the Istio ingress gateway to route outside traffic for the provided
 # host name to this service on the ports and protocols defined in the 'ports' section
@@ -72,29 +73,75 @@ resources:
     memory: "32Mi"
     cpu: "200m"
   limits:
-    memory: "64Mi"
+    memory: "500Mi"
     cpu: "250m"
-# Probe settings (use Kubernetes syntax)
-# Optional
-# probes:
-#   livenessProbe:
-#     initialDelaySeconds: 30
-#     httpGet:
-#       path: /health
-#       port: 8080
-#   readinessProbe:
-#     timeoutSeconds: 10
-#     httpGet:
-#       path: /ready
-#       port: 8080
+    ephemeral-storage: "500Mi"
 
-networkPolicy:
-  enabled: true
-# configMap: # Optional
-#   # Where the config map should be mounted inside your container's filesystem.
-#   mountPath: /config/annulus-config
-#   fileName: config.yaml
-#   # Everything under content is copied verbatim into your service's configmap.
-#   content:
-#     key1: value1
-#     key2: value2
+podSecurityContext:
+  runAsUser: 101
+  runAsGroup: 101
+  fsGroup: 101
+  supplementalGroups: [101]
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+# Probe settings (use Kubernetes syntax)
+probes:
+  livenessProbe:
+    initialDelaySeconds: 30
+    httpGet:
+      path: /healthz
+      port: 9999
+  readinessProbe:
+    timeoutSeconds: 10
+    httpGet:
+      path: /healthz
+      port: 9999
+
+configMap: # Optional
+  # Where the config map should be mounted inside your container's filesystem.
+  mountPath: /etc/nginx
+  fileName: nginx.conf
+  # Everything under content is copied verbatim into your service's configmap.
+  content: |
+    worker_processes  auto;
+
+    error_log  /tmp/nginx/error.log warn;
+    pid        /tmp/nginx/nginx.pid;
+
+    events {
+        worker_connections  1024;
+    }
+
+    http {
+        default_type  application/octet-stream;
+
+        log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                          '$status $body_bytes_sent "$http_referer" '
+                          '"$http_user_agent" "$http_x_forwarded_for"';
+
+        access_log  /var/log/nginx/access.log  main;
+
+        sendfile        on;
+        #tcp_nopush     on;
+
+        keepalive_timeout  65;
+
+        #gzip  on;
+
+        include /etc/nginx/conf.d/*.conf;
+
+        server {
+          listen 9999;
+          location /healthz {
+            access_log          off;
+            return              200;
+          }
+        }
+    }

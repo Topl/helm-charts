@@ -1,6 +1,6 @@
 # annulus
 
-![Version: 0.1.3](https://img.shields.io/badge/Version-0.1.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.5](https://img.shields.io/badge/AppVersion-v0.5-informational?style=flat-square)
+![Version: 0.1.4](https://img.shields.io/badge/Version-0.1.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.0](https://img.shields.io/badge/AppVersion-v1.0-informational?style=flat-square)
 
 Helm Chart for deploying Annulus, a Topl blockchain explorer.
 
@@ -11,6 +11,9 @@ Helm Chart for deploying Annulus, a Topl blockchain explorer.
 | autoscaling.maxReplicas | int | `5` |  |
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.targetAverageCpuUtilization | int | `80` |  |
+| configMap.content | string | `"worker_processes  auto;\n\nerror_log  /tmp/nginx/error.log warn;\npid        /tmp/nginx/nginx.pid;\n\nevents {\n    worker_connections  1024;\n}\n\nhttp {\n    default_type  application/octet-stream;\n\n    log_format  main  '$remote_addr - $remote_user [$time_local] \"$request\" '\n                      '$status $body_bytes_sent \"$http_referer\" '\n                      '\"$http_user_agent\" \"$http_x_forwarded_for\"';\n\n    access_log  /var/log/nginx/access.log  main;\n\n    sendfile        on;\n    #tcp_nopush     on;\n\n    keepalive_timeout  65;\n\n    #gzip  on;\n\n    include /etc/nginx/conf.d/*.conf;\n\n    server {\n      listen 9999;\n      location /healthz {\n        access_log          off;\n        return              200;\n      }\n    }\n}\n"` |  |
+| configMap.fileName | string | `"nginx.conf"` |  |
+| configMap.mountPath | string | `"/etc/nginx"` |  |
 | image.imagePullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"toplprotocol/annulus"` |  |
 | image.tag | string | `nil` |  |
@@ -18,20 +21,35 @@ Helm Chart for deploying Annulus, a Topl blockchain explorer.
 | ingressGateway.matchPrefix[0] | string | `"/"` |  |
 | ingressGateway.name | string | `"istio-gateways/bifrost-gateway"` |  |
 | maxUnavailable | int | `1` |  |
-| networkPolicy.enabled | bool | `true` |  |
 | outlierDetection.consecutive5xxErrors | int | `5` |  |
 | overallTimeout | string | `"10s"` |  |
+| podSecurityContext.fsGroup | int | `101` |  |
+| podSecurityContext.runAsGroup | int | `101` |  |
+| podSecurityContext.runAsUser | int | `101` |  |
+| podSecurityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
+| podSecurityContext.supplementalGroups[0] | int | `101` |  |
 | ports[0].name | string | `"https-svc"` |  |
 | ports[0].port | int | `443` |  |
-| ports[0].targetPort | int | `80` |  |
+| ports[0].targetPort | int | `9999` |  |
+| probes.livenessProbe.httpGet.path | string | `"/healthz"` |  |
+| probes.livenessProbe.httpGet.port | int | `9999` |  |
+| probes.livenessProbe.initialDelaySeconds | int | `30` |  |
+| probes.readinessProbe.httpGet.path | string | `"/healthz"` |  |
+| probes.readinessProbe.httpGet.port | int | `9999` |  |
+| probes.readinessProbe.timeoutSeconds | int | `10` |  |
 | replicaCount | int | `1` |  |
 | resources.limits.cpu | string | `"250m"` |  |
-| resources.limits.memory | string | `"64Mi"` |  |
+| resources.limits.ephemeral-storage | string | `"500Mi"` |  |
+| resources.limits.memory | string | `"500Mi"` |  |
 | resources.requests.cpu | string | `"200m"` |  |
 | resources.requests.memory | string | `"32Mi"` |  |
 | retries.attempts | int | `3` |  |
 | retries.perTryTimeout | string | `"2s"` |  |
+| securityContext.allowPrivilegeEscalation | bool | `false` |  |
+| securityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| securityContext.readOnlyRootFilesystem | bool | `true` |  |
 | service | string | `"annulus"` |  |
+| serviceAccount.automountToken | bool | `false` |  |
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `"annulus"` |  |
 | system | string | `"annulus"` |  |
