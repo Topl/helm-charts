@@ -1,6 +1,6 @@
 # bifrost
 
-![Version: 0.1.7](https://img.shields.io/badge/Version-0.1.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0-alpha7](https://img.shields.io/badge/AppVersion-2.0.0--alpha7-informational?style=flat-square)
+![Version: 0.1.8](https://img.shields.io/badge/Version-0.1.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0-alpha7](https://img.shields.io/badge/AppVersion-2.0.0--alpha7-informational?style=flat-square)
 
 A Helm chart for Bifrost, the Topl blockchain node built for good.
 
@@ -63,17 +63,19 @@ A Helm chart for Bifrost, the Topl blockchain node built for good.
 | podSecurityContext.runAsGroup | int | `0` |  |
 | podSecurityContext.runAsUser | int | `1001` |  |
 | podSecurityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
-| ports[0].name | string | `"http2"` |  |
-| ports[0].port | int | `80` |  |
+| ports[0].name | string | `"https"` |  |
+| ports[0].port | int | `443` |  |
 | ports[0].targetPort | int | `9084` |  |
-| ports[1].name | string | `"https"` |  |
-| ports[1].port | int | `443` |  |
+| ports[1].name | string | `"grpc"` |  |
+| ports[1].port | int | `9084` |  |
 | ports[1].targetPort | int | `9084` |  |
-| ports[2].name | string | `"grpc"` |  |
-| ports[2].port | int | `9084` |  |
-| ports[2].targetPort | int | `9084` |  |
+| probes.livenessProbe.grpc.port | int | `9084` |  |
+| probes.livenessProbe.initialDelaySeconds | int | `30` |  |
+| probes.readinessProbe.grpc.port | int | `9084` |  |
+| probes.readinessProbe.timeoutSeconds | int | `20` |  |
 | replicaCount | int | `1` |  |
 | resources.limits.cpu | float | `2` |  |
+| resources.limits.ephemeral-storage | string | `"500Mi"` |  |
 | resources.limits.memory | string | `"2000Mi"` |  |
 | resources.requests.cpu | string | `"100m"` |  |
 | resources.requests.memory | string | `"2000Mi"` |  |
@@ -81,6 +83,7 @@ A Helm chart for Bifrost, the Topl blockchain node built for good.
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | securityContext.readOnlyRootFilesystem | bool | `true` |  |
 | service | string | `"bifrost-node"` |  |
+| serviceAccount.automountToken | bool | `false` |  |
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `"bifrost-node"` |  |
 | serviceType | string | `"ClusterIP"` |  |

@@ -66,10 +66,14 @@ spec:
               mountPath: {{ .Values.configMap.mountPath | quote }}
             - name: {{ (print .Values.service "-pv") | quote }}
               mountPath: {{ .Values.volume.mountDirectory }}
+            - name: tmp
+              mountPath: /tmp
       volumes:
         - name: {{ (print .Values.service "-config") | quote }}
           configMap:
             name: {{ .Values.service | lower | quote }}
+        - name: tmp
+          emptyDir: {}
   volumeClaimTemplates:
     - metadata:
         name: {{ (print .Values.service "-pv") | quote }}
