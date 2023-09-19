@@ -1,6 +1,6 @@
 # annulus
 
-![Version: 0.1.5](https://img.shields.io/badge/Version-0.1.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.0](https://img.shields.io/badge/AppVersion-v1.0-informational?style=flat-square)
+![Version: 0.1.6](https://img.shields.io/badge/Version-0.1.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.0](https://img.shields.io/badge/AppVersion-v1.0-informational?style=flat-square)
 
 Helm Chart for deploying Annulus, a Topl blockchain explorer.
 
@@ -21,6 +21,7 @@ Helm Chart for deploying Annulus, a Topl blockchain explorer.
 | ingressGateway.matchPrefix[0] | string | `"/"` |  |
 | ingressGateway.name | string | `"istio-gateways/bifrost-gateway"` |  |
 | maxUnavailable | int | `1` |  |
+| networkPolicy.enabled | bool | `true` |  |
 | outlierDetection.consecutive5xxErrors | int | `5` |  |
 | overallTimeout | string | `"10s"` |  |
 | podSecurityContext.fsGroup | int | `101` |  |

@@ -91,6 +91,10 @@ securityContext:
   capabilities:
     drop:
       - ALL
+
+networkPolicy:
+  enabled: true
+
 # Probe settings (use Kubernetes syntax)
 probes:
   livenessProbe:
