@@ -21,6 +21,7 @@ Helm Chart for deploying Annulus, a Topl blockchain explorer.
 | ingressGateway.matchPrefix[0] | string | `"/"` |  |
 | ingressGateway.name | string | `"istio-gateways/bifrost-gateway"` |  |
 | maxUnavailable | int | `1` |  |
+| networkPolicy.enabled | bool | `true` |  |
 | outlierDetection.consecutive5xxErrors | int | `5` |  |
 | overallTimeout | string | `"10s"` |  |
 | podSecurityContext.fsGroup | int | `101` |  |
