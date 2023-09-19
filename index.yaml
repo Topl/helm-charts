@@ -3,6 +3,16 @@ entries:
   annulus:
   - apiVersion: v2
     appVersion: v1.0
+    created: "2023-09-19T17:52:29.166581502Z"
+    description: Helm Chart for deploying Annulus, a Topl blockchain explorer.
+    digest: 9a9afc3ec52931deb454603eea65f0c067ed8dae4ac9010f9b4466dad9a68964
+    name: annulus
+    type: application
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/annulus-0.1.6/annulus-0.1.6.tgz
+    version: 0.1.6
+  - apiVersion: v2
+    appVersion: v1.0
     created: "2023-09-19T17:02:54.465144503Z"
     description: Helm Chart for deploying Annulus, a Topl blockchain explorer.
     digest: 6e69efdc55bd1b91e612c9e149e4083a136323a3abc1a650d039f683a0b169d5
@@ -269,4 +279,4 @@ entries:
     urls:
     - https://github.com/Topl/helm-charts/releases/download/vertx-0.1.0/vertx-0.1.0.tgz
     version: 0.1.0
-generated: "2023-09-19T17:02:54.594508543Z"
+generated: "2023-09-19T17:52:29.166616402Z"
