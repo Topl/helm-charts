@@ -43,12 +43,18 @@ serviceType: ClusterIP
 # Ports must be named <protocol>[-<suffix>] to work with Istio.
 # Valid protocols are grpc, http, http2, https, mongo, mysql, redis, tcp, tls, udp
 ports:
+  - name: http2
+    port: 80
+    targetPort: 9084
   - name: https
     port: 443
     targetPort: 9084
   - name: grpc
     port: 9084
     targetPort: 9084
+  - name: tcp-p2p
+    port: 9085
+    targetPort: 9085
 
 p2p:
   ports:
@@ -154,15 +160,16 @@ probes:
 configMap: # Optional
   # Where the config map should be mounted inside your container's filesystem.
   mountPath: /config/bifrost-config
-  fileName: application.conf
+  fileName: custom-config.yaml
   # Everything under content is copied verbatim into your service's configmap.
+  # Example:
   content: |
-    bifrost {
-      chainReplicator {
-      enableChainReplicator = false
-      checkMissingBlock = true
-      }
-    }
+    bifrost:
+      big-bang:
+        type: public
+        genesis-id: b_6D8mXdqjsGrJbnXf6PqfWQrdTfKr3U5nbLGJGyYVgjqs
+        source-path: https://raw.githubusercontent.com/Topl/Genesis_Testnets/main/testnet0/
+
 volume:
   mountDirectory: /mnt/bifrost/
   # GKE specific storage classes: standard, standard-rwo, premium-rwo

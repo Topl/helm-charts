@@ -1,6 +1,6 @@
 # bifrost
 
-![Version: 0.1.9](https://img.shields.io/badge/Version-0.1.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0-alpha7](https://img.shields.io/badge/AppVersion-2.0.0--alpha7-informational?style=flat-square)
+![Version: 0.1.10](https://img.shields.io/badge/Version-0.1.10-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0-alpha8](https://img.shields.io/badge/AppVersion-2.0.0--alpha8-informational?style=flat-square)
 
 A Helm chart for Bifrost, the Topl blockchain node built for good.
 
@@ -20,8 +20,8 @@ A Helm chart for Bifrost, the Topl blockchain node built for good.
 | args[2] | string | `"--stakingDir"` |  |
 | args[3] | string | `"/mnt/bifrost/staking"` |  |
 | command | string | `nil` |  |
-| configMap.content | string | `"bifrost {\n  chainReplicator {\n  enableChainReplicator = false\n  checkMissingBlock = true\n  }\n}\n"` |  |
-| configMap.fileName | string | `"application.conf"` |  |
+| configMap.content | string | `"bifrost:\n  big-bang:\n    type: public\n    genesis-id: b_6D8mXdqjsGrJbnXf6PqfWQrdTfKr3U5nbLGJGyYVgjqs\n    source-path: https://raw.githubusercontent.com/Topl/Genesis_Testnets/main/testnet0/\n"` |  |
+| configMap.fileName | string | `"custom-config.yaml"` |  |
 | configMap.mountPath | string | `"/config/bifrost-config"` |  |
 | image.imagePullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"toplprotocol/bifrost-node"` |  |
@@ -63,12 +63,18 @@ A Helm chart for Bifrost, the Topl blockchain node built for good.
 | podSecurityContext.runAsGroup | int | `0` |  |
 | podSecurityContext.runAsUser | int | `1001` |  |
 | podSecurityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
-| ports[0].name | string | `"https"` |  |
-| ports[0].port | int | `443` |  |
+| ports[0].name | string | `"http2"` |  |
+| ports[0].port | int | `80` |  |
 | ports[0].targetPort | int | `9084` |  |
-| ports[1].name | string | `"grpc"` |  |
-| ports[1].port | int | `9084` |  |
+| ports[1].name | string | `"https"` |  |
+| ports[1].port | int | `443` |  |
 | ports[1].targetPort | int | `9084` |  |
+| ports[2].name | string | `"grpc"` |  |
+| ports[2].port | int | `9084` |  |
+| ports[2].targetPort | int | `9084` |  |
+| ports[3].name | string | `"tcp-p2p"` |  |
+| ports[3].port | int | `9085` |  |
+| ports[3].targetPort | int | `9085` |  |
 | probes.livenessProbe.grpc.port | int | `9084` |  |
 | probes.livenessProbe.initialDelaySeconds | int | `30` |  |
 | probes.readinessProbe.grpc.port | int | `9084` |  |
