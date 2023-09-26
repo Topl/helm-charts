@@ -162,6 +162,7 @@ configMap: # Optional
   mountPath: /config/bifrost-config
   fileName: custom-config.yaml
   # Everything under content is copied verbatim into your service's configmap.
+  # Example:
   content: |
     bifrost:
       big-bang:
