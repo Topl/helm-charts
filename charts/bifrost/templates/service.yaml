@@ -29,6 +29,7 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
   namespace: {{ .Release.Namespace | quote }}
 spec:
+  type: ClusterIP
   clusterIP: None
   ports:
 {{- range .Values.p2p.ports }}
@@ -37,3 +38,5 @@ spec:
       targetPort: {{ .targetPort }}
       protocol: TCP
 {{- end }}
+  selector:
+    app: {{ .Values.service | lower | quote }}
