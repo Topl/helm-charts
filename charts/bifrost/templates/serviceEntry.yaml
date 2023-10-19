@@ -1,0 +1,32 @@
+# Currently, there is an issue with Istio routing for headless services which prevent this part from being useful. 
+# https://github.com/istio/istio/issues/9784
+# The idea here was to create a ServiceEntry for each of the replicas in the StatefulSet so we can serve TCP p2p traffic to each one individually. 
+# Because of the issue above, a port gets bound cluster wide at 0.0.0.0:9085, which prevents multiple node deployments from happening on the same cluster.
+# I'm leaving this commented out for now in the opes that we may switch our p2p protocol to gRPC, or if a suitable workaround/fix is found.
+
+# {{- if .Values.istio.enabled }}
+# {{- range $index := until (int .Values.replicaCount ) }}
+# apiVersion: networking.istio.io/v1alpha3
+# kind: ServiceEntry
+# metadata:
+#   name: {{ ( print $.Values.service "-" $index ) | lower | quote }}
+#   labels:
+#     app.kubernetes.io/name: {{ $.Values.service | lower | quote }}
+#     app.kubernetes.io/part-of: {{ $.Values.system | quote }}
+#     app.kubernetes.io/managed-by: {{ $.Release.Service | quote }}
+#   namespace: {{ $.Release.Namespace | quote }}
+# spec:
+#   hosts:
+#   - {{ (print $.Values.service "-" $index "." $.Values.service "-p2p." $.Release.Namespace ".svc.cluster.local")  | quote }}
+#   location: MESH_INTERNAL
+#   resolution: STATIC
+#   ports:
+# {{- range $.Values.p2p.ports }}
+#     - name: {{ .name | quote }}
+#       number: {{ .port }}
+#       targetPort: {{ .targetPort }}
+#       protocol: TCP
+# ---
+# {{- end }}
+# {{- end }}
+# {{- end }}

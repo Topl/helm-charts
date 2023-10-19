@@ -68,6 +68,10 @@ p2p:
 istio:
   enabled: true
 
+  annotations:
+    {}
+    # networking.istio.io/exportTo: .
+
   ingressGateway:
     name: istio-gateways/bifrost-gateway
     host: tetra.testnet.torus.topl.tech
