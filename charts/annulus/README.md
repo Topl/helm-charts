@@ -1,6 +1,6 @@
 # annulus
 
-![Version: 0.1.6](https://img.shields.io/badge/Version-0.1.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.0](https://img.shields.io/badge/AppVersion-v1.0-informational?style=flat-square)
+![Version: 0.1.7](https://img.shields.io/badge/Version-0.1.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.0](https://img.shields.io/badge/AppVersion-v1.0-informational?style=flat-square)
 
 Helm Chart for deploying Annulus, a Topl blockchain explorer.
 
@@ -11,7 +11,7 @@ Helm Chart for deploying Annulus, a Topl blockchain explorer.
 | autoscaling.maxReplicas | int | `5` |  |
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.targetAverageCpuUtilization | int | `80` |  |
-| configMap.content | string | `"worker_processes  auto;\n\nerror_log  /tmp/nginx/error.log warn;\npid        /tmp/nginx/nginx.pid;\n\nevents {\n    worker_connections  1024;\n}\n\nhttp {\n    default_type  application/octet-stream;\n\n    log_format  main  '$remote_addr - $remote_user [$time_local] \"$request\" '\n                      '$status $body_bytes_sent \"$http_referer\" '\n                      '\"$http_user_agent\" \"$http_x_forwarded_for\"';\n\n    access_log  /var/log/nginx/access.log  main;\n\n    sendfile        on;\n    #tcp_nopush     on;\n\n    keepalive_timeout  65;\n\n    #gzip  on;\n\n    include /etc/nginx/conf.d/*.conf;\n\n    server {\n      listen 9999;\n      location /healthz {\n        access_log          off;\n        return              200;\n      }\n    }\n}\n"` |  |
+| configMap.content | string | `"worker_processes  auto;\nerror_log  /tmp/nginx/error.log warn;\npid        /tmp/nginx/nginx.pid;\nevents {\n    worker_connections  1024;\n}\nhttp {\n    default_type  application/octet-stream;\n    log_format  main  '$remote_addr - $remote_user [$time_local] \"$request\" '\n                      '$status $body_bytes_sent \"$http_referer\" '\n                      '\"$http_user_agent\" \"$http_x_forwarded_for\"';\n    access_log  /var/log/nginx/access.log  main;\n    sendfile        on;\n    #tcp_nopush     on;\n    keepalive_timeout  65;\n    #gzip  on;\n    include /etc/nginx/conf.d/*.conf;\n    server {\n      listen 9999;\n      root /usr/share/nginx/html;\n      location /healthz {\n        access_log          off;\n        return              200;\n      }\n    }\n}\n"` |  |
 | configMap.fileName | string | `"nginx.conf"` |  |
 | configMap.mountPath | string | `"/etc/nginx"` |  |
 | image.imagePullPolicy | string | `"IfNotPresent"` |  |
