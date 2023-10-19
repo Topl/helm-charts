@@ -42,11 +42,11 @@ spec:
           imagePullPolicy: {{ .Values.image.imagePullPolicy | quote }}
           command:
           {{- range .Values.command }}
-            - {{ . }}
+            - {{ quote . }}
           {{- end }}
           args:
           {{- range .Values.args }}
-            - {{ . }}
+            - {{ quote . }}
           {{- end }}
           ports:
 {{- range .Values.ports }}
