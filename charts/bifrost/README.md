@@ -1,6 +1,6 @@
 # bifrost
 
-![Version: 0.1.10](https://img.shields.io/badge/Version-0.1.10-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0-alpha8](https://img.shields.io/badge/AppVersion-2.0.0--alpha8-informational?style=flat-square)
+![Version: 0.1.11](https://img.shields.io/badge/Version-0.1.11-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0-alpha8](https://img.shields.io/badge/AppVersion-2.0.0--alpha8-informational?style=flat-square)
 
 A Helm chart for Bifrost, the Topl blockchain node built for good.
 
@@ -26,6 +26,7 @@ A Helm chart for Bifrost, the Topl blockchain node built for good.
 | image.imagePullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"toplprotocol/bifrost-node"` |  |
 | image.tag | string | `""` |  |
+| istio.annotations | object | `{}` |  |
 | istio.corsPolicy.allowCredentials | bool | `true` |  |
 | istio.corsPolicy.allowHeaders[0] | string | `"grpc-timeout"` |  |
 | istio.corsPolicy.allowHeaders[10] | string | `"x-grpc-web"` |  |
