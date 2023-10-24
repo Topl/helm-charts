@@ -24,11 +24,43 @@ spec:
       route:
       - destination:
           host: {{ (print $.Values.service "." $.Release.Namespace ".svc.cluster.local")  | quote }}
-          subset: {{ (print "v" $.Values.version) | quote }}
           port:
             number: {{ .port }}
       corsPolicy:
 {{- toYaml $.Values.istio.corsPolicy | nindent 8 }}
+{{- if $.Values.istio.retries }}
+      retries:
+{{ toYaml $.Values.istio.retries | indent 8 }}
+      timeout: {{ required "You must specify an overall timeout to use retries" $.Values.istio.overallTimeout}}
+{{- else if $.Values.istio.overallTimeout }}
+      timeout: {{ $.Values.istio.overallTimeout }}
+{{- end }}
+{{- end }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ (print .Values.service "-p2p") | lower | quote }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.service | lower | quote }}
+    app.kubernetes.io/part-of: {{ .Values.system | quote }}
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  gateways:
+    - {{ .Values.istio.ingressGateway.name | quote }} 
+  hosts:
+    - {{ .Values.istio.ingressGateway.host | quote }}
+  tcp:
+{{- range .Values.p2p.ports }}
+    - match:
+      - port: {{ .port }}
+      route:
+      - destination:
+          # host: {{ (print $.Values.service "-0" "." $.Values.service "-p2p." $.Release.Namespace ".svc.cluster.local")  | quote }} # TODO: Improve routing for multiple statefulsets.
+          host: {{ (print $.Values.service "." $.Release.Namespace ".svc.cluster.local")  | quote }}
+          port:
+            number: {{ .port }}
 {{- if $.Values.istio.retries }}
       retries:
 {{ toYaml $.Values.istio.retries | indent 8 }}
