@@ -131,6 +131,7 @@ configMap: # Optional
         include /etc/nginx/conf.d/*.conf;
         server {
           listen 9999;
+          root /usr/share/nginx/html;
           location /healthz {
             access_log          off;
             return              200;
