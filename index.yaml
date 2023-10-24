@@ -63,6 +63,21 @@ entries:
     version: 0.1.0
   bifrost:
   - apiVersion: v2
+    appVersion: 2.0.0-alpha9
+    created: "2023-10-24T05:01:15.194853274Z"
+    description: A Helm chart for Bifrost, the Topl blockchain node built for good.
+    digest: 15f83cff6cfdfd6842527d4444e416a218b73d96e6f9314c117a8086f8da8ade
+    home: https://topl.co
+    icon: https://uploads-ssl.webflow.com/60f98f46d44e675abb7e66ea/611c4d83ed3df101fd221875_topl_basew.svg
+    name: bifrost
+    sources:
+    - https://github.com/Topl/helm-charts
+    - https://topl.github.io/helm-charts/
+    type: application
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/bifrost-0.1.11/bifrost-0.1.11.tgz
+    version: 0.1.11
+  - apiVersion: v2
     appVersion: 2.0.0-alpha8
     created: "2023-09-26T02:52:05.653415837Z"
     description: A Helm chart for Bifrost, the Topl blockchain node built for good.
@@ -314,4 +329,4 @@ entries:
     urls:
     - https://github.com/Topl/helm-charts/releases/download/vertx-0.1.0/vertx-0.1.0.tgz
     version: 0.1.0
-generated: "2023-10-24T05:00:27.055708885Z"
+generated: "2023-10-24T05:01:15.194922375Z"
