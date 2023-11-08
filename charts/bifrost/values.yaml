@@ -17,8 +17,11 @@ image:
   imagePullPolicy: IfNotPresent
 
 command: # Optional
-args: ["--dataDir", "/mnt/bifrost/data", "--stakingDir", "/mnt/bifrost/staking"]
+args: ["--dataDir", "/bifrost/data", "--stakingDir", "/bifrost/staking"]
 
+nodeSelector:
+  []
+  # node_pool: guaranteed-pool
 # Istio uses the service account name as a component of the service's security
 # identity. Set "create" to false to use an previously created service account.
 serviceAccount:
@@ -154,10 +157,11 @@ networkPolicy:
 probes:
   livenessProbe:
     initialDelaySeconds: 30
+    timeoutSeconds: 60
     grpc:
       port: 9084
   readinessProbe:
-    timeoutSeconds: 20
+    timeoutSeconds: 60
     grpc:
       port: 9084
 
