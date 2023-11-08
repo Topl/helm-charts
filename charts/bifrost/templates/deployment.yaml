@@ -31,6 +31,8 @@ spec:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
 {{- end }}
     spec:
+      nodeSelector: 
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
       serviceAccountName: {{ .Values.serviceAccount.name | lower | quote }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}

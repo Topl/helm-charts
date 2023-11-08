@@ -1,6 +1,6 @@
 # bifrost
 
-![Version: 0.1.11](https://img.shields.io/badge/Version-0.1.11-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0-alpha8](https://img.shields.io/badge/AppVersion-2.0.0--alpha8-informational?style=flat-square)
+![Version: 0.1.12](https://img.shields.io/badge/Version-0.1.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0-alpha10](https://img.shields.io/badge/AppVersion-2.0.0--alpha10-informational?style=flat-square)
 
 A Helm chart for Bifrost, the Topl blockchain node built for good.
 
@@ -16,9 +16,9 @@ A Helm chart for Bifrost, the Topl blockchain node built for good.
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | args[0] | string | `"--dataDir"` |  |
-| args[1] | string | `"/mnt/bifrost/data"` |  |
+| args[1] | string | `"/bifrost/data"` |  |
 | args[2] | string | `"--stakingDir"` |  |
-| args[3] | string | `"/mnt/bifrost/staking"` |  |
+| args[3] | string | `"/bifrost/staking"` |  |
 | command | string | `nil` |  |
 | configMap.content | string | `"bifrost:\n  big-bang:\n    type: public\n    genesis-id: b_6D8mXdqjsGrJbnXf6PqfWQrdTfKr3U5nbLGJGyYVgjqs\n    source-path: https://raw.githubusercontent.com/Topl/Genesis_Testnets/main/testnet0/\n"` |  |
 | configMap.fileName | string | `"custom-config.yaml"` |  |
@@ -57,6 +57,7 @@ A Helm chart for Bifrost, the Topl blockchain node built for good.
 | istio.retries | object | `{}` |  |
 | maxUnavailable | int | `1` |  |
 | networkPolicy.enabled | bool | `true` |  |
+| nodeSelector | list | `[]` |  |
 | p2p.ports[0].name | string | `"tcp-p2p"` |  |
 | p2p.ports[0].port | int | `9085` |  |
 | p2p.ports[0].targetPort | int | `9085` |  |
@@ -76,10 +77,11 @@ A Helm chart for Bifrost, the Topl blockchain node built for good.
 | ports[3].name | string | `"tcp-p2p"` |  |
 | ports[3].port | int | `9085` |  |
 | ports[3].targetPort | int | `9085` |  |
-| probes.livenessProbe.grpc.port | int | `9084` |  |
-| probes.livenessProbe.initialDelaySeconds | int | `30` |  |
 | probes.readinessProbe.grpc.port | int | `9084` |  |
 | probes.readinessProbe.timeoutSeconds | int | `20` |  |
+| probes.startupProbe.failureThreshold | int | `30` |  |
+| probes.startupProbe.grpc.port | int | `9084` |  |
+| probes.startupProbe.timeoutSeconds | int | `20` |  |
 | replicaCount | int | `1` |  |
 | resources.limits.cpu | float | `2` |  |
 | resources.limits.ephemeral-storage | string | `"500Mi"` |  |
