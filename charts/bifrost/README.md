@@ -78,8 +78,10 @@ A Helm chart for Bifrost, the Topl blockchain node built for good.
 | ports[3].port | int | `9085` |  |
 | ports[3].targetPort | int | `9085` |  |
 | probes.readinessProbe.grpc.port | int | `9084` |  |
-| probes.readinessProbe.terminationGracePeriodSeconds | int | `60` |  |
 | probes.readinessProbe.timeoutSeconds | int | `20` |  |
+| probes.startupProbe.failureThreshold | int | `30` |  |
+| probes.startupProbe.grpc.port | int | `9084` |  |
+| probes.startupProbe.timeoutSeconds | int | `20` |  |
 | replicaCount | int | `1` |  |
 | resources.limits.cpu | float | `2` |  |
 | resources.limits.ephemeral-storage | string | `"500Mi"` |  |

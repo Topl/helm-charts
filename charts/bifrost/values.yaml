@@ -155,17 +155,21 @@ networkPolicy:
 # Probe settings (use Kubernetes syntax)
 # Optional
 probes:
+  startupProbe: # Wait failureThreshold * periodSeconds (300s) before allowing other probes to start.
+    grpc:
+      port: 9084
+    failureThreshold: 30
+    timeoutSeconds: 20
+  readinessProbe:
+    timeoutSeconds: 20
+    grpc:
+      port: 9084
   # livenessProbe:
   #   initialDelaySeconds: 30
   #   terminationGracePeriodSeconds: 60
   #   timeoutSeconds: 20
   #   grpc:
   #     port: 9084
-  readinessProbe:
-    terminationGracePeriodSeconds: 60
-    timeoutSeconds: 20
-    grpc:
-      port: 9084
 
 configMap: # Optional
   # Where the config map should be mounted inside your container's filesystem.
