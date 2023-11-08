@@ -155,15 +155,13 @@ networkPolicy:
 # Probe settings (use Kubernetes syntax)
 # Optional
 probes:
-  livenessProbe:
-    initialDelaySeconds: 30
-    failureThreshold: 3
-    terminationGracePeriodSeconds: 60
-    timeoutSeconds: 20
-    grpc:
-      port: 9084
+  # livenessProbe:
+  #   initialDelaySeconds: 30
+  #   terminationGracePeriodSeconds: 60
+  #   timeoutSeconds: 20
+  #   grpc:
+  #     port: 9084
   readinessProbe:
-    failureThreshold: 3
     terminationGracePeriodSeconds: 60
     timeoutSeconds: 20
     grpc:
