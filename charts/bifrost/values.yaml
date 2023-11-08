@@ -157,11 +157,15 @@ networkPolicy:
 probes:
   livenessProbe:
     initialDelaySeconds: 30
-    timeoutSeconds: 60
+    failureThreshold: 3
+    terminationGracePeriodSeconds: 60
+    timeoutSeconds: 20
     grpc:
       port: 9084
   readinessProbe:
-    timeoutSeconds: 60
+    failureThreshold: 3
+    terminationGracePeriodSeconds: 60
+    timeoutSeconds: 20
     grpc:
       port: 9084
 
