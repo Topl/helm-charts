@@ -42,6 +42,9 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           imagePullPolicy: {{ .Values.image.imagePullPolicy | quote }}
+{{- if .Values.env }}
+          env: {{- toYaml .Values.env | nindent 10 }}
+{{- end }}
           command:
           {{- range .Values.command }}
             - {{ quote . }}

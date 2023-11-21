@@ -19,6 +19,10 @@ image:
 command: # Optional
 args: ["--dataDir", "/bifrost/data", "--stakingDir", "/bifrost/staking"]
 
+env:
+  - name: JAVA_OPTS
+    value: "-XX:MaxRAMPercentage=70.0"
+
 nodeSelector:
   []
   # node_pool: guaranteed-pool
