@@ -1,6 +1,6 @@
 # bifrost
 
-![Version: 0.1.12](https://img.shields.io/badge/Version-0.1.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0-alpha10](https://img.shields.io/badge/AppVersion-2.0.0--alpha10-informational?style=flat-square)
+![Version: 0.1.13](https://img.shields.io/badge/Version-0.1.13-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0-alpha10](https://img.shields.io/badge/AppVersion-2.0.0--alpha10-informational?style=flat-square)
 
 A Helm chart for Bifrost, the Topl blockchain node built for good.
 
@@ -23,6 +23,8 @@ A Helm chart for Bifrost, the Topl blockchain node built for good.
 | configMap.content | string | `"bifrost:\n  big-bang:\n    type: public\n    genesis-id: b_6D8mXdqjsGrJbnXf6PqfWQrdTfKr3U5nbLGJGyYVgjqs\n    source-path: https://raw.githubusercontent.com/Topl/Genesis_Testnets/main/testnet0/\n"` |  |
 | configMap.fileName | string | `"custom-config.yaml"` |  |
 | configMap.mountPath | string | `"/config/bifrost-config"` |  |
+| env[0].name | string | `"JAVA_OPTS"` |  |
+| env[0].value | string | `"-XX:MaxRAMPercentage=70.0"` |  |
 | image.imagePullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"toplprotocol/bifrost-node"` |  |
 | image.tag | string | `""` |  |
