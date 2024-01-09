@@ -1,0 +1,53 @@
+ports:
+  - name: https
+    port: 443
+    targetPort: 9084
+  - name: grpc
+    port: 9084
+    targetPort: 9084
+  - name: tcp-p2p
+    port: 9090
+    targetPort: 9085
+p2p:
+  ports:
+    - name: tcp-p2p
+      port: 9085
+      targetport: 9085
+resources:
+  requests:
+    memory: "4000Mi"
+    cpu: "1000m"
+  limits:
+    memory: "4000Mi"
+    cpu: "2000m"
+    ephemeral-storage: "500Mi"
+replicaCount: 1
+istio:
+  ingressGateway:
+    name: istio-gateways/oleg-gateway
+    host: "s0.olegnet.topl.tech"
+image:
+  repository: "toplprotocol/bifrost-node"
+  tag: "2.0.0-beta1"
+args:
+  [
+    "--disableGenus",
+    "--debug",
+    "--dataDir",
+    "/bifrost/data",
+    "--stakingDir",
+    "/bifrost/staking",
+    "--config",
+    "https://raw.githubusercontent.com/Topl/Genesis_Testnets/ten-stakers/ten-stakers/config.yaml",
+    "--knownPeers",
+    "bifrost-node-0.bifrost-node-p2p.bifrost-testnet-10-stakers-s-0.svc.cluster.local:9085,bifrost-node-0.bifrost-node-p2p.bifrost-testnet-10-stakers-s-1.svc.cluster.local:9085,bifrost-node-0.bifrost-node-p2p.bifrost-testnet-10-stakers-s-2.svc.cluster.local:9085,bifrost-node-0.bifrost-node-p2p.bifrost-testnet-10-stakers-s-3.svc.cluster.local:9085,bifrost-node-0.bifrost-node-p2p.bifrost-testnet-10-stakers-s-4.svc.cluster.local:9085,bifrost-node-0.bifrost-node-p2p.bifrost-testnet-10-stakers-s-5.svc.cluster.local:9085,bifrost-node-0.bifrost-node-p2p.bifrost-testnet-10-stakers-s-6.svc.cluster.local:9085,bifrost-node-0.bifrost-node-p2p.bifrost-testnet-10-stakers-s-7.svc.cluster.local:9085,bifrost-node-0.bifrost-node-p2p.bifrost-testnet-10-stakers-s-8.svc.cluster.local:9085,bifrost-node-0.bifrost-node-p2p.bifrost-testnet-10-stakers-s-9.svc.cluster.local:9085",
+  ]
+nodeSelector:
+  node_pool: guaranteed-pool
+networkPolicy:
+  enabled: false
+securityContext:
+  readOnlyRootFilesystem: false
+volume:
+  mountDirectory: /bifrost/
+  storageClass: premium-rwo
