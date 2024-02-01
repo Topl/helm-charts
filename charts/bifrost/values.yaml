@@ -74,6 +74,7 @@ p2p:
 # above.
 istio:
   enabled: true
+  createGrpcWebFilter: true
 
   annotations:
     {}
