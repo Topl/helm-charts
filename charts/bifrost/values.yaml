@@ -82,8 +82,7 @@ istio:
   ingressGateway:
     name: istio-gateways/bifrost-gateway
     host: tetra.testnet.torus.topl.tech
-    matchPrefix:
-      - "/"
+    matchPrefix: []
 
   corsPolicy:
     allowOrigins:

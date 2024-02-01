@@ -32,26 +32,4 @@ spec:
     outlierDetection:
 {{ toYaml .Values.istio.outlierDetection | indent 6 }}
 {{- end }}
----
-{{- range $index := until (int .Values.replicaCount ) }}
-apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata:
-  name: {{ (print $.Values.service $index) | lower | quote }}
-  labels:
-    app.kubernetes.io/name: {{ $.Values.service | lower | quote }}
-    app.kubernetes.io/part-of: {{ $.Values.system | quote }}
-    app.kubernetes.io/managed-by: {{ $.Release.Service | quote }}
-  namespace: {{ $.Release.Namespace | quote }}
-spec:
-  host: {{ (print $.Values.service "-" $index "." $.Values.service "-p2p." $.Release.Namespace ".svc.cluster.local")  | quote }}
-  trafficPolicy:
-    tls:
-      mode: DISABLE
-{{- if $.Values.istio.outlierDetection }}
-    outlierDetection:
-{{ toYaml $.Values.istio.outlierDetection | indent 6 }}
-{{- end }}
----
-{{- end}}
 {{- end}}
