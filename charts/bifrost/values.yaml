@@ -51,23 +51,11 @@ serviceType: ClusterIP
 # Valid protocols are grpc, http, http2, https, mongo, mysql, redis, tcp, tls, udp
 ports:
   - name: http2
-    port: 80
-    targetPort: 9084
-  - name: https
-    port: 443
-    targetPort: 9084
-  - name: grpc
     port: 9084
     targetPort: 9084
   - name: tcp-p2p
     port: 9085
     targetPort: 9085
-
-p2p:
-  ports:
-    - name: tcp-p2p
-      port: 9085
-      targetPort: 9085
 
 # Configure the Istio ingress gateway to route outside traffic for the provided
 # host name to this service on the ports and protocols defined in the 'ports' section
@@ -75,6 +63,16 @@ p2p:
 istio:
   enabled: true
   createGrpcWebFilter: true
+
+  virtualServiceRoutes:
+    http:
+      - port: 443
+        targetPort: 9084
+      - port: 9084
+        targetPort: 9084
+    tcp:
+      - port: 9085
+        targetPort: 9085
 
   annotations:
     {}
