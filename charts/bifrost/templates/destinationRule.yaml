@@ -15,21 +15,4 @@ spec:
     outlierDetection:
 {{ toYaml .Values.istio.outlierDetection | indent 6 }}
 {{- end }}
----
-apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata:
-  name: {{ print .Values.service "-p2p" | lower | quote }}
-  labels:
-    app.kubernetes.io/name: {{ .Values.service | lower | quote }}
-    app.kubernetes.io/part-of: {{ .Values.system | quote }}
-    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
-  namespace: {{ .Release.Namespace | quote }}
-spec:
-  host: {{ (print .Values.service "-p2p." .Release.Namespace ".svc.cluster.local")  | quote }}
-{{- if .Values.istio.outlierDetection }}
-  trafficPolicy:
-    outlierDetection:
-{{ toYaml .Values.istio.outlierDetection | indent 6 }}
-{{- end }}
 {{- end}}
