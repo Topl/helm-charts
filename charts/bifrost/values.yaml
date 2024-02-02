@@ -61,18 +61,18 @@ ports:
 # host name to this service on the ports and protocols defined in the 'ports' section
 # above.
 istio:
-  enabled: true
+  enabled: false
   createGrpcWebFilter: true
 
   virtualServiceRoutes:
     http:
       - port: 443
         targetPort: 9084
-      - port: 9084
-        targetPort: 9084
+        matchPrefix: []
     tcp:
       - port: 9085
         targetPort: 9085
+        matchPrefix: []
 
   annotations:
     {}
@@ -81,7 +81,6 @@ istio:
   ingressGateway:
     name: istio-gateways/bifrost-gateway
     host: tetra.testnet.torus.topl.tech
-    matchPrefix: []
 
   corsPolicy:
     allowOrigins:
@@ -130,11 +129,11 @@ istio:
 # Optional
 resources:
   requests:
-    memory: "2000Mi"
-    cpu: "100m"
+    memory: "4000Mi"
+    cpu: "1000m"
   limits:
-    memory: "2000Mi"
-    cpu: 2.0
+    memory: "4000Mi"
+    cpu: "2000m"
     ephemeral-storage: "500Mi"
 
 podSecurityContext:
