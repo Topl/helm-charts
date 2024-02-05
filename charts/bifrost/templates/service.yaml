@@ -18,31 +18,3 @@ spec:
 {{- end }}
   selector:
     app: {{ .Values.service | lower | quote }}
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ (print .Values.service "-p2p") | quote }}
-  {{- with (mergeOverwrite .Values.istio.annotations) }}
-  annotations:
-    {{- range $key, $value := . }}
-    {{ $key }}: {{ $value | quote }}
-    {{- end }}
-  {{- end }}
-  labels:
-    app.kubernetes.io/name: {{ .Values.service | lower | quote }}
-    app.kubernetes.io/part-of: {{ .Values.system | quote }}
-    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
-  namespace: {{ .Release.Namespace | quote }}
-spec:
-  type: ClusterIP
-  clusterIP: None
-  ports:
-{{- range .Values.p2p.ports }}
-    - name: {{ .name | quote }}
-      port: {{ .port }}
-      targetPort: {{ .targetPort }}
-      protocol: TCP
-{{- end }}
-  selector:
-    app: {{ .Values.service | lower | quote }}
