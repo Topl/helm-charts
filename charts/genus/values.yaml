@@ -1,0 +1,176 @@
+# Default values for genus.
+# This is a YAML-formatted file.
+
+# The overall system your service is a part of
+system: genus
+# The name of your service
+service: genus
+# The major version number for your service
+version: 1
+
+# Docker settings
+image:
+  # The name of your docker container
+  repository: toplprotocol/genus
+  # Your docker container's tag
+  tag: ""
+  imagePullPolicy: IfNotPresent
+
+env:
+  - name: JAVA_OPTS
+    value: "-XX:MaxRAMPercentage=70.0 -XX:ActiveProcessorCount=4 -XX:+UseParallelGC"
+
+nodeSelector:
+  []
+  # node_pool: guaranteed-pool
+# Istio uses the service account name as a component of the service's security
+# identity. Set "create" to false to use a previously created service account.
+serviceAccount:
+  name: genus
+  create: true
+  automountToken: false
+
+# The initial number of pod replicas to run for your service
+replicaCount: 1
+# The maximum number of pods from that set that can be unavailable at once
+maxUnavailable: 1
+
+# Horizontal pod autoscaler configuration (optional)
+# autoscaling:
+#   minReplicas: 2
+#   maxReplicas: 4
+#   targetAverageCpuUtilization: 80
+
+serviceType: ClusterIP
+
+# Port settings
+# Ports must be named <protocol>[-<suffix>] to work with Istio.
+# Valid protocols are grpc, http, http2, https, mongo, mysql, redis, tcp, tls, udp
+ports:
+  - name: http2
+    port: 9084
+    targetPort: 9084
+
+# Configure the Istio ingress gateway to route outside traffic for the provided
+# host name to this service on the ports and protocols defined in the 'ports' section
+# above.
+istio:
+  enabled: false
+  createGrpcWebFilter: true
+
+  virtualServiceRoutes:
+    http:
+      - port: 443
+        targetPort: 9084
+        matchPrefix: []
+
+  annotations:
+    {}
+    # networking.istio.io/exportTo: .
+
+  ingressGateway:
+    name: istio-gateways/genus-gateway
+    host: genus.testnet.topl.co
+
+  corsPolicy:
+    allowOrigins:
+      - regex: ".*"
+      # - exact: https://studio.buf.build
+    allowMethods:
+      - POST
+      - GET
+      - OPTIONS
+      - PUT
+      - DELETE
+    allowHeaders:
+      - grpc-timeout
+      - content-type
+      - keep-alive
+      - user-agent
+      - cache-control
+      - content-type
+      - content-transfer-encoding
+      - x-accept-content-transfer-encoding
+      - x-accept-response-streaming
+      - x-user-agent
+      - x-grpc-web
+    maxAge: "24h"
+    allowCredentials: true
+    exposeHeaders:
+      - grpc-status
+      - grpc-message
+
+  # # The overall timeout for requests to this service
+  # # Optional
+  overallTimeout: # 24h
+
+  # # Client retry settings (use Istio syntax)
+  # # Optional
+  retries: {}
+  #   attempts: 3
+  #   perTryTimeout: 5s
+
+  # # Circuit breaker settings (use Istio syntax)
+  # # Optional
+  outlierDetection: {}
+  #   consecutive5xxErrors: 5
+
+# Resource settings (use Kubernetes syntax)
+# Optional
+resources:
+  requests:
+    memory: "4000Mi"
+    cpu: "250m"
+  limits:
+    memory: "4000Mi"
+    ephemeral-storage: "500Mi"
+
+podSecurityContext:
+  runAsUser: 1001 # TODO: Update Genus Docker container to use high UID. Add CKV_K8S_40 as a check.
+  runAsGroup: 0
+  fsGroup: 0
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+
+networkPolicy:
+  enabled: true
+
+# Probe settings (use Kubernetes syntax)
+# Optional
+probes:
+  startupProbe: # Wait failureThreshold * periodSeconds (300s) before allowing other probes to start.
+    grpc:
+      port: 9084
+    failureThreshold: 30
+    timeoutSeconds: 20
+  readinessProbe:
+    timeoutSeconds: 20
+    grpc:
+      port: 9084
+  # livenessProbe:
+  #   initialDelaySeconds: 30
+  #   terminationGracePeriodSeconds: 60
+  #   timeoutSeconds: 20
+  #   grpc:
+  #     port: 9084
+
+volume:
+  # GKE specific storage classes: standard, standard-rwo, premium-rwo
+  storageClass:
+  storageSize: 10Gi
+
+# Configuration of an _external_ Bifrost Node
+nodeRpc:
+  host: "localhost"
+  port: 9084
+  tls: false
+
+replicator:
+  enable: true

@@ -1,8 +1,8 @@
-# bifrost
+# genus
 
-![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0-beta1](https://img.shields.io/badge/AppVersion-2.0.0--beta1-informational?style=flat-square)
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0-beta2](https://img.shields.io/badge/AppVersion-2.0.0--beta2-informational?style=flat-square)
 
-A Helm chart for Bifrost, the Topl blockchain node built for good.
+A Helm chart for Genus, the data indexer for Bifrost
 
 **Homepage:** <https://topl.co>
 
@@ -15,18 +15,10 @@ A Helm chart for Bifrost, the Topl blockchain node built for good.
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| args[0] | string | `"--dataDir"` |  |
-| args[1] | string | `"/bifrost/data"` |  |
-| args[2] | string | `"--stakingDir"` |  |
-| args[3] | string | `"/bifrost/staking"` |  |
-| command | string | `nil` |  |
-| configMap.content | string | `"bifrost:\n  big-bang:\n    type: public\n    genesis-id: b_6D8mXdqjsGrJbnXf6PqfWQrdTfKr3U5nbLGJGyYVgjqs\n    source-path: https://raw.githubusercontent.com/Topl/Genesis_Testnets/main/testnet0/\n"` |  |
-| configMap.fileName | string | `"custom-config.yaml"` |  |
-| configMap.mountPath | string | `"/config/bifrost-config"` |  |
 | env[0].name | string | `"JAVA_OPTS"` |  |
-| env[0].value | string | `"-XX:MaxRAMPercentage=70.0"` |  |
+| env[0].value | string | `"-XX:MaxRAMPercentage=70.0 -XX:ActiveProcessorCount=4 -XX:+UseParallelGC"` |  |
 | image.imagePullPolicy | string | `"IfNotPresent"` |  |
-| image.repository | string | `"toplprotocol/bifrost-node"` |  |
+| image.repository | string | `"toplprotocol/genus"` |  |
 | image.tag | string | `""` |  |
 | istio.annotations | object | `{}` |  |
 | istio.corsPolicy.allowCredentials | bool | `true` |  |
@@ -52,19 +44,19 @@ A Helm chart for Bifrost, the Topl blockchain node built for good.
 | istio.corsPolicy.maxAge | string | `"24h"` |  |
 | istio.createGrpcWebFilter | bool | `true` |  |
 | istio.enabled | bool | `false` |  |
-| istio.ingressGateway.host | string | `"tetra.testnet.torus.topl.tech"` |  |
-| istio.ingressGateway.name | string | `"istio-gateways/bifrost-gateway"` |  |
+| istio.ingressGateway.host | string | `"genus.testnet.topl.co"` |  |
+| istio.ingressGateway.name | string | `"istio-gateways/genus-gateway"` |  |
 | istio.outlierDetection | object | `{}` |  |
 | istio.overallTimeout | string | `nil` |  |
 | istio.retries | object | `{}` |  |
 | istio.virtualServiceRoutes.http[0].matchPrefix | list | `[]` |  |
 | istio.virtualServiceRoutes.http[0].port | int | `443` |  |
 | istio.virtualServiceRoutes.http[0].targetPort | int | `9084` |  |
-| istio.virtualServiceRoutes.tcp[0].matchPrefix | list | `[]` |  |
-| istio.virtualServiceRoutes.tcp[0].port | int | `9085` |  |
-| istio.virtualServiceRoutes.tcp[0].targetPort | int | `9085` |  |
 | maxUnavailable | int | `1` |  |
 | networkPolicy.enabled | bool | `true` |  |
+| nodeRpc.host | string | `"localhost"` |  |
+| nodeRpc.port | int | `9084` |  |
+| nodeRpc.tls | bool | `false` |  |
 | nodeSelector | list | `[]` |  |
 | podSecurityContext.fsGroup | int | `0` |  |
 | podSecurityContext.runAsGroup | int | `0` |  |
@@ -73,31 +65,27 @@ A Helm chart for Bifrost, the Topl blockchain node built for good.
 | ports[0].name | string | `"http2"` |  |
 | ports[0].port | int | `9084` |  |
 | ports[0].targetPort | int | `9084` |  |
-| ports[1].name | string | `"tcp-p2p"` |  |
-| ports[1].port | int | `9085` |  |
-| ports[1].targetPort | int | `9085` |  |
 | probes.readinessProbe.grpc.port | int | `9084` |  |
 | probes.readinessProbe.timeoutSeconds | int | `20` |  |
 | probes.startupProbe.failureThreshold | int | `30` |  |
 | probes.startupProbe.grpc.port | int | `9084` |  |
 | probes.startupProbe.timeoutSeconds | int | `20` |  |
 | replicaCount | int | `1` |  |
-| resources.limits.cpu | string | `"2000m"` |  |
+| replicator.enable | bool | `true` |  |
 | resources.limits.ephemeral-storage | string | `"500Mi"` |  |
 | resources.limits.memory | string | `"4000Mi"` |  |
-| resources.requests.cpu | string | `"1000m"` |  |
+| resources.requests.cpu | string | `"250m"` |  |
 | resources.requests.memory | string | `"4000Mi"` |  |
 | securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | securityContext.readOnlyRootFilesystem | bool | `true` |  |
-| service | string | `"bifrost-node"` |  |
+| service | string | `"genus"` |  |
 | serviceAccount.automountToken | bool | `false` |  |
 | serviceAccount.create | bool | `true` |  |
-| serviceAccount.name | string | `"bifrost-node"` |  |
+| serviceAccount.name | string | `"genus"` |  |
 | serviceType | string | `"ClusterIP"` |  |
-| system | string | `"bifrost-node"` |  |
+| system | string | `"genus"` |  |
 | version | int | `1` |  |
-| volume.mountDirectory | string | `"/mnt/bifrost/"` |  |
 | volume.storageClass | string | `nil` |  |
 | volume.storageSize | string | `"10Gi"` |  |
 
