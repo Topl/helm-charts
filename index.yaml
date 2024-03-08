@@ -2,6 +2,21 @@ apiVersion: v1
 entries:
   annulus:
   - apiVersion: v2
+    appVersion: v1.4.2
+    created: "2024-03-08T19:21:40.530777781Z"
+    description: Helm Chart for deploying Annulus, a Topl blockchain explorer.
+    digest: 0459c408bd11b6a28379d51da78091dad21c7048e2ec8172f2254b844c4813d9
+    home: https://topl.co
+    icon: https://topl.co/wp-content/uploads/2023/06/topl_white_horiz.svg
+    name: annulus
+    sources:
+    - https://github.com/Topl/helm-charts
+    - https://topl.github.io/helm-charts/
+    type: application
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/annulus-0.1.9/annulus-0.1.9.tgz
+    version: 0.1.9
+  - apiVersion: v2
     appVersion: v1.0
     created: "2023-10-24T05:00:26.911351151Z"
     description: Helm Chart for deploying Annulus, a Topl blockchain explorer.
@@ -62,6 +77,21 @@ entries:
     - https://github.com/Topl/helm-charts/releases/download/annulus-0.1.0/annulus-0.1.0.tgz
     version: 0.1.0
   bifrost:
+  - apiVersion: v2
+    appVersion: 2.0.0-beta2
+    created: "2024-03-08T19:21:40.703922282Z"
+    description: A Helm chart for Bifrost, the Topl blockchain node built for good.
+    digest: 7d013a05657c796ecc179ff95286c814089be04240dd361dce72216c3ac07659
+    home: https://topl.co
+    icon: https://topl.co/wp-content/uploads/2023/06/topl_white_horiz.svg
+    name: bifrost
+    sources:
+    - https://github.com/Topl/helm-charts
+    - https://topl.github.io/helm-charts/
+    type: application
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/bifrost-0.2.1/bifrost-0.2.1.tgz
+    version: 0.2.1
   - apiVersion: v2
     appVersion: 2.0.0-beta1
     created: "2024-02-05T17:14:15.744006186Z"
@@ -228,6 +258,18 @@ entries:
     version: 0.1.1
   bifrost-consensus-testnet:
   - apiVersion: v2
+    appVersion: dev
+    created: "2024-03-08T19:21:40.895177025Z"
+    description: Launches a private testnet using configurable nodes and artificial
+      throttling.
+    digest: 96ce28aaa75355acbdc82c7c8198b71a568f17996e5713a63f8ad6e36b69943c
+    icon: https://topl.co/wp-content/uploads/2023/06/topl_white_horiz.svg
+    name: bifrost-consensus-testnet
+    type: application
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/bifrost-consensus-testnet-0.1.4/bifrost-consensus-testnet-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
     appVersion: 2.0.0-alpha1
     created: "2023-04-05T17:53:08.249677717Z"
     description: Launches a private testnet using configurable nodes and artificial
@@ -298,6 +340,21 @@ entries:
   faucet:
   - apiVersion: v2
     appVersion: 0.1.0
+    created: "2024-03-08T19:21:41.077932679Z"
+    description: A Helm chart for Kubernetes
+    digest: cb646d4a4d9c4b9f6e5bed74a9bf524e3f8412a2f3970490a72701abb2a069b6
+    home: https://topl.co
+    icon: https://topl.co/wp-content/uploads/2023/06/topl_white_horiz.svg
+    name: faucet
+    sources:
+    - https://github.com/Topl/helm-charts
+    - https://topl.github.io/helm-charts/
+    type: application
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/faucet-0.1.3/faucet-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 0.1.0
     created: "2023-10-24T05:00:27.055650184Z"
     description: A Helm chart for Kubernetes
     digest: 630ac52175aa880c141e954c93c07e78e050a7532ac2c6832b71601f8997fe91
@@ -327,6 +384,21 @@ entries:
     - https://github.com/Topl/helm-charts/releases/download/faucet-0.1.0/faucet-0.1.0.tgz
     version: 0.1.0
   genus:
+  - apiVersion: v2
+    appVersion: 2.0.0-beta2
+    created: "2024-03-08T19:21:41.259728052Z"
+    description: A Helm chart for Genus, the data indexer for Bifrost
+    digest: 660f790f333642c5ad9a464ad57339e2ab946f3f57ab0b74f8006760d2801649
+    home: https://topl.co
+    icon: https://topl.co/wp-content/uploads/2023/06/topl_white_horiz.svg
+    name: genus
+    sources:
+    - https://github.com/Topl/helm-charts
+    - https://topl.github.io/helm-charts/
+    type: application
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/genus-0.2.1/genus-0.2.1.tgz
+    version: 0.2.1
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2023-03-14T13:13:23.797382333Z"
@@ -374,4 +446,4 @@ entries:
     urls:
     - https://github.com/Topl/helm-charts/releases/download/vertx-0.1.0/vertx-0.1.0.tgz
     version: 0.1.0
-generated: "2024-02-05T17:14:15.744079972Z"
+generated: "2024-03-08T19:21:41.259847025Z"
