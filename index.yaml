@@ -386,6 +386,21 @@ entries:
   genus:
   - apiVersion: v2
     appVersion: 2.0.0-beta2
+    created: "2024-03-08T20:27:20.156903226Z"
+    description: A Helm chart for Genus, the data indexer for Bifrost
+    digest: b1ce58fc0ab49294f475e9de7c25c0fcf4b4d472c7789010c3151aa8f6313513
+    home: https://topl.co
+    icon: https://topl.co/wp-content/uploads/2023/06/topl_white_horiz.svg
+    name: genus
+    sources:
+    - https://github.com/Topl/helm-charts
+    - https://topl.github.io/helm-charts/
+    type: application
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/genus-0.2.2/genus-0.2.2.tgz
+    version: 0.2.2
+  - apiVersion: v2
+    appVersion: 2.0.0-beta2
     created: "2024-03-08T19:21:41.259728052Z"
     description: A Helm chart for Genus, the data indexer for Bifrost
     digest: 660f790f333642c5ad9a464ad57339e2ab946f3f57ab0b74f8006760d2801649
@@ -446,4 +461,4 @@ entries:
     urls:
     - https://github.com/Topl/helm-charts/releases/download/vertx-0.1.0/vertx-0.1.0.tgz
     version: 0.1.0
-generated: "2024-03-08T19:21:41.259847025Z"
+generated: "2024-03-08T20:27:20.156994707Z"
