@@ -44,7 +44,7 @@ spec:
                 secretKeyRef:
                   name: {{ ((print .Values.service "-db-password") | lower | quote) }}
                   key: db-password
-           {{- toYaml .Values.env | nindent 10 }}
+            {{- toYaml .Values.env | nindent 12 }}
           args:
             - "--orientDbPassword"
             - "$(ORIENT_DB_PASSWORD)"
