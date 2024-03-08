@@ -4,7 +4,7 @@ description: Launches a private testnet using configurable nodes and artificial 
 
 type: application
 
-version: 0.1.3
+version: 0.1.4
 
 appVersion: "dev"
 
