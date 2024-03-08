@@ -15,7 +15,7 @@ A Helm chart for Genus, the data indexer for Bifrost
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| env[0].name | string | `"JAVA_OPTS"` |  |
+| env[0].name | string | `"_JAVA_OPTIONS"` |  |
 | env[0].value | string | `"-XX:MaxRAMPercentage=70.0 -XX:ActiveProcessorCount=4 -XX:+UseParallelGC"` |  |
 | image.imagePullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"toplprotocol/genus"` |  |

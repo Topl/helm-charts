@@ -23,8 +23,8 @@ A Helm chart for Bifrost, the Topl blockchain node built for good.
 | configMap.content | string | `"bifrost:\n  big-bang:\n    type: public\n    genesis-id: b_6D8mXdqjsGrJbnXf6PqfWQrdTfKr3U5nbLGJGyYVgjqs\n    source-path: https://raw.githubusercontent.com/Topl/Genesis_Testnets/main/testnet0/\n"` |  |
 | configMap.fileName | string | `"custom-config.yaml"` |  |
 | configMap.mountPath | string | `"/config/bifrost-config"` |  |
-| env[0].name | string | `"JAVA_OPTS"` |  |
-| env[0].value | string | `"-XX:MaxRAMPercentage=70.0"` |  |
+| env[0].name | string | `"_JAVA_OPTIONS"` |  |
+| env[0].value | string | `"-XX:MaxRAMPercentage=70.0 -XX:ActiveProcessorCount=4"` |  |
 | image.imagePullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"toplprotocol/bifrost-node"` |  |
 | image.tag | string | `""` |  |
