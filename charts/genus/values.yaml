@@ -17,7 +17,7 @@ image:
   imagePullPolicy: IfNotPresent
 
 env:
-  - name: JAVA_OPTS
+  - name: _JAVA_OPTIONS
     value: "-XX:MaxRAMPercentage=70.0 -XX:ActiveProcessorCount=4 -XX:+UseParallelGC"
 
 nodeSelector:

@@ -20,8 +20,8 @@ command: # Optional
 args: ["--dataDir", "/bifrost/data", "--stakingDir", "/bifrost/staking"]
 
 env:
-  - name: JAVA_OPTS
-    value: "-XX:MaxRAMPercentage=70.0"
+  - name: _JAVA_OPTIONS
+    value: "-XX:MaxRAMPercentage=70.0 -XX:ActiveProcessorCount=4"
 
 nodeSelector:
   []
