@@ -18,7 +18,7 @@ image:
 
 env:
   - name: _JAVA_OPTIONS
-    value: "-Xmx1g -Dstorage.diskCache.bufferSize=2000 -XX:ActiveProcessorCount=4"
+    value: "-Xmx1g -Xms1g -Dstorage.diskCache.bufferSize=2000 -XX:ActiveProcessorCount=4 -XX:+AlwaysPreTouch"
 
 nodeSelector:
   []
@@ -120,7 +120,7 @@ istio:
 resources:
   requests:
     memory: "4000Mi"
-    cpu: "20m"
+    cpu: "250m"
   limits:
     memory: "4000Mi"
     ephemeral-storage: "500Mi"
