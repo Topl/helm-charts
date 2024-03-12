@@ -18,7 +18,7 @@ image:
 
 env:
   - name: _JAVA_OPTIONS
-    value: "-XX:MaxRAMPercentage=70.0 -XX:ActiveProcessorCount=4 -XX:+UseParallelGC"
+    value: "-Xmx1g -Xms1g -Dstorage.diskCache.bufferSize=2000 -XX:ActiveProcessorCount=4 -XX:+AlwaysPreTouch"
 
 nodeSelector:
   []
