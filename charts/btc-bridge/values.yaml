@@ -69,7 +69,7 @@ istio:
 
   virtualServiceRoutes:
     http:
-      - port: 3000
+      - port: 443
         targetPort: 3000
         matchPrefix: []
   
@@ -95,7 +95,7 @@ serviceType: NodePort
 # Valid protocols are grpc, http, http2, https, mongo, mysql, redis, tcp, tls, udp
 ports:
   - name: https-svc
-    port: 443
+    port: 3000
     targetPort: 3000
 
 # Resource settings (use Kubernetes syntax)
