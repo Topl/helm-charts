@@ -61,6 +61,12 @@ maxUnavailable: 1
 istio:
   enabled: false
 
+  ingressGateway:
+    name: istio-gateways/bifrost-gateway
+    host: btc-bridge.dev.topl.tech
+    matchPrefix:
+      - "/"
+
   virtualServiceRoutes:
     http:
       - port: 3000
@@ -77,14 +83,6 @@ ports:
     port: 443
     targetPort: 3000
 
-# Configure the Istio ingress gateway to route outside traffic for the provided
-# host name to this service on the ports and protocols defined in the 'ports' section
-# above.
-ingressGateway:
-  name: istio-gateways/bifrost-gateway
-  host: btc-bridge.dev.topl.tech
-  matchPrefix:
-    - "/"
 
 # The overall timeout for requests to this service
 # Optional
