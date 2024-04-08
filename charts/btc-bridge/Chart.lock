@@ -1,6 +1,0 @@
-dependencies:
-- name: bitcoin-node
-  repository: file://../bitcoin-node
-  version: 0.1.0
-digest: sha256:bd70f95b6b92ed8ad0319b50913a4553c2ae21e8068b8eeb8f9218f141949276
-generated: "2024-04-05T13:42:19.578084286-05:00"
