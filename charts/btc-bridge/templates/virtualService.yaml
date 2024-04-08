@@ -10,12 +10,12 @@ metadata:
   namespace: {{ .Release.Namespace | quote }}
 spec:
   gateways:
-    - {{ .Values.ingressGateway.name | quote }} 
+    - {{ .Values.istio.ingressGateway.name | quote }} 
   hosts:
-    - {{ .Values.ingressGateway.host | quote }}
+    - {{ .Values.istio.ingressGateway.host | quote }}
   http:
     - match:
-{{- range .Values.ingressGateway.matchPrefix }}
+{{- range .Values.istio.ingressGateway.matchPrefix }}
       - uri:
           prefix: {{ . | quote }}
 {{- end }}
