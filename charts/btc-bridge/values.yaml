@@ -74,7 +74,7 @@ serviceType: NodePort
 # Valid protocols are grpc, http, http2, https, mongo, mysql, redis, tcp, tls, udp
 ports:
   - name: https-svc
-    port: 3000
+    port: 443
     targetPort: 3000
 
 # Configure the Istio ingress gateway to route outside traffic for the provided

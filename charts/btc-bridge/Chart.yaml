@@ -1,5 +1,5 @@
 apiVersion: v2
-appVersion: 0.1-16-3b0d60b2
+appVersion: 0.1-4-2ad0c117
 description: Helm Chart for deploying the Topl BTC Bridge.
 name: btc-bridge
 type: application
