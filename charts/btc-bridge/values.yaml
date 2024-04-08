@@ -111,20 +111,20 @@ resources:
     memory: "4Gi"
     ephemeral-storage: "500Mi"
 
-# podSecurityContext:
-#   runAsUser: 101
-#   runAsGroup: 101
-#   fsGroup: 101
-#   supplementalGroups: [101]
-#   seccompProfile:
-#     type: RuntimeDefault
+podSecurityContext:
+  runAsUser: 1001
+  runAsGroup: 0
+  fsGroup: 0
+  supplementalGroups: [0]
+  seccompProfile:
+    type: RuntimeDefault
 
-# securityContext:
-#   readOnlyRootFilesystem: true
-#   allowPrivilegeEscalation: false
-#   capabilities:
-#     drop:
-#       - ALL
+securityContext:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
 
 nodeSelector: {}
 
