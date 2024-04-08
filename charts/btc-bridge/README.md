@@ -1,8 +1,8 @@
-# annulus
+# btc-bridge
 
-![Version: 0.1.9](https://img.shields.io/badge/Version-0.1.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.4.2](https://img.shields.io/badge/AppVersion-v1.4.2-informational?style=flat-square)
+![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1-4-2ad0c117](https://img.shields.io/badge/AppVersion-0.1--4--2ad0c117-informational?style=flat-square)
 
-Helm Chart for deploying Annulus, a Topl blockchain explorer.
+Helm Chart for deploying the Topl BTC Bridge.
 
 **Homepage:** <https://topl.co>
 
@@ -15,53 +15,66 @@ Helm Chart for deploying Annulus, a Topl blockchain explorer.
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| autoscaling.maxReplicas | int | `5` |  |
-| autoscaling.minReplicas | int | `1` |  |
-| autoscaling.targetAverageCpuUtilization | int | `80` |  |
-| configMap.content | string | `"worker_processes  auto;\nerror_log  /tmp/nginx/error.log warn;\npid        /tmp/nginx/nginx.pid;\nevents {\n    worker_connections  1024;\n}\nhttp {\n    default_type  application/octet-stream;\n    log_format  main  '$remote_addr - $remote_user [$time_local] \"$request\" '\n                      '$status $body_bytes_sent \"$http_referer\" '\n                      '\"$http_user_agent\" \"$http_x_forwarded_for\"';\n    access_log  /var/log/nginx/access.log  main;\n    sendfile        on;\n    #tcp_nopush     on;\n    keepalive_timeout  65;\n    #gzip  on;\n    include /etc/nginx/conf.d/*.conf;\n    server {\n      listen 9999;\n      root /usr/share/nginx/html;\n      location /healthz {\n        access_log          off;\n        return              200;\n      }\n    }\n}\n"` |  |
-| configMap.fileName | string | `"nginx.conf"` |  |
-| configMap.mountPath | string | `"/etc/nginx"` |  |
-| image.imagePullPolicy | string | `"IfNotPresent"` |  |
-| image.repository | string | `"toplprotocol/annulus"` |  |
-| image.tag | string | `nil` |  |
-| ingressGateway.host | string | `"annulus.dev.topl.tech"` |  |
-| ingressGateway.matchPrefix[0] | string | `"/"` |  |
-| ingressGateway.name | string | `"istio-gateways/bifrost-gateway"` |  |
+| args[0] | string | `"--topl-host"` |  |
+| args[10] | string | `"--topl-wallet-db"` |  |
+| args[11] | string | `"/mnt/btc-bridge/topl-wallet.db"` |  |
+| args[1] | string | `"devnet.genus.topl.co"` |  |
+| args[2] | string | `"--topl-port"` |  |
+| args[3] | string | `"443"` |  |
+| args[4] | string | `"--topl-secure"` |  |
+| args[5] | string | `"true"` |  |
+| args[6] | string | `"--topl-network"` |  |
+| args[7] | string | `"testnet"` |  |
+| args[8] | string | `"--btc-network"` |  |
+| args[9] | string | `"regtest"` |  |
+| bitcoin-node.enabled | bool | `true` |  |
+| command | string | `nil` |  |
+| env[0].name | string | `"_JAVA_OPTIONS"` |  |
+| env[0].value | string | `"-XX:MaxRAMPercentage=70.0 -XX:ActiveProcessorCount=4"` |  |
+| env[1].name | string | `"TOPL_WALLET_PASSWORD"` |  |
+| env[1].value | string | `"password"` |  |
+| image.imagePullPolicy | string | `"Always"` |  |
+| image.repository | string | `"ghcr.io/topl/topl-btc-bridge"` |  |
+| image.tag | string | `""` |  |
+| istio.enabled | bool | `false` |  |
+| istio.ingressGateway.host | string | `"bridge.topl.tech"` |  |
+| istio.ingressGateway.matchPrefix[0] | string | `"/"` |  |
+| istio.ingressGateway.name | string | `"istio-gateways/gateway"` |  |
+| istio.outlierDetection | object | `{}` |  |
+| istio.overallTimeout | string | `nil` |  |
+| istio.retries | object | `{}` |  |
+| istio.virtualServiceRoutes.http[0].matchPrefix | list | `[]` |  |
+| istio.virtualServiceRoutes.http[0].port | int | `443` |  |
+| istio.virtualServiceRoutes.http[0].targetPort | int | `3000` |  |
 | maxUnavailable | int | `1` |  |
-| networkPolicy.enabled | bool | `true` |  |
-| outlierDetection.consecutive5xxErrors | int | `5` |  |
-| overallTimeout | string | `"10s"` |  |
-| podSecurityContext.fsGroup | int | `101` |  |
-| podSecurityContext.runAsGroup | int | `101` |  |
-| podSecurityContext.runAsUser | int | `101` |  |
+| networkPolicy.enabled | bool | `false` |  |
+| nodeSelector | object | `{}` |  |
+| podSecurityContext.fsGroup | int | `0` |  |
+| podSecurityContext.runAsGroup | int | `0` |  |
+| podSecurityContext.runAsUser | int | `1001` |  |
 | podSecurityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
-| podSecurityContext.supplementalGroups[0] | int | `101` |  |
+| podSecurityContext.supplementalGroups[0] | int | `0` |  |
 | ports[0].name | string | `"https-svc"` |  |
-| ports[0].port | int | `443` |  |
-| ports[0].targetPort | int | `9999` |  |
-| probes.livenessProbe.httpGet.path | string | `"/healthz"` |  |
-| probes.livenessProbe.httpGet.port | int | `9999` |  |
-| probes.livenessProbe.initialDelaySeconds | int | `30` |  |
-| probes.readinessProbe.httpGet.path | string | `"/healthz"` |  |
-| probes.readinessProbe.httpGet.port | int | `9999` |  |
-| probes.readinessProbe.timeoutSeconds | int | `10` |  |
+| ports[0].port | int | `3000` |  |
+| ports[0].targetPort | int | `3000` |  |
 | replicaCount | int | `1` |  |
-| resources.limits.cpu | string | `"250m"` |  |
 | resources.limits.ephemeral-storage | string | `"500Mi"` |  |
-| resources.limits.memory | string | `"500Mi"` |  |
-| resources.requests.cpu | string | `"200m"` |  |
+| resources.limits.memory | string | `"4Gi"` |  |
+| resources.requests.cpu | string | `"50m"` |  |
 | resources.requests.memory | string | `"32Mi"` |  |
-| retries.attempts | int | `3` |  |
-| retries.perTryTimeout | string | `"2s"` |  |
 | securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | securityContext.readOnlyRootFilesystem | bool | `true` |  |
-| service | string | `"annulus"` |  |
+| service | string | `"btc-bridge"` |  |
 | serviceAccount.automountToken | bool | `false` |  |
 | serviceAccount.create | bool | `true` |  |
-| serviceAccount.name | string | `"annulus"` |  |
-| system | string | `"annulus"` |  |
+| serviceAccount.name | string | `"btc-bridge"` |  |
+| serviceType | string | `"NodePort"` |  |
+| system | string | `"btc-bridge"` |  |
 | version | int | `1` |  |
+| volume.mountDirectory | string | `"/mnt/btc-bridge/"` |  |
+| volume.storageClass | string | `nil` |  |
+| volume.storageSize | string | `"10Gi"` |  |
 
 ----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.12.0](https://github.com/norwoodj/helm-docs/releases/v1.12.0)
+Autogenerated from chart metadata using [helm-docs v1.13.1](https://github.com/norwoodj/helm-docs/releases/v1.13.1)
