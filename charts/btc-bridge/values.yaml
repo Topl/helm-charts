@@ -62,8 +62,8 @@ istio:
   enabled: false
 
   ingressGateway:
-    name: istio-gateways/bifrost-gateway
-    host: btc-bridge.dev.topl.tech
+    name: istio-gateways/gateway
+    host: bridge.topl.tech
     matchPrefix:
       - "/"
 
@@ -72,6 +72,21 @@ istio:
       - port: 3000
         targetPort: 3000
         matchPrefix: []
+  
+  # # The overall timeout for requests to this service
+  # # Optional
+  overallTimeout: # 24h
+
+  # # Client retry settings (use Istio syntax)
+  # # Optional
+  retries: {}
+  #   attempts: 3
+  #   perTryTimeout: 5s
+
+  # # Circuit breaker settings (use Istio syntax)
+  # # Optional
+  outlierDetection: {}
+  #   consecutive5xxErrors: 5
 
 serviceType: NodePort
 
@@ -82,22 +97,6 @@ ports:
   - name: https-svc
     port: 443
     targetPort: 3000
-
-
-# The overall timeout for requests to this service
-# Optional
-overallTimeout: 10s
-
-# Client retry settings (use Istio syntax)
-# Optional
-retries:
-  attempts: 3
-  perTryTimeout: 2s
-
-# Circuit breaker settings (use Istio syntax)
-# Optional
-outlierDetection:
-  consecutive5xxErrors: 5
 
 # Resource settings (use Kubernetes syntax)
 # Optional
