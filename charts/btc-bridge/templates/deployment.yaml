@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: {{ .Values.service | lower | quote }}
   labels:
@@ -8,14 +8,13 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
   namespace: {{ .Release.Namespace | quote }}
 spec:
-  serviceName: {{ (print .Values.service) | lower | quote }}
+  {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
+  {{- end }}
   selector:
     matchLabels:
       app: {{ .Values.service | lower | quote }}
       version: {{ .Values.version | quote }}
-  updateStrategy:
-    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -66,21 +65,13 @@ spec:
 {{ toYaml .Values.probes | indent 10 }}
 {{- end }}
           volumeMounts:
-            - name: {{ (print .Values.service "-pv") | quote }}
-              mountPath: {{ .Values.volume.mountDirectory }}
-            - name: tmp
-              mountPath: /tmp
+        {{- if .Values.persistence.enabled }}
+            - name: storage
+              mountPath: {{ .Values.persistence.mountPath }}
+        {{- end }}
       volumes:
-        - name: cache
-          emptyDir: {}
-        - name: tmp
-          emptyDir: {}
-  volumeClaimTemplates:
-    - metadata:
-        name: {{ (print .Values.service "-pv") | quote }}
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        storageClassName: {{ .Values.volume.storageClass }}
-        resources:
-          requests:
-            storage: {{ .Values.volume.storageSize }}
+        {{- if .Values.persistence.enabled }}
+        - name: storage
+          persistentVolumeClaim:
+            claimName: {{ .Values.service | lower | quote }}
+        {{- end }}

@@ -141,8 +141,20 @@ networkPolicy:
 #       path: /healthz
 #       port: 3000
 
-volume:
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+persistence:
+  enabled: true
   mountDirectory: /mnt/btc-bridge/
+  accessModes:
+    - ReadWriteOnce
   # GKE specific storage classes: standard, standard-rwo, premium-rwo
   storageClass:
   storageSize: 10Gi
+  finalizers:
+    - kubernetes.io/pvc-protection
