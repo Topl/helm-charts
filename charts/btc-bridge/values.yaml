@@ -150,7 +150,7 @@ autoscaling:
 
 persistence:
   enabled: true
-  mountDirectory: /mnt/btc-bridge/
+  mountPath: /mnt/btc-bridge/
   accessModes:
     - ReadWriteOnce
   # GKE specific storage classes: standard, standard-rwo, premium-rwo
