@@ -154,7 +154,7 @@ persistence:
   accessModes:
     - ReadWriteOnce
   # GKE specific storage classes: standard, standard-rwo, premium-rwo
-  storageClass:
+  storageClassName:
   storageSize: 10Gi
   finalizers:
     - kubernetes.io/pvc-protection
