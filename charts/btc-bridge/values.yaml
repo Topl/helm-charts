@@ -1,0 +1,160 @@
+# Default values for btc-bridge.
+# This is a YAML-formatted file.
+
+# The overall system your service is a part of
+system: btc-bridge
+# The name of your service
+service: btc-bridge
+# The major version number for your service
+version: 1
+
+bitcoin-node:
+  enabled: true
+
+# Docker settings
+image:
+  # The name of your docker container
+  repository: ghcr.io/topl/topl-btc-bridge
+  # Your docker container's tag
+  tag: ""
+  imagePullPolicy: Always
+
+command: # Optional
+args:
+  - "--topl-host"
+  - "devnet.genus.topl.co"
+  - "--topl-port"
+  - "443"
+  - "--topl-secure"
+  - "true"
+  - "--topl-network"
+  - "testnet"
+  - "--btc-network"
+  - "regtest"
+  - "--topl-wallet-db"
+  - "/mnt/btc-bridge/topl-wallet.db"
+
+# command:
+#   - "sleep"
+# args:
+#   - "infinity"
+
+env:
+  - name: _JAVA_OPTIONS
+    value: "-XX:MaxRAMPercentage=70.0 -XX:ActiveProcessorCount=4"
+  - name: TOPL_WALLET_PASSWORD
+    value: "password"
+  
+
+# Istio uses the service account name as a component of the service's security
+# identity. Set "create" to false to use an previously created service account.
+serviceAccount:
+  name: btc-bridge
+  create: true
+  automountToken: false
+
+# The initial number of pod replicas to run for your service
+replicaCount: 1
+# The maximum number of pods from that set that can be unavailable at once
+maxUnavailable: 1
+
+istio:
+  enabled: false
+
+  ingressGateway:
+    name: istio-gateways/gateway
+    host: bridge.topl.tech
+    matchPrefix:
+      - "/"
+
+  virtualServiceRoutes:
+    http:
+      - port: 443
+        targetPort: 4000
+        matchPrefix: []
+  
+  # # The overall timeout for requests to this service
+  # # Optional
+  overallTimeout: # 24h
+
+  # # Client retry settings (use Istio syntax)
+  # # Optional
+  retries: {}
+  #   attempts: 3
+  #   perTryTimeout: 5s
+
+  # # Circuit breaker settings (use Istio syntax)
+  # # Optional
+  outlierDetection: {}
+  #   consecutive5xxErrors: 5
+
+serviceType: NodePort
+
+# Port settings
+# Ports must be named <protocol>[-<suffix>] to work with Istio.
+# Valid protocols are grpc, http, http2, https, mongo, mysql, redis, tcp, tls, udp
+ports:
+  - name: https-svc
+    port: 4000
+    targetPort: 4000
+
+# Resource settings (use Kubernetes syntax)
+# Optional
+resources:
+  requests:
+    memory: "32Mi"
+    cpu: "50m"
+  limits:
+    memory: "4Gi"
+    ephemeral-storage: "500Mi"
+
+podSecurityContext:
+  runAsUser: 1001
+  runAsGroup: 0
+  fsGroup: 0
+  supplementalGroups: [0]
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+
+nodeSelector: {}
+
+networkPolicy:
+  enabled: false
+
+# Probe settings (use Kubernetes syntax)
+probes:
+  livenessProbe:
+    initialDelaySeconds: 30
+    httpGet:
+      path: /
+      port: 4000
+  readinessProbe:
+    timeoutSeconds: 10
+    httpGet:
+      path: /
+      port: 4000
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+persistence:
+  enabled: true
+  mountPath: /mnt/btc-bridge/
+  accessModes:
+    - ReadWriteOnce
+  # GKE specific storage classes: standard, standard-rwo, premium-rwo
+  storageClassName:
+  storageSize: 10Gi
+  finalizers:
+    - kubernetes.io/pvc-protection
