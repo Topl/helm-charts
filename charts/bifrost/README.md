@@ -15,6 +15,7 @@ A Helm chart for Bifrost, the Topl blockchain node built for good.
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| affinity | object | `{}` |  |
 | args[0] | string | `"--dataDir"` |  |
 | args[1] | string | `"/bifrost/data"` |  |
 | args[2] | string | `"--stakingDir"` |  |
@@ -77,7 +78,7 @@ A Helm chart for Bifrost, the Topl blockchain node built for good.
 | metrics.serviceMonitor.scheme | string | `""` |  |
 | metrics.serviceMonitor.selector | object | `{}` |  |
 | networkPolicy.enabled | bool | `true` |  |
-| nodeSelector | list | `[]` |  |
+| nodeSelector | object | `{}` |  |
 | podSecurityContext.fsGroup | int | `0` |  |
 | podSecurityContext.runAsGroup | int | `0` |  |
 | podSecurityContext.runAsUser | int | `1001` |  |
@@ -111,6 +112,7 @@ A Helm chart for Bifrost, the Topl blockchain node built for good.
 | serviceAccount.name | string | `"bifrost-node"` |  |
 | serviceType | string | `"ClusterIP"` |  |
 | system | string | `"bifrost-node"` |  |
+| tolerations | list | `[]` |  |
 | version | int | `1` |  |
 | volume.mountDirectory | string | `"/mnt/bifrost/"` |  |
 | volume.storageClass | string | `nil` |  |

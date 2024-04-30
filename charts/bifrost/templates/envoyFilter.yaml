@@ -1,4 +1,4 @@
-{{- if or (.Values.istio.enabled) (.Values.istio.createGrpcWebFilter) }}
+{{- if and (.Values.istio.enabled) (.Values.istio.createGrpcWebFilter) }}
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:

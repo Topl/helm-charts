@@ -1,3 +1,4 @@
+{{- $root := . -}}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -17,19 +18,27 @@ spec:
     metadata:
       labels:
         # Kubernetes recommended labels
-        app.kubernetes.io/name: {{ .Values.service | lower | quote }}
-        app.kubernetes.io/part-of: {{ .Values.system | quote }}
-        app.kubernetes.io/version: {{ .Values.version | quote }}
+        {{- include "bifrost.labels" . | nindent 8 }}
         # Isio required labels
         app: {{ .Values.service | lower | quote }}
         version: {{ .Values.version | quote }}
-{{- if .Values.configMap }}
+      {{- if .Values.configMap }}
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
-{{- end }}
+      {{- end }}
     spec:
-      nodeSelector: 
-        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- tpl (toYaml .) $root | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       serviceAccountName: {{ .Values.serviceAccount.name | lower | quote }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
