@@ -4,9 +4,7 @@ kind: EnvoyFilter
 metadata:
   name: {{ .Values.service | lower | quote }}
   labels:
-    app.kubernetes.io/name: {{ .Values.service | lower | quote }}
-    app.kubernetes.io/part-of: {{ .Values.system | quote }}
-    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    {{- include "bifrost.labels" . | nindent 4 }}
 spec:
   workloadSelector:
     labels:

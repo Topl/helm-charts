@@ -17,7 +17,11 @@ image:
   imagePullPolicy: IfNotPresent
 
 command: # Optional
-args: ["--dataDir", "/bifrost/data", "--stakingDir", "/bifrost/staking"]
+args:
+  - --dataDir
+  - "/bifrost/data"
+  - --stakingDir
+  - "/bifrost/staking"
 
 env:
   - name: _JAVA_OPTIONS
@@ -56,6 +60,9 @@ ports:
   - name: tcp-p2p
     port: 9085
     targetPort: 9085
+  - name: http-metrics
+    port: 9095
+    targetPort: 9095
 
 # Configure the Istio ingress gateway to route outside traffic for the provided
 # host name to this service on the ports and protocols defined in the 'ports' section
@@ -152,6 +159,23 @@ securityContext:
 
 networkPolicy:
   enabled: true
+
+metrics:
+  enabled: false
+  # -- Prometheus ServiceMonitor scrapeTimeout. If empty, Prometheus uses the global scrape timeout unless it is less than the target's scrape interval value in which the latter is used.
+  scrapeTimeout: ""
+  service:
+    type: ClusterIP
+    servicePort: 9095
+    portName: http-metrics
+  serviceMonitor:
+    enabled: true
+    interval: 30s
+    relabelings: []
+    metricRelabelings: []
+    selector: {}
+    scheme: ""
+    namespace: "" # "monitoring"
 
 # Probe settings (use Kubernetes syntax)
 # Optional
