@@ -10,8 +10,7 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Values.service | lower | quote }}
-      version: {{ .Values.version | quote }}
+      {{- include "bifrost.selectorLabels" . | nindent 6 }}
   updateStrategy:
     type: RollingUpdate
   template:

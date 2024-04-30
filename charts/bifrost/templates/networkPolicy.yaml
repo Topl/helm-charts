@@ -8,7 +8,7 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      app.kubernetes.io/part-of: {{ .Values.system | quote }}
+      {{- include "bifrost.selectorLabels" . | nindent 6 }}
   policyTypes:
     - Ingress
   ingress:
