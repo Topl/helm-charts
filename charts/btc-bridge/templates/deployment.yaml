@@ -3,9 +3,7 @@ kind: Deployment
 metadata:
   name: {{ .Values.service | lower | quote }}
   labels:
-    app.kubernetes.io/name: {{ .Values.service | lower | quote }}
-    app.kubernetes.io/part-of: {{ .Values.system | quote }}
-    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    {{- include "btc-bridge.labels" . | nindent 4 }}
   namespace: {{ .Release.Namespace | quote }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
@@ -13,36 +11,79 @@ spec:
   {{- end }}
   selector:
     matchLabels:
-      app: {{ .Values.service | lower | quote }}
-      version: {{ .Values.version | quote }}
+      {{- include "btc-bridge.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
         # Kubernetes recommended labels
-        app.kubernetes.io/name: {{ .Values.service | lower | quote }}
-        app.kubernetes.io/part-of: {{ .Values.system | quote }}
-        app.kubernetes.io/version: {{ .Values.version | quote }}
+        {{- include "btc-bridge.labels" . | nindent 8 }}
         # Isio required labels
         app: {{ .Values.service | lower | quote }}
         version: {{ .Values.version | quote }}
     spec:
       {{- with .Values.nodeSelector }}
-      nodeSelector: 
+      nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ .Values.serviceAccount.name | lower | quote }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       automountServiceAccountToken: {{ .Values.serviceAccount.automountToken }}
+      {{- if .Values.initWallet.enabled }}
+      initContainers:
+        - name: init
+          image: {{ .Values.initWallet.image }}
+          command: ["/bin/bash"]
+          args:
+            - -c
+            - >-
+                echo "Starting..." &&
+                alias brambl-cli='cs launch -r https://s01.oss.sonatype.org/content/repositories/releases co.topl:brambl-cli_2.13:2.0.0-beta3 -- ' &&
+                shopt -s expand_aliases &&
+                echo "Set alias" &&
+                export BIFROST_HOST=bifrost-node &&
+                export BIFROST_PORT=9084 &&
+                export BIFROST_SECURE=false &&
+                export WALLETNAME=topl &&
+                rm -f $WALLETNAME-keyfile.json &&
+                rm -f $WALLETNAME-wallet.db &&
+                rm -f $WALLETNAME-mnemonic.txt &&
+                brambl-cli wallet init -w password -n private -o $WALLETNAME-keyfile.json --newwalletdb $WALLETNAME-wallet.db --mnemonicfile $WALLETNAME-mnemonic.txt &&
+                export TOPL_WALLET_DB=$WALLETNAME-wallet.db &&
+                export TOPL_WALLET_JSON=$WALLETNAME-keyfile.json &&
+                export TOPL_WALLET_PASSWORD=password &&
+                export LVL_AMOUNT=1003 &&
+                export ADDRESS=$(brambl-cli wallet current-address --walletdb $TOPL_WALLET_DB) &&
+                brambl-cli simple-transaction create --from-fellowship nofellowship --from-template genesis --from-interaction 1 --change-fellowship nofellowship --change-template genesis --change-interaction 1  -t $ADDRESS -w $TOPL_WALLET_PASSWORD -o genesisTx.pbuf -n private -a $LVL_AMOUNT --host  $BIFROST_HOST --port $BIFROST_PORT --secure $BIFROST_SECURE --keyfile $TOPL_WALLET_JSON --walletdb $TOPL_WALLET_DB --fee 10 --transfer-token lvl &&
+                brambl-cli tx prove -i genesisTx.pbuf --walletdb $TOPL_WALLET_DB --keyfile $TOPL_WALLET_JSON -w $TOPL_WALLET_PASSWORD -o genesisTxProved.pbuf &&
+                export GROUP_UTXO=$(brambl-cli tx broadcast -i genesisTxProved.pbuf --host $BIFROST_HOST --port $BIFROST_PORT --secure $BIFROST_SECURE ) &&
+                until brambl-cli genus-query utxo-by-address --host $BIFROST_HOST --port $BIFROST_PORT --secure $BIFROST_SECURE --walletdb $TOPL_WALLET_DB; do sleep 5; done &&
+                brambl-cli simple-minting create --from-fellowship self --from-template default  --host $BIFROST_HOST --port $BIFROST_PORT --secure $BIFROST_SECURE -n private --keyfile $TOPL_WALLET_JSON -w $TOPL_WALLET_PASSWORD -o groupMintingtx.pbuf -i groupPolicy.yaml  --mint-amount 1 --fee 10 --walletdb $TOPL_WALLET_DB --mint-token group &&
+                brambl-cli tx prove -i groupMintingtx.pbuf --walletdb $TOPL_WALLET_DB --keyfile $TOPL_WALLET_JSON -w $TOPL_WALLET_PASSWORD -o groupMintingtxProved.pbuf &&
+                export SERIES_UTXO=$(brambl-cli tx broadcast -i groupMintingtxProved.pbuf --host $BIFROST_HOST --port $BIFROST_PORT --secure $BIFROST_SECURE) &&
+                until brambl-cli genus-query utxo-by-address --host $BIFROST_HOST --port $BIFROST_PORT --secure $BIFROST_SECURE --walletdb $TOPL_WALLET_DB; do sleep 5; done &&
+                brambl-cli simple-minting create --from-fellowship self --from-template default  --host $BIFROST_HOST --port $BIFROST_PORT --secure $BIFROST_SECURE -n private --keyfile $TOPL_WALLET_JSON -w $TOPL_WALLET_PASSWORD -o seriesMintingTx.pbuf -i seriesPolicy.yaml  --mint-amount 1 --fee 10 --walletdb $TOPL_WALLET_DB --mint-token series &&
+                brambl-cli tx prove -i seriesMintingTx.pbuf --walletdb $TOPL_WALLET_DB --keyfile $TOPL_WALLET_JSON -w $TOPL_WALLET_PASSWORD -o seriesMintingTxProved.pbuf &&
+                export ASSET_UTXO=$(brambl-cli tx broadcast -i seriesMintingTxProved.pbuf --host $BIFROST_HOST --port $BIFROST_PORT --secure $BIFROST_SECURE) &&
+                until brambl-cli genus-query utxo-by-address --host $BIFROST_HOST --port $BIFROST_PORT --secure $BIFROST_SECURE --walletdb $TOPL_WALLET_DB; do sleep 5; done &&
+                cp $TOPL_WALLET_JSON /mnt/btc-bridge/topl-keyfile.json &&
+                cp $TOPL_WALLET_DB /mnt/btc-bridge/topl-wallet.db &&
+                echo "all done"
+          {{- if .Values.persistence.enabled }}
+          volumeMounts:
+            - name: storage
+              mountPath: {{ .Values.persistence.mountPath }}
+          {{- end }}
+      {{- end}}
       containers:
         - name: {{ .Values.service | lower | quote }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           imagePullPolicy: {{ .Values.image.imagePullPolicy | quote }}
-{{- if .Values.env }}
+          {{- if .Values.env }}
           env: {{- toYaml .Values.env | nindent 10 }}
-{{- end }}
+          {{- end }}
           command:
           {{- range .Values.command }}
             - {{ quote . }}
@@ -52,18 +93,18 @@ spec:
             - {{ quote . }}
           {{- end }}
           ports:
-{{- range .Values.ports }}
+          {{- range .Values.ports }}
             - name: {{ .name | quote }}
               containerPort: {{ .targetPort }}
               protocol: TCP
-{{- end }}
-{{- if .Values.resources }}
+          {{- end }}
+          {{- if .Values.resources }}
           resources:
-{{ toYaml .Values.resources | indent 12 }}
-{{- end }}
-{{- if .Values.probes }}
-{{ toYaml .Values.probes | indent 10 }}
-{{- end }}
+            {{ toYaml .Values.resources | nindent 12 }}
+          {{- end }}
+        {{- if .Values.probes }}
+          {{ toYaml .Values.probes | nindent 10 }}
+        {{- end }}
           volumeMounts:
         {{- if .Values.persistence.enabled }}
             - name: storage

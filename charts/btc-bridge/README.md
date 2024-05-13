@@ -1,6 +1,6 @@
 # btc-bridge
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1-4-2ad0c117](https://img.shields.io/badge/AppVersion-0.1--4--2ad0c117-informational?style=flat-square)
+![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
 
 Helm Chart for deploying the Topl BTC Bridge.
 
@@ -18,20 +18,21 @@ Helm Chart for deploying the Topl BTC Bridge.
 | args[0] | string | `"--topl-host"` |  |
 | args[10] | string | `"--topl-wallet-db"` |  |
 | args[11] | string | `"/mnt/btc-bridge/topl-wallet.db"` |  |
-| args[1] | string | `"devnet.genus.topl.co"` |  |
+| args[12] | string | `"--topl-wallet-seed-file"` |  |
+| args[13] | string | `"/mnt/btc-bridge/topl-keyfile.json"` |  |
+| args[1] | string | `"localhost"` |  |
 | args[2] | string | `"--topl-port"` |  |
-| args[3] | string | `"443"` |  |
+| args[3] | string | `"9084"` |  |
 | args[4] | string | `"--topl-secure"` |  |
-| args[5] | string | `"true"` |  |
+| args[5] | string | `"false"` |  |
 | args[6] | string | `"--topl-network"` |  |
-| args[7] | string | `"testnet"` |  |
+| args[7] | string | `"private"` |  |
 | args[8] | string | `"--btc-network"` |  |
 | args[9] | string | `"regtest"` |  |
 | autoscaling.enabled | bool | `false` |  |
 | autoscaling.maxReplicas | int | `10` |  |
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
-| bitcoin-node.enabled | bool | `true` |  |
 | command | string | `nil` |  |
 | env[0].name | string | `"_JAVA_OPTIONS"` |  |
 | env[0].value | string | `"-XX:MaxRAMPercentage=70.0 -XX:ActiveProcessorCount=4"` |  |
@@ -40,8 +41,10 @@ Helm Chart for deploying the Topl BTC Bridge.
 | image.imagePullPolicy | string | `"Always"` |  |
 | image.repository | string | `"ghcr.io/topl/topl-btc-bridge"` |  |
 | image.tag | string | `""` |  |
+| initWallet.enabled | bool | `false` |  |
+| initWallet.image | string | `"dacr/coursier-launcher:openjdk-11"` |  |
 | istio.enabled | bool | `false` |  |
-| istio.ingressGateway.host | string | `"bridge.topl.tech"` |  |
+| istio.ingressGateway.host | string | `"bridge.example.com"` |  |
 | istio.ingressGateway.matchPrefix[0] | string | `"/"` |  |
 | istio.ingressGateway.name | string | `"istio-gateways/gateway"` |  |
 | istio.outlierDetection | object | `{}` |  |
@@ -49,13 +52,14 @@ Helm Chart for deploying the Topl BTC Bridge.
 | istio.retries | object | `{}` |  |
 | istio.virtualServiceRoutes.http[0].matchPrefix | list | `[]` |  |
 | istio.virtualServiceRoutes.http[0].port | int | `443` |  |
-| istio.virtualServiceRoutes.http[0].targetPort | int | `3000` |  |
+| istio.virtualServiceRoutes.http[0].targetPort | int | `4000` |  |
 | maxUnavailable | int | `1` |  |
 | networkPolicy.enabled | bool | `false` |  |
 | nodeSelector | object | `{}` |  |
 | persistence.accessModes[0] | string | `"ReadWriteOnce"` |  |
 | persistence.enabled | bool | `true` |  |
 | persistence.finalizers[0] | string | `"kubernetes.io/pvc-protection"` |  |
+| persistence.matchLabels | bool | `false` |  |
 | persistence.mountPath | string | `"/mnt/btc-bridge/"` |  |
 | persistence.storageClassName | string | `nil` |  |
 | persistence.storageSize | string | `"10Gi"` |  |
@@ -65,16 +69,22 @@ Helm Chart for deploying the Topl BTC Bridge.
 | podSecurityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | podSecurityContext.supplementalGroups[0] | int | `0` |  |
 | ports[0].name | string | `"https-svc"` |  |
-| ports[0].port | int | `3000` |  |
-| ports[0].targetPort | int | `3000` |  |
+| ports[0].port | int | `4000` |  |
+| ports[0].targetPort | int | `4000` |  |
+| probes.livenessProbe.httpGet.path | string | `"/"` |  |
+| probes.livenessProbe.httpGet.port | int | `4000` |  |
+| probes.livenessProbe.initialDelaySeconds | int | `30` |  |
+| probes.readinessProbe.httpGet.path | string | `"/"` |  |
+| probes.readinessProbe.httpGet.port | int | `4000` |  |
+| probes.readinessProbe.timeoutSeconds | int | `10` |  |
 | replicaCount | int | `1` |  |
 | resources.limits.ephemeral-storage | string | `"500Mi"` |  |
-| resources.limits.memory | string | `"4Gi"` |  |
+| resources.limits.memory | string | `"3Gi"` |  |
 | resources.requests.cpu | string | `"50m"` |  |
-| resources.requests.memory | string | `"32Mi"` |  |
+| resources.requests.memory | string | `"3Gi"` |  |
 | securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
-| securityContext.readOnlyRootFilesystem | bool | `true` |  |
+| securityContext.readOnlyRootFilesystem | bool | `false` |  |
 | service | string | `"btc-bridge"` |  |
 | serviceAccount.automountToken | bool | `false` |  |
 | serviceAccount.create | bool | `true` |  |

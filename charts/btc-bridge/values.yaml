@@ -8,9 +8,6 @@ service: btc-bridge
 # The major version number for your service
 version: 1
 
-bitcoin-node:
-  enabled: true
-
 # Docker settings
 image:
   # The name of your docker container
@@ -22,17 +19,21 @@ image:
 command: # Optional
 args:
   - "--topl-host"
-  - "devnet.genus.topl.co"
+  - "localhost"
   - "--topl-port"
-  - "443"
+  - "9084"
   - "--topl-secure"
-  - "true"
+  - "false"
   - "--topl-network"
-  - "testnet"
+  - "private"
   - "--btc-network"
   - "regtest"
   - "--topl-wallet-db"
   - "/mnt/btc-bridge/topl-wallet.db"
+  - "--topl-wallet-seed-file"
+  - "/mnt/btc-bridge/topl-keyfile.json"
+  # - "--peg-in-seed-file"
+  # - "/mnt/btc-bridge/pegin-wallet.json"
 
 # command:
 #   - "sleep"
@@ -63,7 +64,7 @@ istio:
 
   ingressGateway:
     name: istio-gateways/gateway
-    host: bridge.topl.tech
+    host: bridge.example.com
     matchPrefix:
       - "/"
 
@@ -102,10 +103,10 @@ ports:
 # Optional
 resources:
   requests:
-    memory: "32Mi"
+    memory: "3Gi"
     cpu: "50m"
   limits:
-    memory: "4Gi"
+    memory: "3Gi"
     ephemeral-storage: "500Mi"
 
 podSecurityContext:
@@ -117,7 +118,7 @@ podSecurityContext:
     type: RuntimeDefault
 
 securityContext:
-  readOnlyRootFilesystem: true
+  readOnlyRootFilesystem: false
   allowPrivilegeEscalation: false
   capabilities:
     drop:
@@ -148,8 +149,13 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
+initWallet:
+  enabled: false
+  image: dacr/coursier-launcher:openjdk-11
+
 persistence:
   enabled: true
+  matchLabels: false
   mountPath: /mnt/btc-bridge/
   accessModes:
     - ReadWriteOnce

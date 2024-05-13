@@ -4,13 +4,11 @@ kind: NetworkPolicy
 metadata:
   name: {{ .Values.service | lower | quote }}
   labels:
-    app.kubernetes.io/name: {{ .Values.service | lower | quote }}
-    app.kubernetes.io/part-of: {{ .Values.system | quote }}
-    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    {{- include "btc-bridge.labels" . | nindent 4 }}
 spec:
   podSelector:
     matchLabels:
-      app.kubernetes.io/part-of: {{ .Values.system | quote }}
+      {{- include "btc-bridge.selectorLabels" . | nindent 4 }}
   ingress:
   - from:
     - podSelector:
