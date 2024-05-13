@@ -1,6 +1,6 @@
 # bifrost
 
-![Version: 0.2.2](https://img.shields.io/badge/Version-0.2.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0-beta2](https://img.shields.io/badge/AppVersion-2.0.0--beta2-informational?style=flat-square)
+![Version: 0.2.3](https://img.shields.io/badge/Version-0.2.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0-beta3](https://img.shields.io/badge/AppVersion-2.0.0--beta3-informational?style=flat-square)
 
 A Helm chart for Bifrost, the Topl blockchain node built for good.
 
@@ -26,7 +26,7 @@ A Helm chart for Bifrost, the Topl blockchain node built for good.
 | configMap.mountPath | string | `"/config/bifrost-config"` |  |
 | env[0].name | string | `"_JAVA_OPTIONS"` |  |
 | env[0].value | string | `"-XX:MaxRAMPercentage=70.0 -XX:ActiveProcessorCount=4"` |  |
-| image.imagePullPolicy | string | `"IfNotPresent"` |  |
+| image.imagePullPolicy | string | `"Always"` |  |
 | image.repository | string | `"toplprotocol/bifrost-node"` |  |
 | image.tag | string | `""` |  |
 | istio.annotations | object | `{}` |  |
@@ -53,7 +53,7 @@ A Helm chart for Bifrost, the Topl blockchain node built for good.
 | istio.corsPolicy.maxAge | string | `"24h"` |  |
 | istio.createGrpcWebFilter | bool | `true` |  |
 | istio.enabled | bool | `false` |  |
-| istio.ingressGateway.host | string | `"tetra.testnet.torus.topl.tech"` |  |
+| istio.ingressGateway.host | string | `"bifrost.example.com"` |  |
 | istio.ingressGateway.name | string | `"istio-gateways/bifrost-gateway"` |  |
 | istio.outlierDetection | object | `{}` |  |
 | istio.overallTimeout | string | `nil` |  |
@@ -77,7 +77,7 @@ A Helm chart for Bifrost, the Topl blockchain node built for good.
 | metrics.serviceMonitor.relabelings | list | `[]` |  |
 | metrics.serviceMonitor.scheme | string | `""` |  |
 | metrics.serviceMonitor.selector | object | `{}` |  |
-| networkPolicy.enabled | bool | `true` |  |
+| networkPolicy.enabled | bool | `false` |  |
 | nodeSelector | object | `{}` |  |
 | podSecurityContext.fsGroup | int | `0` |  |
 | podSecurityContext.runAsGroup | int | `0` |  |
@@ -98,11 +98,10 @@ A Helm chart for Bifrost, the Topl blockchain node built for good.
 | probes.startupProbe.grpc.port | int | `9084` |  |
 | probes.startupProbe.timeoutSeconds | int | `20` |  |
 | replicaCount | int | `1` |  |
-| resources.limits.cpu | string | `"2000m"` |  |
 | resources.limits.ephemeral-storage | string | `"500Mi"` |  |
-| resources.limits.memory | string | `"4000Mi"` |  |
-| resources.requests.cpu | string | `"1000m"` |  |
-| resources.requests.memory | string | `"4000Mi"` |  |
+| resources.limits.memory | string | `"3Gi"` |  |
+| resources.requests.cpu | string | `"25m"` |  |
+| resources.requests.memory | string | `"3Gi"` |  |
 | securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | securityContext.readOnlyRootFilesystem | bool | `true` |  |

@@ -14,7 +14,7 @@ image:
   repository: toplprotocol/bifrost-node
   # Your docker container's tag
   tag: ""
-  imagePullPolicy: IfNotPresent
+  imagePullPolicy: Always
 
 command: # Optional
 args:
@@ -51,12 +51,6 @@ serviceAccount:
 replicaCount: 1
 # The maximum number of pods from that set that can be unavailable at once
 maxUnavailable: 1
-
-# Horizontal pod autoscaler configuration (optional)
-# autoscaling:
-#   minReplicas: 2
-#   maxReplicas: 4
-#   targetAverageCpuUtilization: 80
 
 serviceType: ClusterIP
 
@@ -97,7 +91,7 @@ istio:
 
   ingressGateway:
     name: istio-gateways/bifrost-gateway
-    host: tetra.testnet.torus.topl.tech
+    host: bifrost.example.com
 
   corsPolicy:
     allowOrigins:
@@ -146,11 +140,10 @@ istio:
 # Optional
 resources:
   requests:
-    memory: "4000Mi"
-    cpu: "1000m"
+    memory: "3Gi"
+    cpu: "25m"
   limits:
-    memory: "4000Mi"
-    cpu: "2000m"
+    memory: "3Gi"
     ephemeral-storage: "500Mi"
 
 podSecurityContext:
@@ -168,7 +161,7 @@ securityContext:
       - ALL
 
 networkPolicy:
-  enabled: true
+  enabled: false
 
 metrics:
   enabled: false
