@@ -1,47 +1,34 @@
-{{- $root := . -}}
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: {{ .Values.service | lower | quote }}
   labels:
-    {{- include "bifrost.labels" . | nindent 4 }}
+    {{- include "btc-wallet.labels" . | nindent 4 }}
   namespace: {{ .Release.Namespace | quote }}
 spec:
-  serviceName: {{ .Values.service | lower | quote }}
+  {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
+  {{- end }}
   selector:
     matchLabels:
-      {{- include "bifrost.selectorLabels" . | nindent 6 }}
-  updateStrategy:
-    type: RollingUpdate
+      {{- include "btc-wallet.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
         # Kubernetes recommended labels
-        {{- include "bifrost.labels" . | nindent 8 }}
+        {{- include "btc-wallet.labels" . | nindent 8 }}
         # Isio required labels
         app: {{ .Values.service | lower | quote }}
         version: {{ .Values.version | quote }}
-      {{- if .Values.configMap }}
-      annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
-      {{- end }}
     spec:
       {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- tpl (toYaml .) $root | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
+      nodeSelector: 
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ .Values.serviceAccount.name | lower | quote }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automountToken }}
       containers:
         - name: {{ .Values.service | lower | quote }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
@@ -73,24 +60,13 @@ spec:
           {{ toYaml .Values.probes | nindent 10 }}
         {{- end }}
           volumeMounts:
-            - name: {{ (print .Values.service "-config") | quote }}
-              mountPath: {{ .Values.configMap.mountPath | quote }}
-            - name: {{ (print .Values.service "-pv") | quote }}
-              mountPath: {{ .Values.volume.mountDirectory }}
-            - name: tmp
-              mountPath: /tmp
+        {{- if .Values.persistence.enabled }}
+            - name: storage
+              mountPath: {{ .Values.persistence.mountPath }}
+        {{- end }}
       volumes:
-        - name: {{ (print .Values.service "-config") | quote }}
-          configMap:
-            name: {{ .Values.service | lower | quote }}
-        - name: tmp
-          emptyDir: {}
-  volumeClaimTemplates:
-    - metadata:
-        name: {{ (print .Values.service "-pv") | quote }}
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        storageClassName: {{ .Values.volume.storageClass }}
-        resources:
-          requests:
-            storage: {{ .Values.volume.storageSize }}
+        {{- if .Values.persistence.enabled }}
+        - name: storage
+          persistentVolumeClaim:
+            claimName: {{ .Values.service | lower | quote }}
+        {{- end }}

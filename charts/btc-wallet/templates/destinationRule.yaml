@@ -4,7 +4,7 @@ kind: DestinationRule
 metadata:
   name: {{ .Values.service | lower | quote }}
   labels:
-    {{- include "btc-bridge.labels" . | nindent 4 }}
+    {{- include "btc-wallet.labels" . | nindent 4 }}
   namespace: {{ .Release.Namespace | quote }}
 spec:
   host: {{ (print .Values.service "." .Release.Namespace ".svc.cluster.local")  | quote }}

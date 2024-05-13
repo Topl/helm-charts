@@ -4,7 +4,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .Values.service | lower | quote }}
   labels:
-    {{- include "btc-bridge.labels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ .Values.service | lower | quote }}
+    app.kubernetes.io/part-of: {{ .Values.system | quote }}
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
   namespace: {{ .Release.Namespace | quote }}
   {{- with .Values.persistence.finalizers  }}
   finalizers:
@@ -21,9 +23,9 @@ spec:
   {{- with .Values.persistence.storageClassName }}
   storageClassName: {{ . }}
   {{- end }}
-  {{- if .Values.persistence.matchLabels }}
+  {{- with .Values.persistence.selectorLabels }}
   selector:
     matchLabels:
-    {{- include "btc-bridge.selectorLabels" . | nindent 4 }}
+    {{- toYaml . | nindent 6 }}
   {{- end }}
 {{- end }}

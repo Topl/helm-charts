@@ -2,48 +2,47 @@
 # This is a YAML-formatted file.
 
 # The overall system your service is a part of
-system: bifrost-node
+system: bitcoin-node
 # The name of your service
-service: bifrost-node
+service: bitcoin-node
 # The major version number for your service
 version: 1
 
 # Docker settings
 image:
   # The name of your docker container
-  repository: toplprotocol/bifrost-node
-  # Your docker container's tag
+  repository: ruimarinho/bitcoin-core
   tag: ""
   imagePullPolicy: Always
 
-command: # Optional
+command:
+  - "bitcoind"
+# - sleep
+# - infinity
 args:
-  - --dataDir
-  - "/bifrost/data"
-  - --stakingDir
-  - "/bifrost/staking"
+  - "-printtoconsole"
+  - "-chain=regtest"
+  - "-zmqpubrawblock=tcp://0.0.0.0:28332"
+  - "-rpcuser=test"
+  - "-rpcpassword=test"
+  - "-port=18444"
+  - "-rpcport=18443"
+  - "-rpcbind=:18443"
+  - "-rpcallowip=0.0.0.0/0"
+  - "-datadir=/mnt/bitcoin"
 
-env:
-  - name: _JAVA_OPTIONS
-    value: "-XX:MaxRAMPercentage=70.0 -XX:ActiveProcessorCount=4"
+env: # Optional
+- name: BITCOIN_DATA
+  value: /mnt/bitcoin
 
 nodeSelector: {}
-
-## Tolerations for pod assignment
-## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
-##
 tolerations: []
-
-## Affinity for pod assignment (evaluated as template)
-## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
-##
 affinity: {}
-
   # node_pool: guaranteed-pool
 # Istio uses the service account name as a component of the service's security
 # identity. Set "create" to false to use an previously created service account.
 serviceAccount:
-  name: bifrost-node
+  name: bitcoin-node
   create: true
   automountToken: false
 
@@ -58,15 +57,15 @@ serviceType: ClusterIP
 # Ports must be named <protocol>[-<suffix>] to work with Istio.
 # Valid protocols are grpc, http, http2, https, mongo, mysql, redis, tcp, tls, udp
 ports:
-  - name: http2
-    port: 9084
-    targetPort: 9084
   - name: tcp-p2p
-    port: 9085
-    targetPort: 9085
-  - name: http-metrics
-    port: 9095
-    targetPort: 9095
+    port: 18444
+    targetPort: 18444
+  - name: tcp-rpc
+    port: 18443
+    targetPort: 18443
+  - name: tcp-zmqpub
+    port: 28332
+    targetPort: 28332
 
 # Configure the Istio ingress gateway to route outside traffic for the provided
 # host name to this service on the ports and protocols defined in the 'ports' section
@@ -76,13 +75,9 @@ istio:
   createGrpcWebFilter: true
 
   virtualServiceRoutes:
-    http:
-      - port: 443
-        targetPort: 9084
-        matchPrefix: []
     tcp:
-      - port: 9085
-        targetPort: 9085
+      - port: 18444
+        targetPort: 18444
         matchPrefix: []
 
   annotations:
@@ -90,36 +85,8 @@ istio:
     # networking.istio.io/exportTo: .
 
   ingressGateway:
-    name: istio-gateways/bifrost-gateway
-    host: bifrost.example.com
-
-  corsPolicy:
-    allowOrigins:
-      - regex: ".*"
-      # - exact: https://studio.buf.build
-    allowMethods:
-      - POST
-      - GET
-      - OPTIONS
-      - PUT
-      - DELETE
-    allowHeaders:
-      - grpc-timeout
-      - content-type
-      - keep-alive
-      - user-agent
-      - cache-control
-      - content-type
-      - content-transfer-encoding
-      - x-accept-content-transfer-encoding
-      - x-accept-response-streaming
-      - x-user-agent
-      - x-grpc-web
-    maxAge: "24h"
-    allowCredentials: true
-    exposeHeaders:
-      - grpc-status
-      - grpc-message
+    name: istio-gateways/bitcoin-gateway
+    host: bitcoin.example.com
 
   # # The overall timeout for requests to this service
   # # Optional
@@ -147,9 +114,9 @@ resources:
     ephemeral-storage: "500Mi"
 
 podSecurityContext:
-  runAsUser: 1001 # TODO: Update Bifrost Docker container to use high UID. Add CKV_K8S_40 as a check.
-  runAsGroup: 0
-  fsGroup: 0
+  runAsUser: 101
+  runAsGroup: 101
+  fsGroup: 101
   seccompProfile:
     type: RuntimeDefault
 
@@ -157,63 +124,35 @@ securityContext:
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
   capabilities:
-    drop:
-      - ALL
+    add:
+      - CAP_FOWNER
 
 networkPolicy:
   enabled: false
-
-metrics:
-  enabled: false
-  # -- Prometheus ServiceMonitor scrapeTimeout. If empty, Prometheus uses the global scrape timeout unless it is less than the target's scrape interval value in which the latter is used.
-  scrapeTimeout: ""
-  service:
-    type: ClusterIP
-    servicePort: 9095
-    portName: http-metrics
-  serviceMonitor:
-    enabled: true
-    interval: 30s
-    relabelings: []
-    metricRelabelings: []
-    selector: {}
-    scheme: ""
-    namespace: "" # "monitoring"
 
 # Probe settings (use Kubernetes syntax)
 # Optional
 probes:
   startupProbe: # Wait failureThreshold * periodSeconds (300s) before allowing other probes to start.
-    grpc:
-      port: 9084
+    tcpSocket:
+      port: 18444
     failureThreshold: 30
     timeoutSeconds: 20
   readinessProbe:
     timeoutSeconds: 20
-    grpc:
-      port: 9084
-  # livenessProbe:
-  #   initialDelaySeconds: 30
-  #   terminationGracePeriodSeconds: 60
-  #   timeoutSeconds: 20
-  #   grpc:
-  #     port: 9084
+    tcpSocket:
+      port: 18444
 
 configMap: # Optional
   # Where the config map should be mounted inside your container's filesystem.
-  mountPath: /config/bifrost-config
+  mountPath: /config/bitcoin-config
   fileName: custom-config.yaml
   # Everything under content is copied verbatim into your service's configmap.
   # Example:
   content: |
-    bifrost:
-      big-bang:
-        type: public
-        genesis-id: b_6D8mXdqjsGrJbnXf6PqfWQrdTfKr3U5nbLGJGyYVgjqs
-        source-path: https://raw.githubusercontent.com/Topl/Genesis_Testnets/main/testnet0/
-
+    test
 volume:
-  mountDirectory: /mnt/bifrost/
+  mountDirectory: /mnt/bitcoin/
   # GKE specific storage classes: standard, standard-rwo, premium-rwo
   storageClass:
   storageSize: 10Gi

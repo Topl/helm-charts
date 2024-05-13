@@ -4,11 +4,11 @@ kind: NetworkPolicy
 metadata:
   name: {{ .Values.service | lower | quote }}
   labels:
-    {{- include "btc-bridge.labels" . | nindent 4 }}
+    {{- include "btc-wallet.labels" . | nindent 4 }}
 spec:
   podSelector:
     matchLabels:
-      {{- include "btc-bridge.selectorLabels" . | nindent 4 }}
+      {{- include "btc-wallet.selectorLabels" . | nindent 4 }}
   ingress:
   - from:
     - podSelector:

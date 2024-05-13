@@ -1,39 +1,31 @@
-# Default values for btc-bridge.
+# Default values for btc-wallet.
 # This is a YAML-formatted file.
 
 # The overall system your service is a part of
-system: btc-bridge
+system: btc-wallet
 # The name of your service
-service: btc-bridge
+service: btc-wallet
 # The major version number for your service
 version: 1
 
 # Docker settings
 image:
   # The name of your docker container
-  repository: ghcr.io/topl/topl-btc-bridge
+  repository: ghcr.io/topl/demo-btc-wallet
   # Your docker container's tag
   tag: ""
   imagePullPolicy: Always
 
 command: # Optional
 args:
-  - "--topl-host"
-  - "localhost"
-  - "--topl-port"
-  - "9084"
-  - "--topl-secure"
-  - "false"
-  - "--topl-network"
-  - "private"
-  - "--btc-network"
-  - "regtest"
-  - "--topl-wallet-db"
-  - "/mnt/btc-bridge/topl-wallet.db"
-  - "--topl-wallet-seed-file"
-  - "/mnt/btc-bridge/topl-keyfile.json"
-  # - "--peg-in-seed-file"
-  # - "/mnt/btc-bridge/pegin-wallet.json"
+  - "--btc-user"
+  - "test"
+  - "--btc-password"
+  - "test" # TODO: move this to a secret and reference from env
+  - "--btc-url"
+  - "0.0.0.0"
+  - "--bridge-host"
+  - "0.0.0.0"
 
 # command:
 #   - "sleep"
@@ -43,14 +35,12 @@ args:
 env:
   - name: _JAVA_OPTIONS
     value: "-XX:MaxRAMPercentage=70.0 -XX:ActiveProcessorCount=4"
-  - name: TOPL_WALLET_PASSWORD
-    value: "password"
   
 
 # Istio uses the service account name as a component of the service's security
 # identity. Set "create" to false to use an previously created service account.
 serviceAccount:
-  name: btc-bridge
+  name: btc-wallet
   create: true
   automountToken: false
 
@@ -64,14 +54,14 @@ istio:
 
   ingressGateway:
     name: istio-gateways/gateway
-    host: bridge.example.com
+    host: wallet.example.com
     matchPrefix:
       - "/"
 
   virtualServiceRoutes:
     http:
       - port: 443
-        targetPort: 4000
+        targetPort: 3002
         matchPrefix: []
   
   # # The overall timeout for requests to this service
@@ -96,8 +86,8 @@ serviceType: NodePort
 # Valid protocols are grpc, http, http2, https, mongo, mysql, redis, tcp, tls, udp
 ports:
   - name: https-svc
-    port: 4000
-    targetPort: 4000
+    port: 3002
+    targetPort: 3002
 
 # Resource settings (use Kubernetes syntax)
 # Optional
@@ -118,7 +108,7 @@ podSecurityContext:
     type: RuntimeDefault
 
 securityContext:
-  readOnlyRootFilesystem: false
+  readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
   capabilities:
     drop:
@@ -135,12 +125,12 @@ probes:
     initialDelaySeconds: 30
     httpGet:
       path: /
-      port: 4000
+      port: 3002
   readinessProbe:
     timeoutSeconds: 10
     httpGet:
       path: /
-      port: 4000
+      port: 3002
 
 autoscaling:
   enabled: false
@@ -149,14 +139,9 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
-initWallet:
-  enabled: false
-  image: dacr/coursier-launcher:openjdk-11
-
 persistence:
   enabled: true
-  matchLabels: false
-  mountPath: /mnt/btc-bridge/
+  mountPath: /mnt/btc-wallet/
   accessModes:
     - ReadWriteOnce
   # GKE specific storage classes: standard, standard-rwo, premium-rwo

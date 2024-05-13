@@ -3,9 +3,10 @@ kind: PodDisruptionBudget
 metadata:
   name: {{ .Values.service | lower | quote }}
   labels:
-    {{- include "btc-bridge.labels" . | nindent 4 }}
+    {{- include "bitcoin.labels" . | nindent 4 }}
 spec:
   maxUnavailable: {{ .Values.maxUnavailable }}
   selector:
     matchLabels:
-      {{- include "btc-bridge.selectorLabels" . | nindent 4 }}
+      app: {{ .Values.service | lower | quote }}
+      version: {{ .Values.version | quote }}

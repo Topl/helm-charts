@@ -4,11 +4,13 @@ kind: NetworkPolicy
 metadata:
   name: {{ .Values.service | lower | quote }}
   labels:
-    {{- include "btc-bridge.labels" . | nindent 4 }}
+    {{- include "bitcoin.labels" . | nindent 4 }}
 spec:
   podSelector:
     matchLabels:
-      {{- include "btc-bridge.selectorLabels" . | nindent 4 }}
+      {{- include "bitcoin.selectorLabels" . | nindent 4 }}
+  policyTypes:
+    - Ingress
   ingress:
   - from:
     - podSelector:
@@ -19,6 +21,4 @@ spec:
     - port: {{ .name | quote }}
       protocol: TCP
 {{- end }}
-  policyTypes:
-  - Ingress
 {{- end }}

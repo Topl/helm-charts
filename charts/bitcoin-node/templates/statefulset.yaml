@@ -4,21 +4,21 @@ kind: StatefulSet
 metadata:
   name: {{ .Values.service | lower | quote }}
   labels:
-    {{- include "bifrost.labels" . | nindent 4 }}
+    {{- include "bitcoin.labels" . | nindent 4 }}
   namespace: {{ .Release.Namespace | quote }}
 spec:
   serviceName: {{ .Values.service | lower | quote }}
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "bifrost.selectorLabels" . | nindent 6 }}
+      {{- include "bitcoin.selectorLabels" . | nindent 6 }}
   updateStrategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
         # Kubernetes recommended labels
-        {{- include "bifrost.labels" . | nindent 8 }}
+        {{- include "bitcoin.labels" . | nindent 8 }}
         # Isio required labels
         app: {{ .Values.service | lower | quote }}
         version: {{ .Values.version | quote }}
@@ -77,14 +77,10 @@ spec:
               mountPath: {{ .Values.configMap.mountPath | quote }}
             - name: {{ (print .Values.service "-pv") | quote }}
               mountPath: {{ .Values.volume.mountDirectory }}
-            - name: tmp
-              mountPath: /tmp
       volumes:
         - name: {{ (print .Values.service "-config") | quote }}
           configMap:
             name: {{ .Values.service | lower | quote }}
-        - name: tmp
-          emptyDir: {}
   volumeClaimTemplates:
     - metadata:
         name: {{ (print .Values.service "-pv") | quote }}
