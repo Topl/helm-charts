@@ -352,6 +352,38 @@ entries:
     urls:
     - https://github.com/Topl/helm-charts/releases/download/bifrost-dion-0.1.0/bifrost-dion-0.1.0.tgz
     version: 0.1.0
+  btc-bridge:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2024-05-13T18:29:28.617174978Z"
+    description: Helm Chart for deploying the Topl BTC Bridge.
+    digest: 01bba40aae81e4c16b0036a0be4767214e97026ac62138ab756fc6a5e83c2d63
+    home: https://topl.co
+    icon: https://topl.co/wp-content/uploads/2023/06/topl_white_horiz.svg
+    name: btc-bridge
+    sources:
+    - https://github.com/Topl/helm-charts
+    - https://topl.github.io/helm-charts/
+    type: application
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/btc-bridge-0.1.1/btc-bridge-0.1.1.tgz
+    version: 0.1.1
+  btc-wallet:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2024-05-13T18:29:28.761146016Z"
+    description: Helm Chart for deploying the Topl BTC Wallet.
+    digest: a41a713fe92746bb5b4bc1490ab42671fc8aef903e3bb3e7430093082b3fc5e1
+    home: https://topl.co
+    icon: https://topl.co/wp-content/uploads/2023/06/topl_white_horiz.svg
+    name: btc-wallet
+    sources:
+    - https://github.com/Topl/helm-charts
+    - https://topl.github.io/helm-charts/
+    type: application
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/btc-wallet-0.1.1/btc-wallet-0.1.1.tgz
+    version: 0.1.1
   faucet:
   - apiVersion: v2
     appVersion: 0.1.0
@@ -506,4 +538,4 @@ entries:
     urls:
     - https://github.com/Topl/helm-charts/releases/download/vertx-0.1.0/vertx-0.1.0.tgz
     version: 0.1.0
-generated: "2024-04-30T16:27:10.134424456Z"
+generated: "2024-05-13T18:29:28.761208583Z"
