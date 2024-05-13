@@ -27,7 +27,6 @@ Helm Chart for deploying the Topl BTC Wallet.
 | autoscaling.maxReplicas | int | `10` |  |
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
-| bitcoin-node.enabled | bool | `true` |  |
 | command | string | `nil` |  |
 | env[0].name | string | `"_JAVA_OPTIONS"` |  |
 | env[0].value | string | `"-XX:MaxRAMPercentage=70.0 -XX:ActiveProcessorCount=4"` |  |

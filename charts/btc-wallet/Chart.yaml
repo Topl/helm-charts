@@ -10,9 +10,3 @@ home: https://topl.co
 sources:
   - https://github.com/Topl/helm-charts
   - https://topl.github.io/helm-charts/
-# dependencies:
-#   - name: bitcoin-node
-#     version: 0.1.0
-#     # repository: https://topl.github.io/helm-charts/
-#     repository: "file://../bitcoin-node"
-#     condition: bitcoin-node.enabled

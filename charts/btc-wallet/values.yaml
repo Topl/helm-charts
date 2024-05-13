@@ -8,9 +8,6 @@ service: btc-wallet
 # The major version number for your service
 version: 1
 
-bitcoin-node:
-  enabled: true
-
 # Docker settings
 image:
   # The name of your docker container
