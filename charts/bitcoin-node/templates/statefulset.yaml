@@ -1,0 +1,92 @@
+{{- $root := . -}}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.service | lower | quote }}
+  labels:
+    {{- include "bitcoin.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  serviceName: {{ (print .Values.service "-p2p") | lower | quote }}
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "bitcoin.selectorLabels" . | nindent 6 }}
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        # Kubernetes recommended labels
+        {{- include "bitcoin.labels" . | nindent 8 }}
+        # Isio required labels
+        app: {{ .Values.service | lower | quote }}
+        version: {{ .Values.version | quote }}
+      {{- if .Values.configMap }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+      {{- end }}
+    spec:
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- tpl (toYaml .) $root | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ .Values.serviceAccount.name | lower | quote }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Values.service | lower | quote }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          imagePullPolicy: {{ .Values.image.imagePullPolicy | quote }}
+          {{- if .Values.env }}
+          env: {{- toYaml .Values.env | nindent 10 }}
+          {{- end }}
+          command:
+          {{- range .Values.command }}
+            - {{ quote . }}
+          {{- end }}
+          args:
+          {{- range .Values.args }}
+            - {{ quote . }}
+          {{- end }}
+          ports:
+          {{- range .Values.ports }}
+            - name: {{ .name | quote }}
+              containerPort: {{ .targetPort }}
+              protocol: TCP
+          {{- end }}
+          {{- if .Values.resources }}
+          resources:
+            {{ toYaml .Values.resources | nindent 12 }}
+          {{- end }}
+        {{- if .Values.probes }}
+          {{ toYaml .Values.probes | nindent 10 }}
+        {{- end }}
+          volumeMounts:
+            - name: {{ (print .Values.service "-config") | quote }}
+              mountPath: {{ .Values.configMap.mountPath | quote }}
+            - name: {{ (print .Values.service "-pv") | quote }}
+              mountPath: {{ .Values.volume.mountDirectory }}
+      volumes:
+        - name: {{ (print .Values.service "-config") | quote }}
+          configMap:
+            name: {{ .Values.service | lower | quote }}
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ (print .Values.service "-pv") | quote }}
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: {{ .Values.volume.storageClass }}
+        resources:
+          requests:
+            storage: {{ .Values.volume.storageSize }}
