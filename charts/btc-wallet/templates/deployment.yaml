@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.service | lower | quote }}
+  labels:
+    {{- include "btc-wallet.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "btc-wallet.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        # Kubernetes recommended labels
+        {{- include "btc-wallet.labels" . | nindent 8 }}
+        # Isio required labels
+        app: {{ .Values.service | lower | quote }}
+        version: {{ .Values.version | quote }}
+    spec:
+      {{- with .Values.nodeSelector }}
+      nodeSelector: 
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ .Values.serviceAccount.name | lower | quote }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automountToken }}
+      containers:
+        - name: {{ .Values.service | lower | quote }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          imagePullPolicy: {{ .Values.image.imagePullPolicy | quote }}
+          {{- if .Values.env }}
+          env: {{- toYaml .Values.env | nindent 10 }}
+          {{- end }}
+          command:
+          {{- range .Values.command }}
+            - {{ quote . }}
+          {{- end }}
+          args:
+          {{- range .Values.args }}
+            - {{ quote . }}
+          {{- end }}
+          ports:
+          {{- range .Values.ports }}
+            - name: {{ .name | quote }}
+              containerPort: {{ .targetPort }}
+              protocol: TCP
+          {{- end }}
+          {{- if .Values.resources }}
+          resources:
+            {{ toYaml .Values.resources | nindent 12 }}
+          {{- end }}
+        {{- if .Values.probes }}
+          {{ toYaml .Values.probes | nindent 10 }}
+        {{- end }}
+          volumeMounts:
+        {{- if .Values.persistence.enabled }}
+            - name: storage
+              mountPath: {{ .Values.persistence.mountPath }}
+        {{- end }}
+      volumes:
+        {{- if .Values.persistence.enabled }}
+        - name: storage
+          persistentVolumeClaim:
+            claimName: {{ .Values.service | lower | quote }}
+        {{- end }}

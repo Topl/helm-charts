@@ -1,0 +1,154 @@
+# Default values for btc-wallet.
+# This is a YAML-formatted file.
+
+# The overall system your service is a part of
+system: btc-wallet
+# The name of your service
+service: btc-wallet
+# The major version number for your service
+version: 1
+
+bitcoin-node:
+  enabled: true
+
+# Docker settings
+image:
+  # The name of your docker container
+  repository: ghcr.io/topl/demo-btc-wallet
+  # Your docker container's tag
+  tag: ""
+  imagePullPolicy: Always
+
+command: # Optional
+args:
+  - "--btc-user"
+  - "test"
+  - "--btc-password"
+  - "test" # TODO: move this to a secret and reference from env
+  - "--btc-url"
+  - "0.0.0.0"
+  - "--bridge-host"
+  - "0.0.0.0"
+
+# command:
+#   - "sleep"
+# args:
+#   - "infinity"
+
+env:
+  - name: _JAVA_OPTIONS
+    value: "-XX:MaxRAMPercentage=70.0 -XX:ActiveProcessorCount=4"
+  
+
+# Istio uses the service account name as a component of the service's security
+# identity. Set "create" to false to use an previously created service account.
+serviceAccount:
+  name: btc-wallet
+  create: true
+  automountToken: false
+
+# The initial number of pod replicas to run for your service
+replicaCount: 1
+# The maximum number of pods from that set that can be unavailable at once
+maxUnavailable: 1
+
+istio:
+  enabled: false
+
+  ingressGateway:
+    name: istio-gateways/gateway
+    host: wallet.example.com
+    matchPrefix:
+      - "/"
+
+  virtualServiceRoutes:
+    http:
+      - port: 443
+        targetPort: 3002
+        matchPrefix: []
+  
+  # # The overall timeout for requests to this service
+  # # Optional
+  overallTimeout: # 24h
+
+  # # Client retry settings (use Istio syntax)
+  # # Optional
+  retries: {}
+  #   attempts: 3
+  #   perTryTimeout: 5s
+
+  # # Circuit breaker settings (use Istio syntax)
+  # # Optional
+  outlierDetection: {}
+  #   consecutive5xxErrors: 5
+
+serviceType: NodePort
+
+# Port settings
+# Ports must be named <protocol>[-<suffix>] to work with Istio.
+# Valid protocols are grpc, http, http2, https, mongo, mysql, redis, tcp, tls, udp
+ports:
+  - name: https-svc
+    port: 3002
+    targetPort: 3002
+
+# Resource settings (use Kubernetes syntax)
+# Optional
+resources:
+  requests:
+    memory: "3Gi"
+    cpu: "50m"
+  limits:
+    memory: "3Gi"
+    ephemeral-storage: "500Mi"
+
+podSecurityContext:
+  runAsUser: 1001
+  runAsGroup: 0
+  fsGroup: 0
+  supplementalGroups: [0]
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+
+nodeSelector: {}
+
+networkPolicy:
+  enabled: false
+
+# Probe settings (use Kubernetes syntax)
+probes:
+  livenessProbe:
+    initialDelaySeconds: 30
+    httpGet:
+      path: /
+      port: 3002
+  readinessProbe:
+    timeoutSeconds: 10
+    httpGet:
+      path: /
+      port: 3002
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+persistence:
+  enabled: true
+  mountPath: /mnt/btc-wallet/
+  accessModes:
+    - ReadWriteOnce
+  # GKE specific storage classes: standard, standard-rwo, premium-rwo
+  storageClassName:
+  storageSize: 10Gi
+  finalizers:
+    - kubernetes.io/pvc-protection
