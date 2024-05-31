@@ -1,6 +1,6 @@
 # genus
 
-![Version: 0.2.5](https://img.shields.io/badge/Version-0.2.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0-beta3](https://img.shields.io/badge/AppVersion-2.0.0--beta3-informational?style=flat-square)
+![Version: 0.2.6](https://img.shields.io/badge/Version-0.2.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0-beta3](https://img.shields.io/badge/AppVersion-2.0.0--beta3-informational?style=flat-square)
 
 A Helm chart for Genus, the data indexer for Bifrost
 
@@ -15,6 +15,7 @@ A Helm chart for Genus, the data indexer for Bifrost
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| database.existingSecret | string | `""` |  |
 | env[0].name | string | `"_JAVA_OPTIONS"` |  |
 | env[0].value | string | `"-Xmx1g -Xms1g -Dstorage.diskCache.bufferSize=2000 -XX:ActiveProcessorCount=4 -XX:+AlwaysPreTouch"` |  |
 | image.imagePullPolicy | string | `"IfNotPresent"` |  |
