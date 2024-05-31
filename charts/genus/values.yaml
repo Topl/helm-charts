@@ -174,3 +174,6 @@ nodeRpc:
 
 replicator:
   enable: true
+
+database:
+  existingSecret: ""

@@ -42,7 +42,7 @@ spec:
             - name: ORIENT_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ ((print .Values.service "-db-password") | lower | quote) }}
+                  name: {{ template "genus.dbSecretName" . }}
                   key: db-password
             {{- toYaml .Values.env | nindent 12 }}
           args:
