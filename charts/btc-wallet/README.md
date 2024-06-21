@@ -1,15 +1,25 @@
 # btc-wallet
 
-![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
+![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
 
-Helm Chart for deploying the Topl BTC Wallet.
+Helm Chart for deploying the Apparatus BTC Wallet.
 
-**Homepage:** <https://topl.co>
+**Homepage:** <https://apparatus.live>
+
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| apparatus |  | <https://github.com/Topl> |
 
 ## Source Code
 
 * <https://github.com/Topl/helm-charts>
-* <https://topl.github.io/helm-charts/>
+* <https://topl.github.io/helm-charts>
+
+## Requirements
+
+Kubernetes: `>=1.23.0-0`
 
 ## Values
 
@@ -34,7 +44,7 @@ Helm Chart for deploying the Topl BTC Wallet.
 | image.repository | string | `"ghcr.io/topl/demo-btc-wallet"` |  |
 | image.tag | string | `""` |  |
 | istio.enabled | bool | `false` |  |
-| istio.ingressGateway.host | string | `"wallet.example.com"` |  |
+| istio.ingressGateway.hosts[0] | string | `"wallet.example.com"` |  |
 | istio.ingressGateway.matchPrefix[0] | string | `"/"` |  |
 | istio.ingressGateway.name | string | `"istio-gateways/gateway"` |  |
 | istio.outlierDetection | object | `{}` |  |

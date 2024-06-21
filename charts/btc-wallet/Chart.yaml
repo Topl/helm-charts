@@ -1,12 +1,21 @@
 apiVersion: v2
-# appVersion: 0.1-4-2ad0c117
-appVersion: latest
-description: Helm Chart for deploying the Topl BTC Wallet.
+appVersion: "latest"
+kubeVersion: ">=1.23.0-0"
+version: 0.1.2
+
 name: btc-wallet
-type: application
-version: 0.1.1
-icon: https://topl.co/wp-content/uploads/2023/06/topl_white_horiz.svg
-home: https://topl.co
+description: Helm Chart for deploying the Apparatus BTC Wallet.
+
+home: https://apparatus.live
+icon: https://apparatus.live/wp-content/uploads/2024/03/cropped-Circle_Original-1.png
 sources:
   - https://github.com/Topl/helm-charts
-  - https://topl.github.io/helm-charts/
+  - https://topl.github.io/helm-charts
+keywords:
+  - apparatus
+  - wallet
+  - blockchain
+maintainers:
+  - name: apparatus
+    url: https://github.com/Topl
+

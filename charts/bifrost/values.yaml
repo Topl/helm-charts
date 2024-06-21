@@ -90,8 +90,9 @@ istio:
     # networking.istio.io/exportTo: .
 
   ingressGateway:
-    name: istio-gateways/bifrost-gateway
-    host: bifrost.example.com
+    name: istio-gateways/gateway
+    hosts:
+      - bifrost.example.com
 
   corsPolicy:
     allowOrigins:

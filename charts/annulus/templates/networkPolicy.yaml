@@ -4,18 +4,16 @@ kind: NetworkPolicy
 metadata:
   name: {{ .Values.service | lower | quote }}
   labels:
-    app.kubernetes.io/name: {{ .Values.service | lower | quote }}
-    app.kubernetes.io/part-of: {{ .Values.system | quote }}
-    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    {{- include "annulus.labels" . | nindent 4 }}
 spec:
   podSelector:
     matchLabels:
-      app.kubernetes.io/part-of: {{ .Values.system | quote }}
+      {{- include "annulus.selectorLabels" . | nindent 6 }}
   ingress:
   - from:
     - podSelector:
         matchLabels:
-          app.kubernetes.io/part-of: {{ .Values.system | quote }}
+          {{- include "annulus.selectorLabels" . | nindent 10 }}
     ports:
 {{- range .Values.ports }}
     - port: {{ .name | quote }}

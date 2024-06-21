@@ -8,9 +8,9 @@ metadata:
   namespace: {{ .Release.Namespace | quote }}
 spec:
   host: {{ (print .Values.service "." .Release.Namespace ".svc.cluster.local")  | quote }}
-{{- if .Values.istio.outlierDetection }}
+  {{- if .Values.istio.outlierDetection }}
   trafficPolicy:
     outlierDetection:
-{{ toYaml .Values.istio.outlierDetection | indent 6 }}
-{{- end }}
+      {{ toYaml .Values.istio.outlierDetection | nindent 6 }}
+  {{- end }}
 {{- end}}

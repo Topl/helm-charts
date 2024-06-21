@@ -1,15 +1,25 @@
-# genus
+# Genus
 
-![Version: 0.2.6](https://img.shields.io/badge/Version-0.2.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0-beta3](https://img.shields.io/badge/AppVersion-2.0.0--beta3-informational?style=flat-square)
+![Version: 0.2.7](https://img.shields.io/badge/Version-0.2.7-informational?style=flat-square) ![AppVersion: 2.0.0-beta3](https://img.shields.io/badge/AppVersion-2.0.0--beta3-informational?style=flat-square)
 
-A Helm chart for Genus, the data indexer for Bifrost
+Helm Chart for Genus, the data indexer for Apparatus.
 
-**Homepage:** <https://topl.co>
+**Homepage:** <https://apparatus.live>
+
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| apparatus |  | <https://github.com/Topl> |
 
 ## Source Code
 
 * <https://github.com/Topl/helm-charts>
-* <https://topl.github.io/helm-charts/>
+* <https://topl.github.io/helm-charts>
+
+## Requirements
+
+Kubernetes: `>=1.23.0-0`
 
 ## Values
 
@@ -45,7 +55,7 @@ A Helm chart for Genus, the data indexer for Bifrost
 | istio.corsPolicy.maxAge | string | `"24h"` |  |
 | istio.createGrpcWebFilter | bool | `true` |  |
 | istio.enabled | bool | `false` |  |
-| istio.ingressGateway.host | string | `"genus.testnet.topl.co"` |  |
+| istio.ingressGateway.hosts[0] | string | `"genus.testnet.topl.co"` |  |
 | istio.ingressGateway.name | string | `"istio-gateways/genus-gateway"` |  |
 | istio.outlierDetection | object | `{}` |  |
 | istio.overallTimeout | string | `nil` |  |

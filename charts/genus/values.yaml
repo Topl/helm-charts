@@ -70,7 +70,8 @@ istio:
 
   ingressGateway:
     name: istio-gateways/genus-gateway
-    host: genus.testnet.topl.co
+    hosts:
+      - genus.testnet.topl.co
 
   corsPolicy:
     allowOrigins:

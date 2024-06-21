@@ -1,15 +1,25 @@
 # faucet
 
-![Version: 0.1.3](https://img.shields.io/badge/Version-0.1.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.0](https://img.shields.io/badge/AppVersion-0.1.0-informational?style=flat-square)
+![Version: 0.1.4](https://img.shields.io/badge/Version-0.1.4-informational?style=flat-square) ![AppVersion: 0.1.0](https://img.shields.io/badge/AppVersion-0.1.0-informational?style=flat-square)
 
-A Helm chart for Kubernetes
+Helm Chart for deploying the Apparatus Faucet.
 
-**Homepage:** <https://topl.co>
+**Homepage:** <https://apparatus.live>
+
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| apparatus |  | <https://github.com/Topl> |
 
 ## Source Code
 
 * <https://github.com/Topl/helm-charts>
-* <https://topl.github.io/helm-charts/>
+* <https://topl.github.io/helm-charts>
+
+## Requirements
+
+Kubernetes: `>=1.23.0-0`
 
 ## Values
 
@@ -24,19 +34,24 @@ A Helm chart for Kubernetes
 | image.imagePullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"toplprotocol/faucet"` |  |
 | image.tag | string | `nil` |  |
-| ingressGateway.host | string | `"faucet.topl.tech"` |  |
-| ingressGateway.matchPrefix[0] | string | `"/"` |  |
-| ingressGateway.name | string | `"istio-gateways/bifrost-gateway"` |  |
+| istio.annotations | object | `{}` |  |
+| istio.enabled | bool | `false` |  |
+| istio.ingressGateway.hosts[0] | string | `"faucet.example.com"` |  |
+| istio.ingressGateway.name | string | `"istio-gateways/gateway"` |  |
+| istio.outlierDetection | object | `{}` |  |
+| istio.overallTimeout | string | `nil` |  |
+| istio.retries | object | `{}` |  |
+| istio.virtualServiceRoutes.http[0].matchPrefix | list | `[]` |  |
+| istio.virtualServiceRoutes.http[0].port | int | `443` |  |
+| istio.virtualServiceRoutes.http[0].targetPort | int | `9999` |  |
 | maxUnavailable | int | `1` |  |
-| outlierDetection.consecutive5xxErrors | int | `5` |  |
-| overallTimeout | string | `"10s"` |  |
 | podSecurityContext.fsGroup | int | `101` |  |
 | podSecurityContext.runAsGroup | int | `101` |  |
 | podSecurityContext.runAsUser | int | `101` |  |
 | podSecurityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | podSecurityContext.supplementalGroups[0] | int | `101` |  |
 | ports[0].name | string | `"https-svc"` |  |
-| ports[0].port | int | `443` |  |
+| ports[0].port | int | `9999` |  |
 | ports[0].targetPort | int | `9999` |  |
 | probes.livenessProbe.httpGet.path | string | `"/healthz"` |  |
 | probes.livenessProbe.httpGet.port | int | `9999` |  |
@@ -50,8 +65,6 @@ A Helm chart for Kubernetes
 | resources.limits.memory | string | `"500Mi"` |  |
 | resources.requests.cpu | string | `"200m"` |  |
 | resources.requests.memory | string | `"32Mi"` |  |
-| retries.attempts | int | `3` |  |
-| retries.perTryTimeout | string | `"2s"` |  |
 | securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | securityContext.readOnlyRootFilesystem | bool | `true` |  |

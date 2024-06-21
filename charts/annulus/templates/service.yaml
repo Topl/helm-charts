@@ -3,9 +3,7 @@ kind: Service
 metadata:
   name: {{ .Values.service | lower | quote }}
   labels:
-    app.kubernetes.io/name: {{ .Values.service | lower | quote }}
-    app.kubernetes.io/part-of: {{ .Values.system | quote }}
-    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    {{- include "annulus.labels" . | nindent 4 }}
   namespace: {{ .Release.Namespace | quote }}
 spec:
   ports:
@@ -16,4 +14,4 @@ spec:
       protocol: TCP
 {{- end }}
   selector:
-    app: {{ .Values.service | lower | quote }}
+    {{- include "annulus.labels" . | nindent 4 }}

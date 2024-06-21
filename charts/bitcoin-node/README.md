@@ -1,15 +1,25 @@
 # bitcoin-node
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 23](https://img.shields.io/badge/AppVersion-23-informational?style=flat-square)
+![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![AppVersion: 23](https://img.shields.io/badge/AppVersion-23-informational?style=flat-square)
 
-A Helm chart for Bitcoin node.
+A Helm chart for running a Bitcoin node.
 
-**Homepage:** <https://topl.co>
+**Homepage:** <https://apparatus.live>
+
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| apparatus |  | <https://github.com/Topl> |
 
 ## Source Code
 
 * <https://github.com/Topl/helm-charts>
-* <https://topl.github.io/helm-charts/>
+* <https://topl.github.io/helm-charts>
+
+## Requirements
+
+Kubernetes: `>=1.23.0-0`
 
 ## Values
 
@@ -36,9 +46,8 @@ A Helm chart for Bitcoin node.
 | image.repository | string | `"ruimarinho/bitcoin-core"` |  |
 | image.tag | string | `""` |  |
 | istio.annotations | object | `{}` |  |
-| istio.createGrpcWebFilter | bool | `true` |  |
 | istio.enabled | bool | `false` |  |
-| istio.ingressGateway.host | string | `"bitcoin.example.com"` |  |
+| istio.ingressGateway.hosts[0] | string | `"bitcoin.example.com"` |  |
 | istio.ingressGateway.name | string | `"istio-gateways/bitcoin-gateway"` |  |
 | istio.outlierDetection | object | `{}` |  |
 | istio.overallTimeout | string | `nil` |  |
