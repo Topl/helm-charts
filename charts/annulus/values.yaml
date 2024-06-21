@@ -46,7 +46,7 @@ ports:
 # host name to this service on the ports and protocols defined in the 'ports' section
 # above.
 istio:
-  enabled: true
+  enabled: false
 
   virtualServiceRoutes:
     http:
