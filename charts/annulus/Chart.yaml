@@ -1,11 +1,20 @@
 apiVersion: v2
-appVersion: v1.4.2
-description: Helm Chart for deploying Annulus, a Topl blockchain explorer.
+appVersion: "v1.4.2"
+kubeVersion: ">=1.23.0-0"
+version: 0.1.12
+
 name: annulus
-type: application
-version: 0.1.10
-icon: https://topl.co/wp-content/uploads/2023/06/topl_white_horiz.svg
-home: https://topl.co
+description: A Helm chart for Annulus, an Apparatus blockchain explorer.
+
+home: https://apparatus.live
+icon: https://apparatus.live/wp-content/uploads/2024/03/cropped-Circle_Original-1.png
 sources:
   - https://github.com/Topl/helm-charts
-  - https://topl.github.io/helm-charts/
+  - https://topl.github.io/helm-charts
+keywords:
+  - apparatus
+  - annulus
+  - explorer
+maintainers:
+  - name: apparatus
+    url: https://github.com/Topl

@@ -1,15 +1,25 @@
 # bifrost
 
-![Version: 0.2.3](https://img.shields.io/badge/Version-0.2.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0-beta3](https://img.shields.io/badge/AppVersion-2.0.0--beta3-informational?style=flat-square)
+![Version: 0.2.4](https://img.shields.io/badge/Version-0.2.4-informational?style=flat-square) ![AppVersion: 2.0.0-beta3](https://img.shields.io/badge/AppVersion-2.0.0--beta3-informational?style=flat-square)
 
-A Helm chart for Bifrost, the Topl blockchain node built for good.
+A Helm chart for Bifrost, the Apparatus blockchain node built for good.
 
-**Homepage:** <https://topl.co>
+**Homepage:** <https://apparatus.live>
+
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| apparatus |  | <https://github.com/Topl> |
 
 ## Source Code
 
 * <https://github.com/Topl/helm-charts>
-* <https://topl.github.io/helm-charts/>
+* <https://topl.github.io/helm-charts>
+
+## Requirements
+
+Kubernetes: `>=1.23.0-0`
 
 ## Values
 
@@ -53,8 +63,8 @@ A Helm chart for Bifrost, the Topl blockchain node built for good.
 | istio.corsPolicy.maxAge | string | `"24h"` |  |
 | istio.createGrpcWebFilter | bool | `true` |  |
 | istio.enabled | bool | `false` |  |
-| istio.ingressGateway.host | string | `"bifrost.example.com"` |  |
-| istio.ingressGateway.name | string | `"istio-gateways/bifrost-gateway"` |  |
+| istio.ingressGateway.hosts[0] | string | `"bifrost.example.com"` |  |
+| istio.ingressGateway.name | string | `"istio-gateways/gateway"` |  |
 | istio.outlierDetection | object | `{}` |  |
 | istio.overallTimeout | string | `nil` |  |
 | istio.retries | object | `{}` |  |

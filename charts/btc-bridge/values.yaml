@@ -64,7 +64,8 @@ istio:
 
   ingressGateway:
     name: istio-gateways/gateway
-    host: bridge.example.com
+    hosts:
+      - bridge.example.com
     matchPrefix:
       - "/"
 

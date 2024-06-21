@@ -8,5 +8,5 @@ metadata:
   namespace: {{ .Release.Namespace | quote }}
 data:
   {{ .Values.configMap.fileName | default "config.yaml" }}: |-
-{{ .Values.configMap.content | indent 4 }}
+    {{ .Values.configMap.content | nindent 4 }}
 {{- end }}

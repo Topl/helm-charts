@@ -8,5 +8,4 @@ spec:
   maxUnavailable: {{ .Values.maxUnavailable }}
   selector:
     matchLabels:
-      app: {{ .Values.service | lower | quote }}
-      version: {{ .Values.version | quote }}
+      {{- include "bitcoin.selectorLabels" . | nindent 6 }}

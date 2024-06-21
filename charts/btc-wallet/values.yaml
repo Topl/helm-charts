@@ -54,7 +54,8 @@ istio:
 
   ingressGateway:
     name: istio-gateways/gateway
-    host: wallet.example.com
+    hosts:
+      - wallet.example.com
     matchPrefix:
       - "/"
 

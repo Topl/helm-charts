@@ -10,7 +10,9 @@ spec:
   gateways:
     - {{ .Values.istio.ingressGateway.name | quote }}
   hosts:
-    - {{ .Values.istio.ingressGateway.host | quote }}
+  {{- range .Values.istio.ingressGateway.hosts }}
+    - {{ . | quote }}
+  {{- end }}
   http:
   {{- range .Values.istio.virtualServiceRoutes.http }}
     - match:
@@ -28,7 +30,7 @@ spec:
       {{- toYaml $.Values.istio.corsPolicy | nindent 8 }}
       {{- if $.Values.istio.retries }}
       retries:
-      {{ toYaml $.Values.istio.retries | indent 8 }}
+      {{ toYaml $.Values.istio.retries | nindent 8 }}
       timeout: {{ required "You must specify an overall timeout to use retries" $.Values.istio.overallTimeout}}
       {{- else if $.Values.istio.overallTimeout }}
       timeout: {{ $.Values.istio.overallTimeout }}
@@ -45,7 +47,7 @@ spec:
             number: {{ .targetPort }}
       {{- if $.Values.istio.retries }}
       retries:
-      {{ toYaml $.Values.istio.retries | indent 8 }}
+      {{ toYaml $.Values.istio.retries | nindent 8 }}
       timeout: {{ required "You must specify an overall timeout to use retries" $.Values.istio.overallTimeout}}
       {{- else if $.Values.istio.overallTimeout }}
       timeout: {{ $.Values.istio.overallTimeout }}

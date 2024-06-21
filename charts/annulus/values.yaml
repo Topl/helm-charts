@@ -39,32 +39,44 @@ autoscaling:
 # Valid protocols are grpc, http, http2, https, mongo, mysql, redis, tcp, tls, udp
 ports:
   - name: https-svc
-    port: 443
+    port: 9999
     targetPort: 9999
 
 # Configure the Istio ingress gateway to route outside traffic for the provided
 # host name to this service on the ports and protocols defined in the 'ports' section
 # above.
-ingressGateway:
-  name: istio-gateways/bifrost-gateway
-  host: explore.example.com
-  matchPrefix:
-    - "/"
+istio:
+  enabled: false
 
-# The overall timeout for requests to this service
-# Optional
-overallTimeout: 10s
+  virtualServiceRoutes:
+    http:
+      - port: 443
+        targetPort: 9999
+        matchPrefix: []
 
-# Client retry settings (use Istio syntax)
-# Optional
-retries:
-  attempts: 3
-  perTryTimeout: 2s
+  annotations:
+    {}
+    # networking.istio.io/exportTo: .
 
-# Circuit breaker settings (use Istio syntax)
-# Optional
-outlierDetection:
-  consecutive5xxErrors: 5
+  ingressGateway:
+    name: istio-gateways/gateway
+    hosts:
+      - annulus.example.com
+
+  # # The overall timeout for requests to this service
+  # # Optional
+  overallTimeout: # 24h
+
+  # # Client retry settings (use Istio syntax)
+  # # Optional
+  retries: {}
+  #   attempts: 3
+  #   perTryTimeout: 5s
+
+  # # Circuit breaker settings (use Istio syntax)
+  # # Optional
+  outlierDetection: {}
+  #   consecutive5xxErrors: 5
 
 # Resource settings (use Kubernetes syntax)
 # Optional

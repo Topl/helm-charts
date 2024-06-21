@@ -2,24 +2,22 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-    name: {{ .Values.service | lower | quote }}
-    labels:
-        app.kubernetes.io/name: {{ .Values.service | lower | quote }}
-        app.kubernetes.io/part-of: {{ .Values.system | quote }}
-        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
-    namespace: {{ .Release.Namespace | quote }}
+  name: {{ .Values.service | lower | quote }}
+  labels:
+    {{- include "annulus.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace | quote }}
 spec:
-    scaleTargetRef:
-        apiVersion: apps/v1
-        kind: Deployment
-        name: {{ .Values.service | lower | quote }}
-    minReplicas: {{ .Values.autoscaling.minReplicas }}
-    maxReplicas: {{ .Values.autoscaling.maxReplicas }}
-    metrics:
-        - type: Resource
-          resource:
-              name: cpu
-              target:
-                  type: Utilization
-                  averageUtilization: {{ .Values.autoscaling.targetAverageCpuUtilization }}
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ .Values.service | lower | quote }}
+  minReplicas: {{ .Values.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.autoscaling.targetAverageCpuUtilization }}
 {{- end }}

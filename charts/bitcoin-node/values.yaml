@@ -72,7 +72,6 @@ ports:
 # above.
 istio:
   enabled: false
-  createGrpcWebFilter: true
 
   virtualServiceRoutes:
     tcp:
@@ -85,8 +84,9 @@ istio:
     # networking.istio.io/exportTo: .
 
   ingressGateway:
-    name: istio-gateways/bitcoin-gateway
-    host: bitcoin.example.com
+    name: istio-gateways/gateway
+    hosts:
+      - bitcoin.example.com
 
   # # The overall timeout for requests to this service
   # # Optional

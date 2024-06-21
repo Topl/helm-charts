@@ -3,17 +3,15 @@ kind: DestinationRule
 metadata:
   name: {{ .Values.service | lower | quote }}
   labels:
-    app.kubernetes.io/name: {{ .Values.service | lower | quote }}
-    app.kubernetes.io/part-of: {{ .Values.system | quote }}
-    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    {{- include "annulus.labels" . | nindent 4 }}
   namespace: {{ .Release.Namespace | quote }}
 spec:
   host: {{ (print .Values.service "." .Release.Namespace ".svc.cluster.local")  | quote }}
-{{- if .Values.outlierDetection }}
+  {{- if .Values.outlierDetection }}
   trafficPolicy:
     outlierDetection:
-{{ toYaml .Values.outlierDetection | indent 6 }}
-{{- end }}
+    {{ toYaml .Values.outlierDetection | nindent 6 }}
+  {{- end }}
   subsets:
     - name: {{ (print "v" .Values.version) | quote }}
       labels:
