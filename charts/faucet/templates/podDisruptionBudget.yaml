@@ -8,4 +8,4 @@ spec:
   maxUnavailable: {{ .Values.maxUnavailable }}
   selector:
     matchLabels:
-      {{- include "faucet.labels" . | nindent 4 }}
+      {{- include "faucet.labels" . | nindent 6 }}

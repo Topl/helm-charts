@@ -8,4 +8,4 @@ spec:
   maxUnavailable: {{ .Values.maxUnavailable }}
   selector:
     matchLabels:
-      {{- include "btc-bridge.selectorLabels" . | nindent 4 }}
+      {{- include "btc-bridge.selectorLabels" . | nindent 6 }}
