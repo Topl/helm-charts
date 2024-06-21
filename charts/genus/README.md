@@ -1,4 +1,4 @@
-# Genus
+# genus
 
 ![Version: 0.2.7](https://img.shields.io/badge/Version-0.2.7-informational?style=flat-square) ![AppVersion: 2.0.0-beta3](https://img.shields.io/badge/AppVersion-2.0.0--beta3-informational?style=flat-square)
 
@@ -56,7 +56,7 @@ Kubernetes: `>=1.23.0-0`
 | istio.createGrpcWebFilter | bool | `true` |  |
 | istio.enabled | bool | `false` |  |
 | istio.ingressGateway.hosts[0] | string | `"genus.testnet.topl.co"` |  |
-| istio.ingressGateway.name | string | `"istio-gateways/genus-gateway"` |  |
+| istio.ingressGateway.name | string | `"istio-gateways/gateway"` |  |
 | istio.outlierDetection | object | `{}` |  |
 | istio.overallTimeout | string | `nil` |  |
 | istio.retries | object | `{}` |  |

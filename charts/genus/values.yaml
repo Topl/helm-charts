@@ -69,7 +69,7 @@ istio:
     # networking.istio.io/exportTo: .
 
   ingressGateway:
-    name: istio-gateways/genus-gateway
+    name: istio-gateways/gateway
     hosts:
       - genus.testnet.topl.co
 

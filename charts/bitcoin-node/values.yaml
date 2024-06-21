@@ -84,7 +84,7 @@ istio:
     # networking.istio.io/exportTo: .
 
   ingressGateway:
-    name: istio-gateways/bitcoin-gateway
+    name: istio-gateways/gateway
     hosts:
       - bitcoin.example.com
 

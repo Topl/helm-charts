@@ -48,7 +48,7 @@ Kubernetes: `>=1.23.0-0`
 | istio.annotations | object | `{}` |  |
 | istio.enabled | bool | `false` |  |
 | istio.ingressGateway.hosts[0] | string | `"bitcoin.example.com"` |  |
-| istio.ingressGateway.name | string | `"istio-gateways/bitcoin-gateway"` |  |
+| istio.ingressGateway.name | string | `"istio-gateways/gateway"` |  |
 | istio.outlierDetection | object | `{}` |  |
 | istio.overallTimeout | string | `nil` |  |
 | istio.retries | object | `{}` |  |
