@@ -8,4 +8,4 @@ spec:
   maxUnavailable: {{ .Values.maxUnavailable }}
   selector:
     matchLabels:
-      {{- include "annulus.labels" . | nindent 6 }}
+      {{- include "annulus.selectorLabels" . | nindent 6 }}

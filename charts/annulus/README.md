@@ -35,7 +35,7 @@ Kubernetes: `>=1.23.0-0`
 | image.repository | string | `"toplprotocol/annulus"` |  |
 | image.tag | string | `nil` |  |
 | istio.annotations | object | `{}` |  |
-| istio.enabled | bool | `true` |  |
+| istio.enabled | bool | `false` |  |
 | istio.ingressGateway.hosts[0] | string | `"annulus.example.com"` |  |
 | istio.ingressGateway.name | string | `"istio-gateways/gateway"` |  |
 | istio.outlierDetection | object | `{}` |  |
