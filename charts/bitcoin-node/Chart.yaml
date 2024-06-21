@@ -1,7 +1,7 @@
 apiVersion: v2
 appVersion: "23"
 kubeVersion: ">=1.23.0-0"
-version: 0.1.1
+version: 0.1.2
 
 name: bitcoin-node
 description: A Helm chart for running a Bitcoin node.
