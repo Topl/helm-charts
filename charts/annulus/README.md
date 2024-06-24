@@ -1,6 +1,6 @@
 # annulus
 
-![Version: 0.1.12](https://img.shields.io/badge/Version-0.1.12-informational?style=flat-square) ![AppVersion: v1.4.2](https://img.shields.io/badge/AppVersion-v1.4.2-informational?style=flat-square)
+![Version: 0.1.13](https://img.shields.io/badge/Version-0.1.13-informational?style=flat-square) ![AppVersion: v1.4.2](https://img.shields.io/badge/AppVersion-v1.4.2-informational?style=flat-square)
 
 A Helm chart for Annulus, an Apparatus blockchain explorer.
 
@@ -36,8 +36,9 @@ Kubernetes: `>=1.23.0-0`
 | image.tag | string | `nil` |  |
 | istio.annotations | object | `{}` |  |
 | istio.enabled | bool | `false` |  |
-| istio.ingressGateway.hosts[0] | string | `"annulus.example.com"` |  |
-| istio.ingressGateway.name | string | `"istio-gateways/gateway"` |  |
+| istio.ingress.gateways[0] | string | `"istio-gateways/gateway"` |  |
+| istio.ingress.host | string | `"annulus.example.com"` |  |
+| istio.ingress.redirectHosts | list | `[]` |  |
 | istio.outlierDetection | object | `{}` |  |
 | istio.overallTimeout | string | `nil` |  |
 | istio.retries | object | `{}` |  |

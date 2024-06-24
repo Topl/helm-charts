@@ -1,6 +1,6 @@
 # btc-wallet
 
-![Version: 0.1.3](https://img.shields.io/badge/Version-0.1.3-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
+![Version: 0.1.4](https://img.shields.io/badge/Version-0.1.4-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
 
 Helm Chart for deploying the Apparatus BTC Wallet.
 
@@ -44,9 +44,10 @@ Kubernetes: `>=1.23.0-0`
 | image.repository | string | `"ghcr.io/topl/demo-btc-wallet"` |  |
 | image.tag | string | `""` |  |
 | istio.enabled | bool | `false` |  |
-| istio.ingressGateway.hosts[0] | string | `"wallet.example.com"` |  |
-| istio.ingressGateway.matchPrefix[0] | string | `"/"` |  |
-| istio.ingressGateway.name | string | `"istio-gateways/gateway"` |  |
+| istio.ingress.gateways[0] | string | `"istio-gateways/gateway"` |  |
+| istio.ingress.host | string | `"wallet.example.com"` |  |
+| istio.ingress.matchPrefix[0] | string | `"/"` |  |
+| istio.ingress.redirectHosts | list | `[]` |  |
 | istio.outlierDetection | object | `{}` |  |
 | istio.overallTimeout | string | `nil` |  |
 | istio.retries | object | `{}` |  |

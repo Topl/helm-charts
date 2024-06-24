@@ -62,10 +62,11 @@ maxUnavailable: 1
 istio:
   enabled: false
 
-  ingressGateway:
-    name: istio-gateways/gateway
-    hosts:
-      - bridge.example.com
+  ingress:
+    gateways: 
+    - istio-gateways/gateway
+    host: bridge.example.com
+    redirectHosts: []
     matchPrefix:
       - "/"
 

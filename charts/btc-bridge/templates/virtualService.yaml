@@ -8,12 +8,39 @@ metadata:
   namespace: {{ .Release.Namespace | quote }}
 spec:
   gateways:
-    - {{ .Values.istio.ingressGateway.name | quote }}
-  hosts:
-  {{- range .Values.istio.ingressGateway.hosts }}
+  {{- range .Values.istio.ingress.gateways }}
     - {{ . | quote }}
   {{- end }}
+  hosts:
+    - {{ .Values.istio.ingress.host | quote }}
+  {{- range .Values.istio.ingress.redirectHosts }}
+    - {{ . | quote }}
+  {{- end }}
+  {{- if .Values.istio.virtualServiceRoutes.http }}
   http:
+  # Redirect routes
+  {{- range .Values.istio.virtualServiceRoutes.http }}
+    - match:
+      {{- range $.Values.istio.ingress.redirectHosts }}
+      - uri:
+          exact: {{ . | quote }}
+      {{- end }}
+      redirect:
+        authority: {{ $.Values.istio.ingress.host | quote }}
+      {{- with $.Values.istio.corsPolicy }}
+      corsPolicy:
+      {{- toYaml . | nindent 8 }}
+      {{- end}}
+      {{- if $.Values.istio.retries }}
+      retries:
+      {{ toYaml $.Values.istio.retries | nindent 8 }}
+      timeout: {{ required "You must specify an overall timeout to use retries" $.Values.istio.overallTimeout}}
+      {{- else if $.Values.istio.overallTimeout }}
+      timeout: {{ $.Values.istio.overallTimeout }}
+      {{- end }}
+  {{- end }}
+  {{- end }}
+  # Normal routes
   {{- range .Values.istio.virtualServiceRoutes.http }}
     - match:
       - port: {{ .port }}
@@ -26,8 +53,10 @@ spec:
           host: {{ (print $.Values.service "." $.Release.Namespace ".svc.cluster.local")  | quote }}
           port:
             number: {{ .targetPort }}
+      {{- with $.Values.istio.corsPolicy }}
       corsPolicy:
-      {{- toYaml $.Values.istio.corsPolicy | nindent 8 }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- if $.Values.istio.retries }}
       retries:
       {{ toYaml $.Values.istio.retries | nindent 8 }}
@@ -36,6 +65,7 @@ spec:
       timeout: {{ $.Values.istio.overallTimeout }}
       {{- end }}
   {{- end }}
+  {{- if .Values.istio.virtualServiceRoutes.tcp }}
   tcp:
   {{- range .Values.istio.virtualServiceRoutes.tcp }}
     - match:
@@ -52,5 +82,6 @@ spec:
       {{- else if $.Values.istio.overallTimeout }}
       timeout: {{ $.Values.istio.overallTimeout }}
       {{- end }}
+  {{- end }}
   {{- end }}
 {{- end }}

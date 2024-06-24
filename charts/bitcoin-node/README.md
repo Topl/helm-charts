@@ -1,6 +1,6 @@
 # bitcoin-node
 
-![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square) ![AppVersion: 23](https://img.shields.io/badge/AppVersion-23-informational?style=flat-square)
+![Version: 0.1.3](https://img.shields.io/badge/Version-0.1.3-informational?style=flat-square) ![AppVersion: 23](https://img.shields.io/badge/AppVersion-23-informational?style=flat-square)
 
 A Helm chart for running a Bitcoin node.
 
@@ -47,8 +47,9 @@ Kubernetes: `>=1.23.0-0`
 | image.tag | string | `""` |  |
 | istio.annotations | object | `{}` |  |
 | istio.enabled | bool | `false` |  |
-| istio.ingressGateway.hosts[0] | string | `"bitcoin.example.com"` |  |
-| istio.ingressGateway.name | string | `"istio-gateways/gateway"` |  |
+| istio.ingress.gateways[0] | string | `"istio-gateways/gateway"` |  |
+| istio.ingress.host | string | `"bitcoin.example.com"` |  |
+| istio.ingress.redirectHosts | list | `[]` |  |
 | istio.outlierDetection | object | `{}` |  |
 | istio.overallTimeout | string | `nil` |  |
 | istio.retries | object | `{}` |  |

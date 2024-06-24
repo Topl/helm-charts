@@ -58,10 +58,11 @@ istio:
     {}
     # networking.istio.io/exportTo: .
 
-  ingressGateway:
-    name: istio-gateways/gateway
-    hosts:
-      - faucet.example.com
+  ingress:
+    gateways: 
+    - istio-gateways/gateway
+    host: faucet.example.com
+    redirectHosts: []
 
   # # The overall timeout for requests to this service
   # # Optional

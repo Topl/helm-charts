@@ -1,6 +1,6 @@
 # btc-bridge
 
-![Version: 0.1.3](https://img.shields.io/badge/Version-0.1.3-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
+![Version: 0.1.4](https://img.shields.io/badge/Version-0.1.4-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
 
 Helm Chart for deploying the Apparatus BTC Bridge.
 
@@ -54,9 +54,10 @@ Kubernetes: `>=1.23.0-0`
 | initWallet.enabled | bool | `false` |  |
 | initWallet.image | string | `"dacr/coursier-launcher:openjdk-11"` |  |
 | istio.enabled | bool | `false` |  |
-| istio.ingressGateway.hosts[0] | string | `"bridge.example.com"` |  |
-| istio.ingressGateway.matchPrefix[0] | string | `"/"` |  |
-| istio.ingressGateway.name | string | `"istio-gateways/gateway"` |  |
+| istio.ingress.gateways[0] | string | `"istio-gateways/gateway"` |  |
+| istio.ingress.host | string | `"bridge.example.com"` |  |
+| istio.ingress.matchPrefix[0] | string | `"/"` |  |
+| istio.ingress.redirectHosts | list | `[]` |  |
 | istio.outlierDetection | object | `{}` |  |
 | istio.overallTimeout | string | `nil` |  |
 | istio.retries | object | `{}` |  |

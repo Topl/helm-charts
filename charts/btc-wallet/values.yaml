@@ -52,10 +52,11 @@ maxUnavailable: 1
 istio:
   enabled: false
 
-  ingressGateway:
-    name: istio-gateways/gateway
-    hosts:
-      - wallet.example.com
+  ingress:
+    gateways: 
+    - istio-gateways/gateway
+    host: wallet.example.com
+    redirectHosts: []
     matchPrefix:
       - "/"
 
