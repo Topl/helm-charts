@@ -22,7 +22,7 @@ spec:
   {{- range .Values.istio.virtualServiceRoutes.http }}
     - match:
       {{- range $.Values.istio.ingress.redirectHosts }}
-      - uri:
+      - authority:
           exact: {{ . | quote }}
       {{- end }}
       redirect:
