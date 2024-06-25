@@ -1,6 +1,6 @@
 # faucet
 
-![Version: 0.1.5](https://img.shields.io/badge/Version-0.1.5-informational?style=flat-square) ![AppVersion: 0.1.0](https://img.shields.io/badge/AppVersion-0.1.0-informational?style=flat-square)
+![Version: 0.1.6](https://img.shields.io/badge/Version-0.1.6-informational?style=flat-square) ![AppVersion: 0.1.0](https://img.shields.io/badge/AppVersion-0.1.0-informational?style=flat-square)
 
 Helm Chart for deploying the Apparatus Faucet.
 
@@ -36,8 +36,9 @@ Kubernetes: `>=1.23.0-0`
 | image.tag | string | `nil` |  |
 | istio.annotations | object | `{}` |  |
 | istio.enabled | bool | `false` |  |
-| istio.ingressGateway.hosts[0] | string | `"faucet.example.com"` |  |
-| istio.ingressGateway.name | string | `"istio-gateways/gateway"` |  |
+| istio.ingress.gateways[0] | string | `"istio-gateways/gateway"` |  |
+| istio.ingress.host | string | `"faucet.example.com"` |  |
+| istio.ingress.redirectHosts | list | `[]` |  |
 | istio.outlierDetection | object | `{}` |  |
 | istio.overallTimeout | string | `nil` |  |
 | istio.retries | object | `{}` |  |

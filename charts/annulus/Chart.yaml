@@ -1,7 +1,7 @@
 apiVersion: v2
 appVersion: "v1.4.2"
 kubeVersion: ">=1.23.0-0"
-version: 0.1.12
+version: 0.1.13
 
 name: annulus
 description: A Helm chart for Annulus, an Apparatus blockchain explorer.

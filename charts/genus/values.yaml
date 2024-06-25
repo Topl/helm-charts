@@ -68,10 +68,11 @@ istio:
     {}
     # networking.istio.io/exportTo: .
 
-  ingressGateway:
-    name: istio-gateways/gateway
-    hosts:
-      - genus.testnet.topl.co
+  ingress:
+    gateways: 
+    - istio-gateways/gateway
+    host: genus.example.com
+    redirectHosts: []
 
   corsPolicy:
     allowOrigins:

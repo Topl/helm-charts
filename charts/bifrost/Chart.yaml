@@ -1,7 +1,7 @@
 apiVersion: v2
 appVersion: "2.0.0-beta3"
 kubeVersion: ">=1.23.0-0"
-version: 0.2.4
+version: 0.2.5
 
 name: bifrost
 description: A Helm chart for Bifrost, the Apparatus blockchain node built for good.

@@ -83,10 +83,11 @@ istio:
     {}
     # networking.istio.io/exportTo: .
 
-  ingressGateway:
-    name: istio-gateways/gateway
-    hosts:
-      - bitcoin.example.com
+  ingress:
+    gateways: 
+    - istio-gateways/gateway
+    host: bitcoin.example.com
+    redirectHosts: []
 
   # # The overall timeout for requests to this service
   # # Optional

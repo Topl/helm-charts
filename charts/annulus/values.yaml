@@ -58,10 +58,12 @@ istio:
     {}
     # networking.istio.io/exportTo: .
 
-  ingressGateway:
-    name: istio-gateways/gateway
-    hosts:
-      - annulus.example.com
+  ingress:
+    gateways:
+    - istio-gateways/gateway
+    host: annulus.example.com
+    # Adds 301 redirects for the provided hosts to the main host.
+    redirectHosts: []
 
   # # The overall timeout for requests to this service
   # # Optional

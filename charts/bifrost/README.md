@@ -1,6 +1,6 @@
 # bifrost
 
-![Version: 0.2.4](https://img.shields.io/badge/Version-0.2.4-informational?style=flat-square) ![AppVersion: 2.0.0-beta3](https://img.shields.io/badge/AppVersion-2.0.0--beta3-informational?style=flat-square)
+![Version: 0.2.5](https://img.shields.io/badge/Version-0.2.5-informational?style=flat-square) ![AppVersion: 2.0.0-beta3](https://img.shields.io/badge/AppVersion-2.0.0--beta3-informational?style=flat-square)
 
 A Helm chart for Bifrost, the Apparatus blockchain node built for good.
 
@@ -63,8 +63,9 @@ Kubernetes: `>=1.23.0-0`
 | istio.corsPolicy.maxAge | string | `"24h"` |  |
 | istio.createGrpcWebFilter | bool | `true` |  |
 | istio.enabled | bool | `false` |  |
-| istio.ingressGateway.hosts[0] | string | `"bifrost.example.com"` |  |
-| istio.ingressGateway.name | string | `"istio-gateways/gateway"` |  |
+| istio.ingress.gateways[0] | string | `"istio-gateways/gateway"` |  |
+| istio.ingress.host | string | `"bifrost.example.com"` |  |
+| istio.ingress.redirectHosts | list | `[]` |  |
 | istio.outlierDetection | object | `{}` |  |
 | istio.overallTimeout | string | `nil` |  |
 | istio.retries | object | `{}` |  |
