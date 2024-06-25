@@ -3,6 +3,28 @@ entries:
   annulus:
   - apiVersion: v2
     appVersion: v1.4.2
+    created: "2024-06-25T21:05:00.0536214Z"
+    description: A Helm chart for Annulus, an Apparatus blockchain explorer.
+    digest: 6c965fae0b0d264d017f417f67381d6ea05f4276a9819e561d8e4a2659222e0d
+    home: https://apparatus.live
+    icon: https://apparatus.live/wp-content/uploads/2024/03/cropped-Circle_Original-1.png
+    keywords:
+    - apparatus
+    - annulus
+    - explorer
+    kubeVersion: '>=1.23.0-0'
+    maintainers:
+    - name: apparatus
+      url: https://github.com/Topl
+    name: annulus
+    sources:
+    - https://github.com/Topl/helm-charts
+    - https://topl.github.io/helm-charts
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/annulus-0.1.14/annulus-0.1.14.tgz
+    version: 0.1.14
+  - apiVersion: v2
+    appVersion: v1.4.2
     created: "2024-06-25T14:57:46.247294164Z"
     description: A Helm chart for Annulus, an Apparatus blockchain explorer.
     digest: e64df0bacc6fb757f89388b0c4931838e456e06e9a5a9ef2dac7d076db644a2a
@@ -99,6 +121,29 @@ entries:
     - https://github.com/Topl/helm-charts/releases/download/annulus-0.1.0/annulus-0.1.0.tgz
     version: 0.1.0
   bifrost:
+  - apiVersion: v2
+    appVersion: 2.0.0-beta3
+    created: "2024-06-25T21:05:00.189427608Z"
+    description: A Helm chart for Bifrost, the Apparatus blockchain node built for
+      good.
+    digest: db438383c0a59dc6f09835cc16dcdac06dc377dbb244dfe8764e7fba865d2b8d
+    home: https://apparatus.live
+    icon: https://apparatus.live/wp-content/uploads/2024/03/cropped-Circle_Original-1.png
+    keywords:
+    - apparatus
+    - bifrost
+    - blockchain
+    kubeVersion: '>=1.23.0-0'
+    maintainers:
+    - name: apparatus
+      url: https://github.com/Topl
+    name: bifrost
+    sources:
+    - https://github.com/Topl/helm-charts
+    - https://topl.github.io/helm-charts
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/bifrost-0.2.6/bifrost-0.2.6.tgz
+    version: 0.2.6
   - apiVersion: v2
     appVersion: 2.0.0-beta3
     created: "2024-06-25T14:57:46.38550841Z"
@@ -412,6 +457,28 @@ entries:
   bitcoin-node:
   - apiVersion: v2
     appVersion: "23"
+    created: "2024-06-25T21:05:00.339508509Z"
+    description: A Helm chart for running a Bitcoin node.
+    digest: c3e18774937f1edc4bb6f34bf87ee6b62996b5dfdfc04fbdb3517f2d2eef3413
+    home: https://apparatus.live
+    icon: https://apparatus.live/wp-content/uploads/2024/03/cropped-Circle_Original-1.png
+    keywords:
+    - apparatus
+    - bitcoin
+    - blockchain
+    kubeVersion: '>=1.23.0-0'
+    maintainers:
+    - name: apparatus
+      url: https://github.com/Topl
+    name: bitcoin-node
+    sources:
+    - https://github.com/Topl/helm-charts
+    - https://topl.github.io/helm-charts
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/bitcoin-node-0.1.4/bitcoin-node-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
+    appVersion: "23"
     created: "2024-06-25T14:57:46.551937301Z"
     description: A Helm chart for running a Bitcoin node.
     digest: 6bb14c14b8e0b54fb900d121867de0d91623a04eb28142effe3484a36ad76ee7
@@ -455,6 +522,28 @@ entries:
     - https://github.com/Topl/helm-charts/releases/download/bitcoin-node-0.1.2/bitcoin-node-0.1.2.tgz
     version: 0.1.2
   btc-bridge:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2024-06-25T21:05:00.469460731Z"
+    description: Helm Chart for deploying the Apparatus BTC Bridge.
+    digest: ace3bd3e65d781e24612b64886669beb9cae7b4bc909f75fa5e9a13b7071220e
+    home: https://apparatus.live
+    icon: https://apparatus.live/wp-content/uploads/2024/03/cropped-Circle_Original-1.png
+    keywords:
+    - apparatus
+    - bridge
+    - blockchain
+    kubeVersion: '>=1.23.0-0'
+    maintainers:
+    - name: apparatus
+      url: https://github.com/Topl
+    name: btc-bridge
+    sources:
+    - https://github.com/Topl/helm-charts
+    - https://topl.github.io/helm-charts
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/btc-bridge-0.1.5/btc-bridge-0.1.5.tgz
+    version: 0.1.5
   - apiVersion: v2
     appVersion: latest
     created: "2024-06-25T14:57:46.745721691Z"
@@ -517,6 +606,28 @@ entries:
   btc-wallet:
   - apiVersion: v2
     appVersion: latest
+    created: "2024-06-25T21:05:00.56767632Z"
+    description: Helm Chart for deploying the Apparatus BTC Wallet.
+    digest: aa7ee5ecf96006152de9142efeae0dc8f278069f749bf30aa12ef1682d625f23
+    home: https://apparatus.live
+    icon: https://apparatus.live/wp-content/uploads/2024/03/cropped-Circle_Original-1.png
+    keywords:
+    - apparatus
+    - wallet
+    - blockchain
+    kubeVersion: '>=1.23.0-0'
+    maintainers:
+    - name: apparatus
+      url: https://github.com/Topl
+    name: btc-wallet
+    sources:
+    - https://github.com/Topl/helm-charts
+    - https://topl.github.io/helm-charts
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/btc-wallet-0.1.5/btc-wallet-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v2
+    appVersion: latest
     created: "2024-06-25T14:57:46.901989317Z"
     description: Helm Chart for deploying the Apparatus BTC Wallet.
     digest: 3e44ce4822f795417c8b55723a728e9d87b62c0df1c995c77bc6ddc09a004a0f
@@ -575,6 +686,28 @@ entries:
     - https://github.com/Topl/helm-charts/releases/download/btc-wallet-0.1.1/btc-wallet-0.1.1.tgz
     version: 0.1.1
   faucet:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2024-06-25T21:05:00.660454415Z"
+    description: Helm Chart for deploying the Apparatus Faucet.
+    digest: f0850f9ee7ff79a1a8442d90438fb79eb145e972ca20b44ff8b956edda40bb3a
+    home: https://apparatus.live
+    icon: https://apparatus.live/wp-content/uploads/2024/03/cropped-Circle_Original-1.png
+    keywords:
+    - apparatus
+    - wallet
+    - blockchain
+    kubeVersion: '>=1.23.0-0'
+    maintainers:
+    - name: apparatus
+      url: https://github.com/Topl
+    name: faucet
+    sources:
+    - https://github.com/Topl/helm-charts
+    - https://topl.github.io/helm-charts
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/faucet-0.1.7/faucet-0.1.7.tgz
+    version: 0.1.7
   - apiVersion: v2
     appVersion: 0.1.0
     created: "2024-06-25T14:57:47.037178845Z"
@@ -665,6 +798,28 @@ entries:
     - https://github.com/Topl/helm-charts/releases/download/faucet-0.1.0/faucet-0.1.0.tgz
     version: 0.1.0
   genus:
+  - apiVersion: v2
+    appVersion: 2.0.0-beta3
+    created: "2024-06-25T21:05:00.758263271Z"
+    description: Helm Chart for Genus, the data indexer for Apparatus.
+    digest: 34275a00254ea509041dfdfa9e6cd012866846254ecb395d5d33c70107564721
+    home: https://apparatus.live
+    icon: https://apparatus.live/wp-content/uploads/2024/03/cropped-Circle_Original-1.png
+    keywords:
+    - apparatus
+    - genus
+    - blockchain
+    kubeVersion: '>=1.23.0-0'
+    maintainers:
+    - name: apparatus
+      url: https://github.com/Topl
+    name: genus
+    sources:
+    - https://github.com/Topl/helm-charts
+    - https://topl.github.io/helm-charts
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/genus-0.2.10/genus-0.2.10.tgz
+    version: 0.2.10
   - apiVersion: v2
     appVersion: 2.0.0-beta3
     created: "2024-06-25T14:57:47.207831969Z"
@@ -831,4 +986,4 @@ entries:
     urls:
     - https://github.com/Topl/helm-charts/releases/download/vertx-0.1.0/vertx-0.1.0.tgz
     version: 0.1.0
-generated: "2024-06-25T14:57:47.208065518Z"
+generated: "2024-06-25T21:05:00.75857307Z"
