@@ -1,0 +1,26 @@
+{{- if .Values.cronJob.enabled }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: mint-blocks
+spec:
+  schedule: "*/5 * * * *"  # Every 5 minutes
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: mint-block
+            image: curlimages/curl
+            imagePullPolicy: IfNotPresent
+            args:
+            - /bin/sh
+            - -ec
+            - |
+              date; \
+              echo Starting block minting; \
+              export ADDRESS=$(curl --user test:test --data-binary '{"jsonrpc":"1.0", "id":"minting", "method":"getnewaddress", "params":[]}' -H 'content-type:text/plain;' {{ .Values.service | lower | quote }}:18443/wallet/minting | awk -F '"' '/result/{print $4}'); echo $ADDRESS ; \
+              curl --user test:test --data-binary "{\"jsonrpc\":\"1.0\", \"id\":\"minting\", \"method\":\"generatetoaddress\", \"params\":[1,\"$ADDRESS\"]}" {{ .Values.service | lower | quote }}:18443/wallet/minting; \
+              echo done
+          restartPolicy: OnFailure
+{{- end }}

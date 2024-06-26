@@ -42,6 +42,25 @@ spec:
       serviceAccountName: {{ .Values.serviceAccount.name | lower | quote }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: initialize-wallet
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+          command:
+            - /bin/bash
+            - -c
+            - |
+              echo "Starting the bitcoind daemon" && \
+              bitcoind {{ include "bitcoin.args" . }} && \
+              echo "Checking if the wallet is initialized" && \
+              bitcoin-cli -rpcuser=test -rpcpassword=test -rpcport=18443 getwalletinfo | grep minting || {
+                echo "Creating the wallet" && \
+                bitcoin-cli -rpcuser=test -rpcpassword=test -rpcport=18443 createwallet ${{ .Values.walletName | quote }}
+              }
+          volumeMounts:
+            - name: {{ (print .Values.service "-config") | quote }}
+              mountPath: {{ .Values.configMap.mountPath | quote }}
+            - name: {{ (print .Values.service "-pv") | quote }}
+              mountPath: {{ .Values.volume.mountDirectory }}
       containers:
         - name: {{ .Values.service | lower | quote }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}

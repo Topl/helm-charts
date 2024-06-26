@@ -60,3 +60,12 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{- define "bitcoin.args" -}}
+{{- $list := list }}
+{{- $list = append $list "-daemonwait" }}
+{{- range .Values.args }}
+{{- $list = append $list (printf "\"%s\"" .) }}
+{{- end }}
+{{- join " " $list }}
+{{- end }}
