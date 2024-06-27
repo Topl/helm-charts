@@ -92,7 +92,7 @@ Kubernetes: `>=1.23.0-0`
 | serviceAccount.automountToken | bool | `false` |  |
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `"bitcoin-node"` |  |
-| serviceType | string | `"NodePort"` |  |
+| serviceType | string | `"ClusterIP"` |  |
 | system | string | `"bitcoin-node"` |  |
 | tolerations | list | `[]` |  |
 | version | int | `1` |  |
