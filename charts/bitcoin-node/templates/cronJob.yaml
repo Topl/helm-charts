@@ -19,8 +19,19 @@ spec:
             - |
               date; \
               echo Starting block minting; \
-              export ADDRESS=$(curl --user test:test --data-binary '{"jsonrpc":"1.0", "id":"minting", "method":"getnewaddress", "params":[]}' -H 'content-type:text/plain;' {{ .Values.service | lower | quote }}:18443/wallet/minting | awk -F '"' '/result/{print $4}'); echo $ADDRESS ; \
-              curl --user test:test --data-binary "{\"jsonrpc\":\"1.0\", \"id\":\"minting\", \"method\":\"generatetoaddress\", \"params\":[1,\"$ADDRESS\"]}" {{ .Values.service | lower | quote }}:18443/wallet/minting; \
+              export ADDRESS=$(curl --user $RPC_USERNAME:$RPC_PASSWORD --data-binary '{"jsonrpc":"1.0", "id":"{{ .Values.wallet.name }}", "method":"getnewaddress", "params":[]}' -H 'content-type:text/plain;' {{ .Values.service | lower | quote }}:18443/wallet/{{ .Values.wallet.name }} | awk -F '"' '/result/{print $4}'); echo $ADDRESS ; \
+              curl --user $(RPC_USERNAME):$(RPC_PASSWORD) --data-binary "{\"jsonrpc\":\"1.0\", \"id\":\"{{ .Values.wallet.name }}\", \"method\":\"generatetoaddress\", \"params\":[1,\"$ADDRESS\"]}" {{ .Values.service | lower | quote }}:18443/wallet/{{ .Values.wallet.name }}; \
               echo done
+            env:
+            - name: RPC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "bitcoin.walletSecretName" . }}
+                  key: username
+            - name: RPC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "bitcoin.walletSecretName" . }}
+                  key: password
           restartPolicy: OnFailure
 {{- end }}
