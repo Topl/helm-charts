@@ -1,8 +1,8 @@
-{{- if .Values.bridgeBackend.networkPolicy.enabled }}
+{{- if .Values.backend.networkPolicy.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ .Values.bridgeBackend.service | lower | quote }}
+  name: {{ .Values.backend.service | lower | quote }}
   labels:
     {{- include "btc-bridge.backend.labels" . | nindent 4 }}
 spec:
@@ -13,9 +13,9 @@ spec:
   - from:
     - podSelector:
         matchLabels:
-          app.kubernetes.io/part-of: {{ .Values.bridgeBackend.system | quote }}
+          app.kubernetes.io/part-of: {{ .Values.backend.system | quote }}
     ports:
-{{- range .Values.bridgeBackend.ports }}
+{{- range .Values.backend.ports }}
     - port: {{ .name | quote }}
       protocol: TCP
 {{- end }}

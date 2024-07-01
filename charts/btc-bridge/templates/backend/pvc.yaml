@@ -1,27 +1,27 @@
-{{- if and .Values.bridgeBackend.persistence.enabled}}
+{{- if and .Values.backend.persistence.enabled}}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ .Values.bridgeBackend.service | lower | quote }}
+  name: {{ .Values.backend.service | lower | quote }}
   labels:
     {{- include "btc-bridge.backend.labels" . | nindent 4 }}
   namespace: {{ .Release.Namespace | quote }}
-  {{- with .Values.bridgeBackend.persistence.finalizers  }}
+  {{- with .Values.backend.persistence.finalizers  }}
   finalizers:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
   accessModes:
-    {{- range .Values.bridgeBackend.persistence.accessModes }}
+    {{- range .Values.backend.persistence.accessModes }}
     - {{ . | quote }}
     {{- end }}
   resources:
     requests:
-      storage: {{ .Values.bridgeBackend.persistence.storageSize | quote }}
-  {{- with .Values.bridgeBackend.persistence.storageClassName }}
+      storage: {{ .Values.backend.persistence.storageSize | quote }}
+  {{- with .Values.backend.persistence.storageClassName }}
   storageClassName: {{ . }}
   {{- end }}
-  {{- if .Values.bridgeBackend.persistence.matchLabels }}
+  {{- if .Values.backend.persistence.matchLabels }}
   selector:
     matchLabels:
     {{- include "btc-bridge.backend.selectorLabels" . | nindent 4 }}

@@ -8,7 +8,7 @@ service: btc-bridge
 # The major version number for your service
 version: 1
 
-bridgeUi:
+ui:
   enabled: true
   # The overall system your service is a part of
   system: bridge-ui
@@ -166,7 +166,7 @@ bridgeUi:
           }
       }
 
-bridgeBackend:
+backend:
   service: btc-bridge
   # Docker settings
   image:

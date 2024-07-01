@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.ui.service | lower | quote }}
+  labels:
+    {{- include "btc-bridge.ui.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  {{- if not .Values.ui.autoscaling.enabled }}
+  replicas: {{ .Values.ui.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "btc-bridge.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        # Kubernetes recommended labels
+        {{- include "btc-bridge.ui.labels" . | nindent 8 }}
+        # Isio required labels
+        app: {{ .Values.ui.service | lower | quote }}
+        version: {{ .Values.ui.version | quote }}
+    {{- if .Values.ui.configMap }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/ui/configmap.yaml") . | sha256sum }}
+    {{- end }}
+    spec:
+      {{- with .Values.ui.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ .Values.ui.serviceAccount.name | lower | quote }}
+      securityContext:
+        {{- toYaml .Values.ui.podSecurityContext | nindent 8 }}
+      automountServiceAccountToken: {{ .Values.ui.serviceAccount.automountToken }}
+      containers:
+        - name: {{ .Values.ui.service | lower | quote }}
+          image: {{ .Values.ui.image.repository }}:{{ .Values.ui.image.tag | default .Chart.AppVersion }}
+          securityContext:
+            {{- toYaml .Values.ui.securityContext | nindent 12 }}
+          imagePullPolicy: {{ .Values.ui.image.imagePullPolicy | quote }}
+          {{- if .Values.ui.env }}
+          env: {{- toYaml .Values.ui.env | nindent 10 }}
+          {{- end }}
+          command:
+          {{- range .Values.ui.command }}
+            - {{ quote . }}
+          {{- end }}
+          args:
+          {{- range .Values.ui.args }}
+            - {{ quote . }}
+          {{- end }}
+          ports:
+          {{- range .Values.ui.ports }}
+            - name: {{ .name | quote }}
+              containerPort: {{ .targetPort }}
+              protocol: TCP
+          {{- end }}
+          {{- if .Values.ui.resources }}
+          resources:
+            {{ toYaml .Values.ui.resources | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+          {{- if .Values.ui.configMap }}
+            - name: {{ (print .Values.ui.service "-config") | quote }}
+              mountPath: {{ .Values.ui.configMap.mountPath | quote }}
+          {{- end }}
+            - name: cache
+              mountPath: /var/cache/nginx
+            - name: tmp
+              mountPath: /tmp/nginx
+          {{- if .Values.ui.probes }}
+            {{ toYaml .Values.ui.probes | nindent 10 }}
+          {{- end }}
+      volumes:
+      {{- if .Values.ui.configMap }}
+        - name: {{ (print .Values.ui.service "-config") | quote }}
+          configMap:
+            name: {{ .Values.ui.service | lower | quote }}
+      {{- end }}
+        - name: cache
+          emptyDir: {}
+        - name: tmp
+          emptyDir: {}

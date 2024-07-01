@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.bridgeUi.service | lower | quote }}
+  name: {{ .Values.ui.service | lower | quote }}
   labels:
     {{- include "btc-bridge.ui.labels" . | nindent 4 }}
   namespace: {{ .Release.Namespace | quote }}
 spec:
-  type: {{ .Values.bridgeUi.serviceType }}
+  type: {{ .Values.ui.serviceType }}
   ports:
-{{- range .Values.bridgeUi.ports }}
+{{- range .Values.ui.ports }}
     - name: {{ .name | quote }}
       port: {{ .port }}
       protocol: TCP

@@ -25,9 +25,9 @@ app.kubernetes.io/component: ui
 Create the name of the service account to use
 */}}
 {{- define "btc-bridge.ui.serviceAccountName" -}}
-{{- if .Values.bridgeUi.serviceAccount.create }}
-{{- default (include "btc-bridge.ui.fullname" .) .Values.bridgeUi.serviceAccount.name }}
+{{- if .Values.ui.serviceAccount.create }}
+{{- default (include "btc-bridge.ui.fullname" .) .Values.ui.serviceAccount.name }}
 {{- else }}
-{{- default "default" .Values.bridgeUi.serviceAccount.name }}
+{{- default "default" .Values.ui.serviceAccount.name }}
 {{- end }}
 {{- end }}

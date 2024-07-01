@@ -25,9 +25,9 @@ app.kubernetes.io/component: backend
 Create the name of the service account to use
 */}}
 {{- define "btc-bridge.backend.serviceAccountName" -}}
-{{- if .Values.bridgeBackend.serviceAccount.create }}
-{{- default (include "btc-bridge.backend.fullname" .) .Values.bridgeBackend.serviceAccount.name }}
+{{- if .Values.backend.serviceAccount.create }}
+{{- default (include "btc-bridge.backend.fullname" .) .Values.backend.serviceAccount.name }}
 {{- else }}
-{{- default "default" .Values.bridgeBackend.serviceAccount.name }}
+{{- default "default" .Values.backend.serviceAccount.name }}
 {{- end }}
 {{- end }}

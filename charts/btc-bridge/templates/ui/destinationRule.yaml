@@ -1,0 +1,16 @@
+{{- if .Values.ui.istio.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ .Values.ui.service | lower | quote }}
+  labels:
+    {{- include "btc-bridge.ui.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  host: {{ (print .Values.ui.service "." .Release.Namespace ".svc.cluster.local")  | quote }}
+  {{- if .Values.ui.istio.outlierDetection }}
+  trafficPolicy:
+    outlierDetection:
+      {{ toYaml .Values.ui.istio.outlierDetection | nindent 6 }}
+  {{- end }}
+{{- end}}
