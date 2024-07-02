@@ -546,6 +546,28 @@ entries:
   btc-bridge:
   - apiVersion: v2
     appVersion: latest
+    created: "2024-07-02T18:38:11.789390023Z"
+    description: Helm Chart for deploying the Apparatus BTC Bridge.
+    digest: 150501b03f1e05d20a9aaa0248eb353202bdd852e272e1fa148d035033aef7d5
+    home: https://apparatus.live
+    icon: https://apparatus.live/wp-content/uploads/2024/03/cropped-Circle_Original-1.png
+    keywords:
+    - apparatus
+    - bridge
+    - blockchain
+    kubeVersion: '>=1.23.0-0'
+    maintainers:
+    - name: apparatus
+      url: https://github.com/Topl
+    name: btc-bridge
+    sources:
+    - https://github.com/Topl/helm-charts
+    - https://topl.github.io/helm-charts
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/btc-bridge-0.1.6/btc-bridge-0.1.6.tgz
+    version: 0.1.6
+  - apiVersion: v2
+    appVersion: latest
     created: "2024-06-25T21:05:00.469460731Z"
     description: Helm Chart for deploying the Apparatus BTC Bridge.
     digest: ace3bd3e65d781e24612b64886669beb9cae7b4bc909f75fa5e9a13b7071220e
@@ -1008,4 +1030,4 @@ entries:
     urls:
     - https://github.com/Topl/helm-charts/releases/download/vertx-0.1.0/vertx-0.1.0.tgz
     version: 0.1.0
-generated: "2024-07-02T13:50:52.899866149Z"
+generated: "2024-07-02T18:38:11.789524626Z"
