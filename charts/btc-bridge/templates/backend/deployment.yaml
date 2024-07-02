@@ -1,38 +1,38 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.service | lower | quote }}
+  name: {{ .Values.backend.service | lower | quote }}
   labels:
-    {{- include "btc-bridge.labels" . | nindent 4 }}
+    {{- include "btc-bridge.backend.labels" . | nindent 4 }}
   namespace: {{ .Release.Namespace | quote }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
+  {{- if not .Values.backend.autoscaling.enabled }}
+  replicas: {{ .Values.backend.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "btc-bridge.selectorLabels" . | nindent 6 }}
+      {{- include "btc-bridge.backend.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
         # Kubernetes recommended labels
-        {{- include "btc-bridge.labels" . | nindent 8 }}
+        {{- include "btc-bridge.backend.labels" . | nindent 8 }}
         # Isio required labels
-        app: {{ .Values.service | lower | quote }}
-        version: {{ .Values.version | quote }}
+        app: {{ .Values.backend.service | lower | quote }}
+        version: {{ .Values.backend.version | quote }}
     spec:
-      {{- with .Values.nodeSelector }}
+      {{- with .Values.backend.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ .Values.serviceAccount.name | lower | quote }}
+      serviceAccountName: {{ .Values.backend.serviceAccount.name | lower | quote }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      automountServiceAccountToken: {{ .Values.serviceAccount.automountToken }}
-      {{- if .Values.initWallet.enabled }}
+        {{- toYaml .Values.backend.podSecurityContext | nindent 8 }}
+      automountServiceAccountToken: {{ .Values.backend.serviceAccount.automountToken }}
+      {{- if .Values.backend.initWallet.enabled }}
       initContainers:
         - name: init
-          image: {{ .Values.initWallet.image }}
+          image: {{ .Values.backend.initWallet.image }}
           command: ["/bin/bash"]
           args:
             - -c
@@ -69,50 +69,50 @@ spec:
                 cp $TOPL_WALLET_JSON /mnt/btc-bridge/topl-keyfile.json &&
                 cp $TOPL_WALLET_DB /mnt/btc-bridge/topl-wallet.db &&
                 echo "all done"
-          {{- if .Values.persistence.enabled }}
+          {{- if .Values.backend.persistence.enabled }}
           volumeMounts:
             - name: storage
-              mountPath: {{ .Values.persistence.mountPath }}
+              mountPath: {{ .Values.backend.persistence.mountPath }}
           {{- end }}
       {{- end}}
       containers:
-        - name: {{ .Values.service | lower | quote }}
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+        - name: {{ .Values.backend.service | lower | quote }}
+          image: {{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag | default .Chart.AppVersion }}
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          imagePullPolicy: {{ .Values.image.imagePullPolicy | quote }}
-          {{- if .Values.env }}
-          env: {{- toYaml .Values.env | nindent 10 }}
+            {{- toYaml .Values.backend.securityContext | nindent 12 }}
+          imagePullPolicy: {{ .Values.backend.image.imagePullPolicy | quote }}
+          {{- if .Values.backend.env }}
+          env: {{- toYaml .Values.backend.env | nindent 10 }}
           {{- end }}
           command:
-          {{- range .Values.command }}
+          {{- range .Values.backend.command }}
             - {{ quote . }}
           {{- end }}
           args:
-          {{- range .Values.args }}
+          {{- range .Values.backend.args }}
             - {{ quote . }}
           {{- end }}
           ports:
-          {{- range .Values.ports }}
+          {{- range .Values.backend.ports }}
             - name: {{ .name | quote }}
               containerPort: {{ .targetPort }}
               protocol: TCP
           {{- end }}
-          {{- if .Values.resources }}
+          {{- if .Values.backend.resources }}
           resources:
-            {{ toYaml .Values.resources | nindent 12 }}
+            {{ toYaml .Values.backend.resources | nindent 12 }}
           {{- end }}
-        {{- if .Values.probes }}
-          {{ toYaml .Values.probes | nindent 10 }}
+        {{- if .Values.backend.probes }}
+          {{ toYaml .Values.backend.probes | nindent 10 }}
         {{- end }}
           volumeMounts:
-        {{- if .Values.persistence.enabled }}
+        {{- if .Values.backend.persistence.enabled }}
             - name: storage
-              mountPath: {{ .Values.persistence.mountPath }}
+              mountPath: {{ .Values.backend.persistence.mountPath }}
         {{- end }}
       volumes:
-        {{- if .Values.persistence.enabled }}
+        {{- if .Values.backend.persistence.enabled }}
         - name: storage
           persistentVolumeClaim:
-            claimName: {{ .Values.service | lower | quote }}
+            claimName: {{ .Values.backend.service | lower | quote }}
         {{- end }}

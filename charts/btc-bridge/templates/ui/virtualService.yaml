@@ -1,0 +1,87 @@
+{{- if .Values.ui.istio.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ .Values.ui.service | lower | quote }}
+  labels:
+    {{- include "btc-bridge.ui.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  gateways:
+  {{- range .Values.ui.istio.ingress.gateways }}
+    - {{ . | quote }}
+  {{- end }}
+  hosts:
+    - {{ .Values.ui.istio.ingress.host | quote }}
+  {{- range .Values.ui.istio.ingress.redirectHosts }}
+    - {{ . | quote }}
+  {{- end }}
+  {{- if .Values.ui.istio.virtualServiceRoutes.http }}
+  http:
+  # Redirect routes
+  {{- range .Values.ui.istio.virtualServiceRoutes.http }}
+    - match:
+      {{- range $.Values.ui.istio.ingress.redirectHosts }}
+      - authority:
+          exact: {{ . | quote }}
+      {{- end }}
+      redirect:
+        authority: {{ $.Values.ui.istio.ingress.host | quote }}
+      {{- with $.Values.ui.istio.corsPolicy }}
+      corsPolicy:
+      {{- toYaml . | nindent 8 }}
+      {{- end}}
+      {{- if $.Values.ui.istio.retries }}
+      retries:
+      {{ toYaml $.Values.ui.istio.retries | nindent 8 }}
+      timeout: {{ required "You must specify an overall timeout to use retries" $.Values.ui.istio.overallTimeout}}
+      {{- else if $.Values.ui.istio.overallTimeout }}
+      timeout: {{ $.Values.ui.istio.overallTimeout }}
+      {{- end }}
+  {{- end }}
+  {{- end }}
+  # Normal routes
+  {{- range .Values.ui.istio.virtualServiceRoutes.http }}
+    - match:
+      - port: {{ .port }}
+      {{- range .matchPrefix }}
+      - uri:
+          prefix: {{ . | quote }}
+      {{- end }}
+      route:
+      - destination:
+          host: {{ (print $.Values.ui.service "." $.Release.Namespace ".svc.cluster.local")  | quote }}
+          port:
+            number: {{ .targetPort }}
+      {{- with $.Values.ui.istio.corsPolicy }}
+      corsPolicy:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if $.Values.ui.istio.retries }}
+      retries:
+      {{ toYaml $.Values.ui.istio.retries | nindent 8 }}
+      timeout: {{ required "You must specify an overall timeout to use retries" $.Values.ui.istio.overallTimeout}}
+      {{- else if $.Values.ui.istio.overallTimeout }}
+      timeout: {{ $.Values.ui.istio.overallTimeout }}
+      {{- end }}
+  {{- end }}
+  {{- if .Values.ui.istio.virtualServiceRoutes.tcp }}
+  tcp:
+  {{- range .Values.ui.istio.virtualServiceRoutes.tcp }}
+    - match:
+      - port: {{ .port }}
+      route:
+      - destination:
+          host: {{ (print $.Values.ui.service "." $.Release.Namespace ".svc.cluster.local")  | quote }}
+          port:
+            number: {{ .targetPort }}
+      {{- if $.Values.ui.istio.retries }}
+      retries:
+      {{ toYaml $.Values.ui.istio.retries | nindent 8 }}
+      timeout: {{ required "You must specify an overall timeout to use retries" $.Values.ui.istio.overallTimeout}}
+      {{- else if $.Values.ui.istio.overallTimeout }}
+      timeout: {{ $.Values.ui.istio.overallTimeout }}
+      {{- end }}
+  {{- end }}
+  {{- end }}
+{{- end }}

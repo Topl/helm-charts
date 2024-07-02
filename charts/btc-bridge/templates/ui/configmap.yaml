@@ -1,0 +1,12 @@
+{{- if .Values.ui.configMap }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.ui.service | lower | quote }}
+  labels:
+    {{- include "btc-bridge.ui.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace | quote }}
+data:
+  {{ .Values.ui.configMap.fileName | default "config.yaml" }}: |-
+{{ .Values.ui.configMap.content | nindent 4 }}
+{{- end }}

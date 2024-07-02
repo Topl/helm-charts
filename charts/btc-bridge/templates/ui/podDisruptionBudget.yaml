@@ -1,11 +1,11 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: {{ .Values.service | lower | quote }}
+  name: {{ .Values.ui.service | lower | quote }}
   labels:
-    {{- include "btc-bridge.labels" . | nindent 4 }}
+    {{- include "btc-bridge.ui.labels" . | nindent 4 }}
 spec:
-  maxUnavailable: {{ .Values.maxUnavailable }}
+  maxUnavailable: {{ .Values.ui.maxUnavailable }}
   selector:
     matchLabels:
       {{- include "btc-bridge.selectorLabels" . | nindent 6 }}

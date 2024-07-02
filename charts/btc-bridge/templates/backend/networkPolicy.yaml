@@ -1,0 +1,24 @@
+{{- if .Values.backend.networkPolicy.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Values.backend.service | lower | quote }}
+  labels:
+    {{- include "btc-bridge.backend.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "btc-bridge.backend.selectorLabels" . | nindent 4 }}
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/part-of: {{ .Values.backend.system | quote }}
+    ports:
+{{- range .Values.backend.ports }}
+    - port: {{ .name | quote }}
+      protocol: TCP
+{{- end }}
+  policyTypes:
+  - Ingress
+{{- end }}
