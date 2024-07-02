@@ -457,6 +457,28 @@ entries:
   bitcoin-node:
   - apiVersion: v2
     appVersion: "23"
+    created: "2024-07-02T13:50:52.899739199Z"
+    description: A Helm chart for running a Bitcoin node.
+    digest: 6520fe228dd50dc645d8261e27ff827d8d04752adb1b5dde80ff803ee6079be7
+    home: https://apparatus.live
+    icon: https://apparatus.live/wp-content/uploads/2024/03/cropped-Circle_Original-1.png
+    keywords:
+    - apparatus
+    - bitcoin
+    - blockchain
+    kubeVersion: '>=1.23.0-0'
+    maintainers:
+    - name: apparatus
+      url: https://github.com/Topl
+    name: bitcoin-node
+    sources:
+    - https://github.com/Topl/helm-charts
+    - https://topl.github.io/helm-charts
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/bitcoin-node-0.1.5/bitcoin-node-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v2
+    appVersion: "23"
     created: "2024-06-25T21:05:00.339508509Z"
     description: A Helm chart for running a Bitcoin node.
     digest: c3e18774937f1edc4bb6f34bf87ee6b62996b5dfdfc04fbdb3517f2d2eef3413
@@ -986,4 +1008,4 @@ entries:
     urls:
     - https://github.com/Topl/helm-charts/releases/download/vertx-0.1.0/vertx-0.1.0.tgz
     version: 0.1.0
-generated: "2024-06-25T21:05:00.75857307Z"
+generated: "2024-07-02T13:50:52.899866149Z"
