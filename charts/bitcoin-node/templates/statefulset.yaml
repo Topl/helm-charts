@@ -42,6 +42,45 @@ spec:
       serviceAccountName: {{ .Values.serviceAccount.name | lower | quote }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: initialize-wallet
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+          command:
+            - /bin/bash
+            - -c
+            - |
+              echo "Starting the bitcoind daemon" && \
+              bitcoind {{ include "bitcoin.args" . }} -rpcuser=$RPC_USERNAME -rpcpassword=$RPC_PASSWORD && \
+              echo "Checking if the wallet is initialized" && \
+              bitcoin-cli -rpcuser=$RPC_USERNAME -rpcpassword=$RPC_PASSWORD -rpcport=18443 getwalletinfo | grep {{ .Values.wallet.name }} || {
+                echo "Creating the wallet" && \
+                bitcoin-cli -rpcuser=$RPC_USERNAME -rpcpassword=$RPC_PASSWORD -rpcport=18443 createwallet ${{ .Values.wallet.name | quote }} && \
+                echo "Loading the wallet" && \
+                bitcoin-cli -rpcuser=$RPC_USERNAME -rpcpassword=$RPC_PASSWORD -rpcport=18443 loadwallet ${{ .Values.wallet.name | quote }} && \
+                echo "Encrypting the wallet" && \
+                bitcoin-cli -rpcuser=$RPC_USERNAME -rpcpassword=$RPC_PASSWORD -rpcport=18443 encryptwallet $WALLET_PASSPHRASE
+              }
+          env:
+            - name: RPC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "bitcoin.walletSecretName" . }}
+                  key: username
+            - name: RPC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "bitcoin.walletSecretName" . }}
+                  key: password
+            - name: WALLET_PASSPHRASE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "bitcoin.walletSecretName" . }}
+                  key: walletpassphrase
+          volumeMounts:
+            - name: {{ (print .Values.service "-config") | quote }}
+              mountPath: {{ .Values.configMap.mountPath | quote }}
+            - name: {{ (print .Values.service "-pv") | quote }}
+              mountPath: {{ .Values.volume.mountDirectory }}
       containers:
         - name: {{ .Values.service | lower | quote }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
@@ -59,6 +98,8 @@ spec:
           {{- range .Values.args }}
             - {{ quote . }}
           {{- end }}
+            - -rpcuser=$(RPC_USERNAME)
+            - -rpcpassword=$(RPC_PASSWORD)
           ports:
           {{- range .Values.ports }}
             - name: {{ .name | quote }}
@@ -77,6 +118,22 @@ spec:
               mountPath: {{ .Values.configMap.mountPath | quote }}
             - name: {{ (print .Values.service "-pv") | quote }}
               mountPath: {{ .Values.volume.mountDirectory }}
+          env:
+            - name: RPC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "bitcoin.walletSecretName" . }}
+                  key: username
+            - name: RPC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "bitcoin.walletSecretName" . }}
+                  key: password
+            - name: WALLET_PASSPHRASE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "bitcoin.walletSecretName" . }}
+                  key: walletpassphrase
       volumes:
         - name: {{ (print .Values.service "-config") | quote }}
           configMap:

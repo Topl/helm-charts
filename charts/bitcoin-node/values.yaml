@@ -23,13 +23,25 @@ args:
   - "-printtoconsole"
   - "-chain=regtest"
   - "-zmqpubrawblock=tcp://0.0.0.0:28332"
-  - "-rpcuser=test"
-  - "-rpcpassword=test"
   - "-port=18444"
   - "-rpcport=18443"
   - "-rpcbind=:18443"
   - "-rpcallowip=0.0.0.0/0"
   - "-datadir=/mnt/bitcoin"
+  - "-wallet=minting"
+
+cronJob:
+  enabled: true
+
+rpc:
+  username: "bitcoin"
+  password: ""
+  existingSecret: "" # Set to manually manage secret.
+
+wallet:
+  name: "minting"
+  passphrase: ""
+  existingSecret: "" # Set to manually manage secret.
 
 env: # Optional
 - name: BITCOIN_DATA
