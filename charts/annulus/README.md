@@ -1,6 +1,6 @@
 # annulus
 
-![Version: 0.1.14](https://img.shields.io/badge/Version-0.1.14-informational?style=flat-square) ![AppVersion: v1.4.2](https://img.shields.io/badge/AppVersion-v1.4.2-informational?style=flat-square)
+![Version: 0.1.15](https://img.shields.io/badge/Version-0.1.15-informational?style=flat-square) ![AppVersion: v1.4.2](https://img.shields.io/badge/AppVersion-v1.4.2-informational?style=flat-square)
 
 A Helm chart for Annulus, an Apparatus blockchain explorer.
 
@@ -41,6 +41,10 @@ Kubernetes: `>=1.23.0-0`
 | istio.ingress.redirectHosts | list | `[]` |  |
 | istio.outlierDetection | object | `{}` |  |
 | istio.overallTimeout | string | `nil` |  |
+| istio.rateLimiting.http.enabled | bool | `false` |  |
+| istio.rateLimiting.http.fill_interval | string | `"60s"` |  |
+| istio.rateLimiting.http.max_tokens | int | `5000` |  |
+| istio.rateLimiting.http.tokens_per_fill | int | `5000` |  |
 | istio.retries | object | `{}` |  |
 | istio.virtualServiceRoutes.http[0].matchPrefix | list | `[]` |  |
 | istio.virtualServiceRoutes.http[0].port | int | `443` |  |

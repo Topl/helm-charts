@@ -1,4 +1,4 @@
-{{- if and (.Values.istio.enabled) (.Values.istio.createGrpcWebFilter) }}
+{{- if or (and .Values.istio.enabled .Values.istio.createGrpcWebFilter) (and .Values.istio.enabled .Values.istio.rateLimiting.rpc.enabled) }}
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
@@ -10,6 +10,7 @@ spec:
     labels:
       app: {{ .Values.service | lower | quote }}
   configPatches:
+    {{- if .Values.istio.createGrpcWebFilter }}
     - applyTo: HTTP_FILTER
       match:
         context: SIDECAR_INBOUND
@@ -25,4 +26,82 @@ spec:
           name: "envoy.grpc_web"
           typed_config:
             "@type": "type.googleapis.com/envoy.extensions.filters.http.grpc_web.v3.GrpcWeb"
+    {{- end }}
+    {{- if .Values.istio.rateLimiting.rpc.enabled }}
+    - applyTo: HTTP_FILTER
+      match:
+        context: SIDECAR_INBOUND
+        listener:
+          filterChain:
+            filter:
+              name: "envoy.filters.network.http_connection_manager"
+      patch:
+        operation: INSERT_BEFORE
+        value:
+          name: envoy.filters.http.local_ratelimit
+          typed_config:
+            "@type": type.googleapis.com/udpa.type.v1.TypedStruct
+            type_url: type.googleapis.com/envoy.extensions.filters.http.local_ratelimit.v3.LocalRateLimit
+            value:
+              stat_prefix: http_local_rate_limiter
+    - applyTo: HTTP_ROUTE
+      match:
+        context: SIDECAR_INBOUND
+        routeConfiguration:
+          vhost:
+            name: "inbound|http|9084"
+            route:
+              action: ANY
+      patch:
+        operation: MERGE
+        value:
+          typed_per_filter_config:
+            envoy.filters.http.local_ratelimit:
+              "@type": type.googleapis.com/udpa.type.v1.TypedStruct
+              type_url: type.googleapis.com/envoy.extensions.filters.http.local_ratelimit.v3.LocalRateLimit
+              value:
+                stat_prefix: http_local_rate_limiter
+                token_bucket:
+                  max_tokens: {{ .Values.istio.rateLimiting.rpc.max_tokens }}
+                  tokens_per_fill: {{ .Values.istio.rateLimiting.rpc.tokens_per_fill }}
+                  fill_interval: {{ .Values.istio.rateLimiting.rpc.fill_interval }}
+                filter_enabled:
+                  runtime_key: local_rate_limit_enabled
+                  default_value:
+                    numerator: 100
+                    denominator: HUNDRED
+                filter_enforced:
+                  runtime_key: local_rate_limit_enforced
+                  default_value:
+                    numerator: 100
+                    denominator: HUNDRED
+                response_headers_to_add:
+                  - append: false
+                    header:
+                      key: x-local-rate-limit
+                      value: 'true'
+    {{- end }}
+    {{- if .Values.istio.rateLimiting.p2p.enabled }}
+    - applyTo: NETWORK_FILTER
+      match:
+        context: SIDECAR_INBOUND
+        listener:
+          portNumber: 9085
+          filterChain:
+            filter:
+              name: "envoy.filters.network.tcp_proxy"
+      patch:
+        operation: INSERT_BEFORE
+        value:
+          name: envoy.filters.network.local_ratelimit
+          typed_config:
+            "@type": type.googleapis.com/udpa.type.v1.TypedStruct
+            type_url: type.googleapis.com/envoy.extensions.filters.network.local_ratelimit.v3.LocalRateLimit
+            value:
+              stat_prefix: tcp_local_rate_limiter
+              token_bucket:
+                max_tokens: {{ .Values.istio.rateLimiting.p2p.max_tokens }}
+                tokens_per_fill: {{ .Values.istio.rateLimiting.p2p.tokens_per_fill }}
+                fill_interval: {{ .Values.istio.rateLimiting.p2p.fill_interval }}
+    {{- end }}
 {{- end }}
