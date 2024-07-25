@@ -3,6 +3,28 @@ entries:
   annulus:
   - apiVersion: v2
     appVersion: v1.4.2
+    created: "2024-07-25T19:57:57.845598586Z"
+    description: A Helm chart for Annulus, an Apparatus blockchain explorer.
+    digest: 73b6c983eb5181740d6eb2edb83005b749ecc98f548db42cbfe7e18a1818d73e
+    home: https://apparatus.live
+    icon: https://apparatus.live/wp-content/uploads/2024/03/cropped-Circle_Original-1.png
+    keywords:
+    - apparatus
+    - annulus
+    - explorer
+    kubeVersion: '>=1.23.0-0'
+    maintainers:
+    - name: apparatus
+      url: https://github.com/Topl
+    name: annulus
+    sources:
+    - https://github.com/Topl/helm-charts
+    - https://topl.github.io/helm-charts
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/annulus-0.1.15/annulus-0.1.15.tgz
+    version: 0.1.15
+  - apiVersion: v2
+    appVersion: v1.4.2
     created: "2024-06-25T21:05:00.0536214Z"
     description: A Helm chart for Annulus, an Apparatus blockchain explorer.
     digest: 6c965fae0b0d264d017f417f67381d6ea05f4276a9819e561d8e4a2659222e0d
@@ -121,6 +143,29 @@ entries:
     - https://github.com/Topl/helm-charts/releases/download/annulus-0.1.0/annulus-0.1.0.tgz
     version: 0.1.0
   bifrost:
+  - apiVersion: v2
+    appVersion: 2.0.0-beta3
+    created: "2024-07-25T19:57:58.014885731Z"
+    description: A Helm chart for Bifrost, the Apparatus blockchain node built for
+      good.
+    digest: 61bb04567ffd02eb35a5e491ba6c3ebd1ee3634ceb2917931e7ba56aaf0f19f6
+    home: https://apparatus.live
+    icon: https://apparatus.live/wp-content/uploads/2024/03/cropped-Circle_Original-1.png
+    keywords:
+    - apparatus
+    - bifrost
+    - blockchain
+    kubeVersion: '>=1.23.0-0'
+    maintainers:
+    - name: apparatus
+      url: https://github.com/Topl
+    name: bifrost
+    sources:
+    - https://github.com/Topl/helm-charts
+    - https://topl.github.io/helm-charts
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/bifrost-0.2.7/bifrost-0.2.7.tgz
+    version: 0.2.7
   - apiVersion: v2
     appVersion: 2.0.0-beta3
     created: "2024-06-25T21:05:00.189427608Z"
@@ -546,6 +591,28 @@ entries:
   btc-bridge:
   - apiVersion: v2
     appVersion: latest
+    created: "2024-07-25T19:57:58.22828146Z"
+    description: Helm Chart for deploying the Apparatus BTC Bridge.
+    digest: 9cb1f1b6a3f7863daefe8cdbf64d5bff53609f8d569cb933f665539691097a9e
+    home: https://apparatus.live
+    icon: https://apparatus.live/wp-content/uploads/2024/03/cropped-Circle_Original-1.png
+    keywords:
+    - apparatus
+    - bridge
+    - blockchain
+    kubeVersion: '>=1.23.0-0'
+    maintainers:
+    - name: apparatus
+      url: https://github.com/Topl
+    name: btc-bridge
+    sources:
+    - https://github.com/Topl/helm-charts
+    - https://topl.github.io/helm-charts
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/btc-bridge-0.1.7/btc-bridge-0.1.7.tgz
+    version: 0.1.7
+  - apiVersion: v2
+    appVersion: latest
     created: "2024-07-02T18:38:11.789390023Z"
     description: Helm Chart for deploying the Apparatus BTC Bridge.
     digest: 150501b03f1e05d20a9aaa0248eb353202bdd852e272e1fa148d035033aef7d5
@@ -844,6 +911,28 @@ entries:
   genus:
   - apiVersion: v2
     appVersion: 2.0.0-beta3
+    created: "2024-07-25T19:57:58.388606153Z"
+    description: Helm Chart for Genus, the data indexer for Apparatus.
+    digest: 66a0602fb4238da5c5c2cdde71cff2f876db85d090dc0bd853f1180ba8c6d9ac
+    home: https://apparatus.live
+    icon: https://apparatus.live/wp-content/uploads/2024/03/cropped-Circle_Original-1.png
+    keywords:
+    - apparatus
+    - genus
+    - blockchain
+    kubeVersion: '>=1.23.0-0'
+    maintainers:
+    - name: apparatus
+      url: https://github.com/Topl
+    name: genus
+    sources:
+    - https://github.com/Topl/helm-charts
+    - https://topl.github.io/helm-charts
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/genus-0.2.11/genus-0.2.11.tgz
+    version: 0.2.11
+  - apiVersion: v2
+    appVersion: 2.0.0-beta3
     created: "2024-06-25T21:05:00.758263271Z"
     description: Helm Chart for Genus, the data indexer for Apparatus.
     digest: 34275a00254ea509041dfdfa9e6cd012866846254ecb395d5d33c70107564721
@@ -1030,4 +1119,4 @@ entries:
     urls:
     - https://github.com/Topl/helm-charts/releases/download/vertx-0.1.0/vertx-0.1.0.tgz
     version: 0.1.0
-generated: "2024-07-02T18:38:11.789524626Z"
+generated: "2024-07-25T19:57:58.388847033Z"
