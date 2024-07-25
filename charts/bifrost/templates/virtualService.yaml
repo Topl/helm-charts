@@ -19,6 +19,7 @@ spec:
   {{- if .Values.istio.virtualServiceRoutes.http }}
   http:
   # Redirect routes
+  {{- if .Values.istio.ingress.redirectHosts}}
   {{- range .Values.istio.virtualServiceRoutes.http }}
     - match:
       {{- range $.Values.istio.ingress.redirectHosts }}
@@ -38,6 +39,7 @@ spec:
       {{- else if $.Values.istio.overallTimeout }}
       timeout: {{ $.Values.istio.overallTimeout }}
       {{- end }}
+  {{- end }}
   {{- end }}
   {{- end }}
   # Normal routes

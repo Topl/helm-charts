@@ -94,6 +94,18 @@ istio:
     - istio-gateways/gateway
     host: bifrost.example.com
     redirectHosts: []
+  
+  rateLimiting:
+    p2p:
+      enabled: false
+      max_tokens: 5000
+      tokens_per_fill: 5000
+      fill_interval: 60s
+    rpc:
+      enabled: false
+      max_tokens: 5000
+      tokens_per_fill: 5000
+      fill_interval: 60s
 
   corsPolicy:
     allowOrigins:

@@ -1,6 +1,6 @@
 # genus
 
-![Version: 0.2.10](https://img.shields.io/badge/Version-0.2.10-informational?style=flat-square) ![AppVersion: 2.0.0-beta3](https://img.shields.io/badge/AppVersion-2.0.0--beta3-informational?style=flat-square)
+![Version: 0.2.11](https://img.shields.io/badge/Version-0.2.11-informational?style=flat-square) ![AppVersion: 2.0.0-beta3](https://img.shields.io/badge/AppVersion-2.0.0--beta3-informational?style=flat-square)
 
 Helm Chart for Genus, the data indexer for Apparatus.
 
@@ -60,6 +60,14 @@ Kubernetes: `>=1.23.0-0`
 | istio.ingress.redirectHosts | list | `[]` |  |
 | istio.outlierDetection | object | `{}` |  |
 | istio.overallTimeout | string | `nil` |  |
+| istio.rateLimiting.p2p.enabled | bool | `false` |  |
+| istio.rateLimiting.p2p.fill_interval | string | `"60s"` |  |
+| istio.rateLimiting.p2p.max_tokens | int | `5000` |  |
+| istio.rateLimiting.p2p.tokens_per_fill | int | `5000` |  |
+| istio.rateLimiting.rpc.enabled | bool | `false` |  |
+| istio.rateLimiting.rpc.fill_interval | string | `"60s"` |  |
+| istio.rateLimiting.rpc.max_tokens | int | `5000` |  |
+| istio.rateLimiting.rpc.tokens_per_fill | int | `5000` |  |
 | istio.retries | object | `{}` |  |
 | istio.virtualServiceRoutes.http[0].matchPrefix | list | `[]` |  |
 | istio.virtualServiceRoutes.http[0].port | int | `443` |  |

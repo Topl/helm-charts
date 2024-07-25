@@ -1,0 +1,36 @@
+{{- if and .Values.backend.istio.enabled .Values.backend.istio.rateLimiting.tcp.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: {{ .Values.service | lower | quote }}
+  labels:
+    {{- include "btc-bridge.labels" . | nindent 4 }}
+spec:
+  workloadSelector:
+    labels:
+      app: {{ .Values.service | lower | quote }}
+  configPatches:
+    {{- if .Values.backend.istio.rateLimiting.tcp.enabled }}
+    - applyTo: NETWORK_FILTER
+      match:
+        context: SIDECAR_INBOUND
+        listener:
+          portNumber: 9085
+          filterChain:
+            filter:
+              name: "envoy.filters.network.tcp_proxy"
+      patch:
+        operation: INSERT_BEFORE
+        value:
+          name: envoy.filters.network.local_ratelimit
+          typed_config:
+            "@type": type.googleapis.com/udpa.type.v1.TypedStruct
+            type_url: type.googleapis.com/envoy.extensions.filters.network.local_ratelimit.v3.LocalRateLimit
+            value:
+              stat_prefix: tcp_local_rate_limiter
+              token_bucket:
+                max_tokens: {{ .Values.backend.istio.rateLimiting.tcp.max_tokens }}
+                tokens_per_fill: {{ .Values.backend.istio.rateLimiting.tcp.tokens_per_fill }}
+                fill_interval: {{ .Values.backend.istio.rateLimiting.tcp.fill_interval }}
+    {{- end }}
+{{- end }}

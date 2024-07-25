@@ -1,6 +1,6 @@
 # btc-bridge
 
-![Version: 0.1.6](https://img.shields.io/badge/Version-0.1.6-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
+![Version: 0.1.7](https://img.shields.io/badge/Version-0.1.7-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
 
 Helm Chart for deploying the Apparatus BTC Bridge.
 
@@ -60,6 +60,10 @@ Kubernetes: `>=1.23.0-0`
 | backend.istio.ingress.redirectHosts | list | `[]` |  |
 | backend.istio.outlierDetection | object | `{}` |  |
 | backend.istio.overallTimeout | string | `nil` |  |
+| backend.istio.rateLimiting.tcp.enabled | bool | `true` |  |
+| backend.istio.rateLimiting.tcp.fill_interval | string | `"60s"` |  |
+| backend.istio.rateLimiting.tcp.max_tokens | int | `5000` |  |
+| backend.istio.rateLimiting.tcp.tokens_per_fill | int | `5000` |  |
 | backend.istio.retries | object | `{}` |  |
 | backend.istio.virtualServiceRoutes.http[0].matchPrefix | list | `[]` |  |
 | backend.istio.virtualServiceRoutes.http[0].port | int | `443` |  |
@@ -120,6 +124,10 @@ Kubernetes: `>=1.23.0-0`
 | ui.istio.ingress.redirectHosts | list | `[]` |  |
 | ui.istio.outlierDetection | object | `{}` |  |
 | ui.istio.overallTimeout | string | `nil` |  |
+| ui.istio.rateLimiting.http.enabled | bool | `false` |  |
+| ui.istio.rateLimiting.http.fill_interval | string | `"60s"` |  |
+| ui.istio.rateLimiting.http.max_tokens | int | `5000` |  |
+| ui.istio.rateLimiting.http.tokens_per_fill | int | `5000` |  |
 | ui.istio.retries | object | `{}` |  |
 | ui.istio.virtualServiceRoutes.http[0].matchPrefix | list | `[]` |  |
 | ui.istio.virtualServiceRoutes.http[0].port | int | `443` |  |

@@ -64,6 +64,13 @@ istio:
     host: annulus.example.com
     # Adds 301 redirects for the provided hosts to the main host.
     redirectHosts: []
+  
+  rateLimiting:
+    http:
+      enabled: false
+      max_tokens: 5000
+      tokens_per_fill: 5000
+      fill_interval: 60s
 
   # # The overall timeout for requests to this service
   # # Optional
