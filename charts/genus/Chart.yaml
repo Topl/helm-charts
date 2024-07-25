@@ -1,7 +1,7 @@
 apiVersion: v2
-appVersion: "2.0.0-beta3"
+appVersion: "2.0.0-beta4"
 kubeVersion: ">=1.23.0-0"
-version: 0.2.11
+version: 0.2.12
 
 name: genus
 description: Helm Chart for Genus, the data indexer for Apparatus.
