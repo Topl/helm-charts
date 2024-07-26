@@ -144,6 +144,29 @@ entries:
     version: 0.1.0
   bifrost:
   - apiVersion: v2
+    appVersion: 2.0.0-beta4
+    created: "2024-07-26T16:35:48.519938623Z"
+    description: A Helm chart for Bifrost, the Apparatus blockchain node built for
+      good.
+    digest: cd805dcefdf038010f8094c0183c0b2dffc1aca3b9d0d9efe49e7d7abaa8e7a2
+    home: https://apparatus.live
+    icon: https://apparatus.live/wp-content/uploads/2024/03/cropped-Circle_Original-1.png
+    keywords:
+    - apparatus
+    - bifrost
+    - blockchain
+    kubeVersion: '>=1.23.0-0'
+    maintainers:
+    - name: apparatus
+      url: https://github.com/Topl
+    name: bifrost
+    sources:
+    - https://github.com/Topl/helm-charts
+    - https://topl.github.io/helm-charts
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/bifrost-0.2.8/bifrost-0.2.8.tgz
+    version: 0.2.8
+  - apiVersion: v2
     appVersion: 2.0.0-beta3
     created: "2024-07-25T19:57:58.014885731Z"
     description: A Helm chart for Bifrost, the Apparatus blockchain node built for
@@ -910,6 +933,28 @@ entries:
     version: 0.1.0
   genus:
   - apiVersion: v2
+    appVersion: 2.0.0-beta4
+    created: "2024-07-26T16:35:48.642929361Z"
+    description: Helm Chart for Genus, the data indexer for Apparatus.
+    digest: 3c576e3b2de9425a63466a36fc48bc24dc1c78f3899f85a835d2e6906d26908a
+    home: https://apparatus.live
+    icon: https://apparatus.live/wp-content/uploads/2024/03/cropped-Circle_Original-1.png
+    keywords:
+    - apparatus
+    - genus
+    - blockchain
+    kubeVersion: '>=1.23.0-0'
+    maintainers:
+    - name: apparatus
+      url: https://github.com/Topl
+    name: genus
+    sources:
+    - https://github.com/Topl/helm-charts
+    - https://topl.github.io/helm-charts
+    urls:
+    - https://github.com/Topl/helm-charts/releases/download/genus-0.2.12/genus-0.2.12.tgz
+    version: 0.2.12
+  - apiVersion: v2
     appVersion: 2.0.0-beta3
     created: "2024-07-25T19:57:58.388606153Z"
     description: Helm Chart for Genus, the data indexer for Apparatus.
@@ -1119,4 +1164,4 @@ entries:
     urls:
     - https://github.com/Topl/helm-charts/releases/download/vertx-0.1.0/vertx-0.1.0.tgz
     version: 0.1.0
-generated: "2024-07-25T19:57:58.388847033Z"
+generated: "2024-07-26T16:35:48.643207482Z"
